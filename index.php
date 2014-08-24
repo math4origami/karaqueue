@@ -16,17 +16,18 @@ address = address.replace("index.php", "");
 var link = document.createElement("a");
 link.innerHTML = "Nicokara Add Song";
 link.href = "javascript:(function() { \
-  var bookmark = document.createElement('img'); \
-  bookmark.src = '" + address + "addSong.php?'; \
+  var addSongPath = '" + address + "addSong.php?'; \
   var damData = document.getElementsByClassName('nicokaraDamData'); \
   if (damData.length > 0) { \
-    bookmark.src += damData[0].id; \
+    addSongPath += damData[0].id; \
   } else { \
-    bookmark.src += 'address=' + encodeURIComponent(window.location.href); \
+    addSongPath += 'address=' + encodeURIComponent(window.location.href); \
   } \
-  document.body.appendChild(bookmark); \
+  var added = open(addSongPath); \
 })();";
 
+  // var bookmark = document.createElement('iframe'); \
+  // document.body.appendChild(bookmark); \
 var bookmark = document.getElementById("bookmark");
 bookmark.appendChild(link);
 </script>
@@ -36,7 +37,7 @@ Extension/script: <a href="extension.crx">Nicokara Extension</a>
 </div>
 
 <div><h2>Local version</h2></div>
-<div id="theater" >Go to <a href="theater.php?local=1">Theater</a></div>
+<div id="theater">Go to <a href="theater.php?local=1">Theater</a></div>
 <div id="theater" style="margin-bottom:20;">Go to <a href="webSql.html">Local SQL</a></div>
 
 <div id="localBookmark">Bookmarklet: </div>

@@ -10,6 +10,9 @@ function query(command, args, callback) {
         }
       }, function(tx, err) {
         console.log(err);
+
+        var output = document.getElementById("webSqlOutput");
+        output.innerHTML += err.message + "\n";
       }
     );
   })
@@ -134,12 +137,13 @@ function testQueue() {
 }
 
 function printQueue(queue) {
+  var output = document.getElementById("webSqlOutput");
   for (var i in queue) {
     var song = queue[i];
-    console.log(song.id+" "+song.queue_id+" "+song.queue_index+" "+song.type+" "+
-      song.name+" "+song.timestamp);
+    output.innerHTML += song.id+" "+song.queue_id+" "+song.queue_index+" "+song.type+" "+
+      song.name+" "+song.timestamp+"\n";
   }
-  console.log(" ");
+  output.innerHTML += "\n";
 }
 
 function testDelete() {

@@ -164,3 +164,15 @@ span.helpKey {
   width: 40;
   display: inline-block;
 }
+
+div#webSqlContainer {
+  position: absolute;
+  width: 100%;
+  top: 30;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+pre#webSqlOutput {
+  padding-left: 10;
+}
