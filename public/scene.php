@@ -16,7 +16,7 @@ if (isset($_GET['name'])) {
 <div id="sceneFrameCover"></div>
 
 <div id="sceneFrameContainer">
-<script type="text/javascript" src="http://ext.nicovideo.jp/thumb_watch/<?= $name ?>">
+<script type="text/javascript" src="http://ext.nicovideo.jp/thumb_watch/<?php echo $name;?>">
 </script>
 </div>
 
