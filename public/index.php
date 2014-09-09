@@ -7,14 +7,14 @@ address = address.replace("index.php", "");
 </head>
 
 <body>
-<div><h1>Nicokara</h1></div>
+<div><h1>Karaqueue</h1></div>
 
 <div id="theater" style="margin-bottom:20;">Go to <a href="theater.php">Theater</a></div>
 
 <div id="bookmark">Bookmarklet: </div>
 <script type="text/javascript">
 var link = document.createElement("a");
-link.innerHTML = "Nicokara Add Song";
+link.innerHTML = "Karaqueue Add Song";
 link.href = "javascript:(function() { \
   var addSongPath = '" + address + "addSong.php?'; \
   var damData = document.getElementsByClassName('nicokaraDamData'); \
@@ -23,6 +23,7 @@ link.href = "javascript:(function() { \
   } else { \
     addSongPath += 'address=' + encodeURIComponent(window.location.href); \
   } \
+  var added = open(addSongPath); \
   var added = open(addSongPath); \
 })();";
 
@@ -33,36 +34,7 @@ bookmark.appendChild(link);
 </script>
 
 <div>
-Extension/script: <a href="extension.crx">Nicokara Extension</a>
-</div>
-
-<div><h2>Local version</h2></div>
-<div id="theater">Go to <a href="theater.php?local=1">Theater</a></div>
-<div id="theater" style="margin-bottom:20;">Go to <a href="webSql.html">Local SQL</a></div>
-
-<div id="localBookmark">Bookmarklet: </div>
-<script type="text/javascript">
-var link = document.createElement("a");
-link.innerHTML = "Local Add Song";
-link.href = "javascript:(function() { \
-  var localPage = document.createElement('a'); \
-  localPage.href = '" + address + "addSong.html?'; \
-  var damData = document.getElementsByClassName('nicokaraDamData'); \
-  if (damData.length > 0) { \
-    localPage.href += damData[0].id; \
-  } else { \
-    localPage.href += 'address=' + encodeURIComponent(window.location.href); \
-  } \
-  localPage.id = 'nicokaraAddSong'; \
-  document.body.appendChild(localPage);\
-})();";
-
-var bookmark = document.getElementById("localBookmark");
-bookmark.appendChild(link);
-</script>
-
-<div>
-Extension/script: <a href="extension.crx">Nicokara Extension</a> (same as above)
+Extension/script: <a href="extension.crx">Karaqueue Extension</a>
 </div>
 
 <div style="margin-top:20;">

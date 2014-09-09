@@ -4,6 +4,8 @@
       "all_frames": true,
       "js": [ "script.js" ],
       "matches": [
+         "http://*.localhost/*",
+         "https://*.localhost/*",
          "http://*.karaqueue.com/*",
          "https://*.karaqueue.com/*",
          "http://*.nicovideo.jp/*",
