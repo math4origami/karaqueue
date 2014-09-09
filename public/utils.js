@@ -36,3 +36,35 @@ function httpRequest(url, callback) {
   xmlHttp.open("GET", url, true);
   xmlHttp.send();
 }
+
+function now() {
+  return (new Date()).getTime();
+}
+
+function getFirstElementByClassName(className, doc) {
+  var arr;
+  if (doc) {
+    arr = doc.getElementsByClassName(className);
+  } else {
+    arr = document.getElementsByClassName(className);
+  }
+  if (arr.length > 0) {
+    return arr[0];
+  } else {
+    return null;
+  }
+}
+
+function getFirstElementByTagName(className, doc) {
+  var arr;
+  if (doc) {
+    arr = doc.getElementsByTagName(className);
+  } else {
+    arr = document.getElementsByTagName(className);
+  }
+  if (arr.length > 0) {
+    return arr[0];
+  } else {
+    return null;
+  }
+}

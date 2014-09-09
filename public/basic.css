@@ -76,7 +76,7 @@ div#stage {
 }
 
 
-iframe#sceneFrame {
+iframe.sceneFrame {
   border: 0;
   height: 100%;
   width: 100%;
@@ -175,4 +175,9 @@ div#webSqlContainer {
 
 pre#webSqlOutput {
   padding-left: 10;
+}
+
+embed {
+  width: 100%;
+  height: 100%;
 }

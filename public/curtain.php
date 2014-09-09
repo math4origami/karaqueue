@@ -101,5 +101,7 @@ function getDamToken() {
 
 <div class="damkaraScene"></div>
 
+<script type="text/javascript" src="http://ext.nicovideo.jp/thumb_watch/sm1589969"></script>
+
 </body>
 </html>

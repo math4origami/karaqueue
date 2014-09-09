@@ -1,19 +1,24 @@
+<?php
+if (isset($_GET['name'])) {
+  $name = $_GET['name'];
+} else {
+  $name = '';
+}
+?>
+
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="basic.css">
-<script type="text/javascript" src="utils.js"></script>
 </head>
 
 <body>
-<script type="text/javascript">
-var args = getArgs();
-if (args.name) {
-  var scene = document.createElement("div");
-  scene.className = "nicokaraScene";
-  scene.id = args.name;
 
-  document.body.appendChild(scene);
-}
+<div id="sceneFrameCover"></div>
+
+<div id="sceneFrameContainer">
+<script type="text/javascript" src="http://ext.nicovideo.jp/thumb_watch/<?= $name ?>">
 </script>
+</div>
+
 </body>
 </html>

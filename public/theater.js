@@ -2,14 +2,6 @@
 var clientQueue = [];
 var currentStage = -1;
 var highlightStage = -1;
-var isLocal = false;
-
-function setLocal() {
-  var args = getArgs();
-  if (args.local) {
-    isLocal = true;
-  }
-}
 
 function getActIndex() {
   if (highlightStage > -1) {
@@ -20,11 +12,7 @@ function getActIndex() {
 }
 
 function reloadQueue() {
-  if (isLocal) {
-    localGetQueue(reloadQueueCallback);
-  } else {
-    httpRequest("queue.php", reloadQueueServer); 
-  }
+  httpRequest("queue.php", reloadQueueServer);
 }
 
 function reloadQueueServer(response) {
@@ -155,7 +143,7 @@ function checkStage() {
 
   var sceneVideo = document.getElementById("sceneVideo");
   if (!sceneVideo) {
-    return false;
+    return checkStageFrame();
   }
 
   var clientSong = clientQueue[currentStage];
@@ -163,6 +151,7 @@ function checkStage() {
   if (sceneVideo.readyState != 4) {
     if (!clientSong.loadedTemp) {
       clientSong.loadedTemp = true;
+      clientSong.loadedTempTime = now();
       clientSong.tempWindow = window.open("http://www.nicovideo.jp/watch/" + clientSong.name, "_blank",
         "width=100, height=100, top=0, left=600");
       console.log(clientQueue.tempWindow);
@@ -171,16 +160,65 @@ function checkStage() {
       }
       
       window.focus();
+    } else if (now() >= clientSong.loadedTempTime + 6000) {
+      if (clientSong.tempWindow) {
+        clientSong.tempWindow.close();
+        clientSong.tempWindow = null;
+      }
+
+      var scene = document.createElement("iframe");
+      scene.src = "scene.php?name=" + clientSong.name;
+      scene.scrolling = false;
+      scene.className = "sceneFrame";
+
+      var stage = document.getElementById("stage");
+      removeAllChildren(stage);
+      stage.appendChild(scene);
+
+      return false;
     }
+
     sceneVideo.load();
     return false;
   } else if (clientSong.tempWindow) {
-      clientSong.tempWindow.close();
-      clientSong.tempWindow = null;
+    clientSong.tempWindow.close();
+    clientSong.tempWindow = null;
   }
 
   if (sceneVideo.ended) {
     return true;
+  }
+
+  return false;
+}
+
+function getSceneFrame() {
+  var stageFrame = getFirstElementByClassName("sceneFrame");
+  if (!stageFrame) {
+    return null;
+  }
+
+  var embed = getFirstElementByTagName("embed", stageFrame.contentDocument);
+  if (!embed) {
+    return null;
+  }
+
+  return embed;
+}
+
+function checkStageFrame() {
+  var sceneFrame = getSceneFrame();
+  if (!sceneFrame) {
+    return false;
+  }
+
+  if (typeof sceneFrame.ext_setCommentVisible == "function") {
+    sceneFrame.ext_setCommentVisible(false);
+  }
+  if (typeof sceneFrame.ext_getStatus == "function") {
+    if (sceneFrame.ext_getStatus() == "end") {
+      return true;
+    }
   }
 
   return false;
@@ -349,11 +387,7 @@ function setCurrent() {
 function deleteSong() {
   var actIndex = getActIndex();
   if (actIndex >= 0 && actIndex < clientQueue.length) {
-    if (isLocal) {
-      localDeleteSong(clientQueue[actIndex].id, reloadQueue);
-    } else {
-      httpRequest("actSong.php?act=delete&id=" + clientQueue[actIndex].id, reloadQueue);
-    }
+    httpRequest("actSong.php?act=delete&id=" + clientQueue[actIndex].id, reloadQueue);
 
     if (currentStage == actIndex) {
       if (currentStage >= clientQueue.length-1) {
@@ -380,12 +414,8 @@ function deleteSong() {
 function raiseSong() {
   var actIndex = getActIndex();
   if (actIndex > 0 && actIndex < clientQueue.length) {
-    if (isLocal) {
-      localRaiseSong(clientQueue[actIndex].id, reloadQueue);
-    } else {
-      httpRequest("actSong.php?act=raise&id=" + clientQueue[actIndex].id, reloadQueue);
-    }
-
+    httpRequest("actSong.php?act=raise&id=" + clientQueue[actIndex].id, reloadQueue);
+    
     if (actIndex == highlightStage) {
       highlightStage--;
     }
@@ -400,12 +430,8 @@ function raiseSong() {
 function lowerSong() {
   var actIndex = getActIndex();
   if (actIndex >= 0 && actIndex < clientQueue.length-1) {
-    if (isLocal) {
-      localLowerSong(clientQueue[actIndex].id, reloadQueue);
-    } else {
-      httpRequest("actSong.php?act=lower&id=" + clientQueue[actIndex].id, reloadQueue);
-    }
-
+    httpRequest("actSong.php?act=lower&id=" + clientQueue[actIndex].id, reloadQueue);
+    
     if (actIndex == highlightStage) {
       highlightStage++;
     }
@@ -458,6 +484,16 @@ function bodyKeyPress(event) {
       } else {
         sceneVideo.pause();
       }
+    } else {
+      var sceneFrame = getSceneFrame();
+      if (sceneFrame && typeof sceneFrame.ext_play == "function") {
+        var status = sceneFrame.ext_getStatus();
+        if (status == "playing") {
+          sceneFrame.ext_play(false);
+        } else if (status == "paused") {
+          sceneFrame.ext_play(true);
+        }
+      }
     }
   } else if (key == "?") {
     displayHelp();
@@ -475,6 +511,5 @@ function displayHelp() {
   document.getElementById("help").style.visibility = help;
 }
 
-setLocal();
 run(reloadQueue, 1000);
-run(refreshStage, 5000);
+run(refreshStage, 3000);
