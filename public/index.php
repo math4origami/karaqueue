@@ -3,6 +3,10 @@
 <script type="text/javascript">
 var address = window.location.origin + window.location.pathname;
 address = address.replace("index.php", "");
+var siteLabel = "Karaqueue";
+if (window.location.host.indexOf("localhost") > -1) {
+  siteLabel = "Localhost";
+}
 </script>
 </head>
 
@@ -14,7 +18,7 @@ address = address.replace("index.php", "");
 <div id="bookmark">Bookmarklet: </div>
 <script type="text/javascript">
 var link = document.createElement("a");
-link.innerHTML = "Karaqueue Add Song";
+link.innerHTML = siteLabel + " Add Song";
 link.href = "javascript:(function() { \
   var addSongPath = '" + address + "addSong.php?'; \
   var damData = document.getElementsByClassName('nicokaraDamData'); \
@@ -23,8 +27,9 @@ link.href = "javascript:(function() { \
   } else { \
     addSongPath += 'address=' + encodeURIComponent(window.location.href); \
   } \
-  var added = open(addSongPath); \
-  var added = open(addSongPath); \
+  var script = document.createElement('script'); \
+  script.src = addSongPath; \
+  document.body.appendChild(script); \
 })();";
 
   // var bookmark = document.createElement('iframe'); \

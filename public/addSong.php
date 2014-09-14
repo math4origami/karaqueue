@@ -1,11 +1,18 @@
-<html>
-<head></head>
-
-<body>
-
-<div>
 <?php
 include_once "mysql.php";
+
+function getTypeName($type) {
+  switch ($type) {
+    case 0:
+      return "NicoNicoDouga";
+    case 1:
+      return "Dam";
+    case 2:
+      return "Youtube";
+    default:
+      return "Unknown type";
+  }
+}
 
 function addSong($type, $name) {
   global $mysqli;
@@ -20,33 +27,36 @@ function addSong($type, $name) {
     }
   }
 
-  $result = $mysqli->query("INSERT INTO queued_song (queue_id, queue_index, type, name)
+  $mysqli->query("INSERT INTO queued_song (queue_id, queue_index, type, name)
     VALUES (0, " . ($last + 1) . ", $type, '$name')");
+
+  $typeName = getTypeName($type);
+  echo "alert('Successfully added: `$name` from $typeName');";
 }
 
 if (isset($_GET["address"])) {
   $address = $_GET["address"];
-  echo $address;
   
   $parsed = parse_url($address);
 
-  if (isset($parsed["host"]) && isset($parsed["path"])) {
-    if (strpos($parsed["host"], "nicovideo.jp") !== false) {
+  if (isset($parsed["host"])) {
+    if (strpos($parsed["host"], "nicovideo.jp") !== false && 
+        isset($parsed["path"])) {
       $tags = explode("/", $parsed["path"]);
       $name = $tags[count($tags) - 1];
 
-      if (strpos($name, "sm") !== false) {
+      if (strpos($name, "sm") === 0) {
         addSong(0, $name);
       }
     } else if (strpos($parsed["host"], "youtube.com") !== false &&
                isset($parsed["query"])) {
       $args = explode("&", $parsed["query"]);
-      // for ($args as $pair) {
-      //   $tags = explode("=", $pair);
-      //   if (count($tags) > 1 && $tags[0] == "v") {
-      //     addSong(2, $tags[1]);
-      //   }
-      // }
+      foreach ($args as $pair) {
+        $tags = explode("=", $pair);
+        if (count($tags) > 1 && $tags[0] == "v") {
+          addSong(2, $tags[1]);
+        }
+      }
     }
   }
 } else if (isset($_GET["contentsId"]) && 
@@ -72,7 +82,3 @@ if (isset($_GET["address"])) {
 }
 
 ?>
-</div>
-
-</body>
-</html>

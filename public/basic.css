@@ -5,6 +5,15 @@ body {
   font-family:'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
 }
 
+iframe#nicoTemp {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 500;
+  height: 500;
+  z-index: -1;
+}
+
 div#theater {
   margin: 0;
   padding: 0;
@@ -87,6 +96,11 @@ video {
   height: 100%;
 }
 
+object.youtubeObject {
+  width: 100%;
+  height: 100%;
+}
+
 div.queueEntry {
   border: 0;
   width: 312;
@@ -141,6 +155,26 @@ img.damLogo {
   width: 200;
   bottom: 20;
   right: 20;
+}
+
+div.youtubeQueue {
+  width: 292;
+  height: 165;
+  border: 10 #ccc solid;
+}
+
+div.youtubeTitle {
+  padding: 10;
+  font-size: larger;
+  font-weight: bold;
+}
+
+img.youtubeThumbnail {
+  position: absolute;
+  width: 292;
+  height: 165;
+  z-index: -1;
+  opacity: 0.5;
 }
 
 div#help {

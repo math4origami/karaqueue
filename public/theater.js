@@ -47,6 +47,29 @@ function reloadQueueCallback(serverQueue) {
   }
 }
 
+function buildYoutubeSong(name, queueSong) {
+  var key = "AIzaSyAM1ahn1DkYNhmRvPBVnEHV0efORA52Vq4";
+  var gapi = "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + name + "&key=" + key;
+  httpRequest(gapi, function(response) {
+    buildYoutubeSongCallback(response, queueSong);
+  });
+}
+
+function buildYoutubeSongCallback(response, queueSong) {
+  var youtube = JSON.parse(response);
+  
+  var youtubeTitle = document.createElement("div");
+  youtubeTitle.className = "youtubeTitle";
+  youtubeTitle.innerHTML = youtube.items[0].snippet.title;
+  
+  var youtubeThumbnail = document.createElement("img");
+  youtubeThumbnail.className = "youtubeThumbnail";
+  youtubeThumbnail.src = youtube.items[0].snippet.thumbnails.high.url;
+
+  queueSong.appendChild(youtubeThumbnail);
+  queueSong.appendChild(youtubeTitle);
+}
+
 function buildQueueSong(serverSong, server_i) {
   var queueSong = null;
   if (serverSong.type == 1) {
@@ -74,6 +97,10 @@ function buildQueueSong(serverSong, server_i) {
     queueSong.appendChild(damArtist);
     queueSong.appendChild(damTitle);
     queueSong.appendChild(damDuration);
+  } else if (serverSong.type == 2) {
+    queueSong = document.createElement("div");
+    queueSong.className = "youtubeQueue";
+    buildYoutubeSong(serverSong.name, queueSong);
   } else {
     queueSong = document.createElement("iframe");
     queueSong.src = "http://ext.nicovideo.jp/thumb/" + serverSong.name;
@@ -136,35 +163,28 @@ function refreshStage() {
   }
 }
 
-function checkStage() {
-  if (currentStage < 0) {
-    return true;
-  }
-
-  var sceneVideo = document.getElementById("sceneVideo");
-  if (!sceneVideo) {
-    return checkStageFrame();
-  }
-
+function checkSceneVideo(sceneVideo) {
   var clientSong = clientQueue[currentStage];
-  console.log(sceneVideo.readyState);
   if (sceneVideo.readyState != 4) {
     if (!clientSong.loadedTemp) {
       clientSong.loadedTemp = true;
       clientSong.loadedTempTime = now();
-      clientSong.tempWindow = window.open("http://www.nicovideo.jp/watch/" + clientSong.name, "_blank",
-        "width=100, height=100, top=0, left=600");
-      console.log(clientQueue.tempWindow);
-      if (clientSong.tempWindow) {
-        clientSong.tempWindow.blur();
-      }
+
+      // var nicoTemp = document.getElementById("nicoTemp");
+      // nicoTemp.src = "http://www.nicovideo.jp/watch/" + clientSong.name;
+      
+      // clientSong.tempWindow = window.open("http://www.nicovideo.jp/watch/" + clientSong.name, "_blank",
+      //   "width=100, height=100, top=0, left=600");
+      // if (clientSong.tempWindow) {
+      //   clientSong.tempWindow.blur();
+      // }
       
       window.focus();
     } else if (now() >= clientSong.loadedTempTime + 6000) {
-      if (clientSong.tempWindow) {
-        clientSong.tempWindow.close();
-        clientSong.tempWindow = null;
-      }
+      // if (clientSong.tempWindow) {
+      //   clientSong.tempWindow.close();
+      //   clientSong.tempWindow = null;
+      // }
 
       var scene = document.createElement("iframe");
       scene.src = "scene.php?name=" + clientSong.name;
@@ -180,9 +200,9 @@ function checkStage() {
 
     sceneVideo.load();
     return false;
-  } else if (clientSong.tempWindow) {
-    clientSong.tempWindow.close();
-    clientSong.tempWindow = null;
+  // } else if (clientSong.tempWindow) {
+  //   clientSong.tempWindow.close();
+  //   clientSong.tempWindow = null;
   }
 
   if (sceneVideo.ended) {
@@ -206,12 +226,7 @@ function getSceneFrame() {
   return embed;
 }
 
-function checkStageFrame() {
-  var sceneFrame = getSceneFrame();
-  if (!sceneFrame) {
-    return false;
-  }
-
+function checkSceneFrame(sceneFrame) {
   if (typeof sceneFrame.ext_setCommentVisible == "function") {
     sceneFrame.ext_setCommentVisible(false);
   }
@@ -219,6 +234,33 @@ function checkStageFrame() {
     if (sceneFrame.ext_getStatus() == "end") {
       return true;
     }
+  }
+
+  return false;
+}
+
+function checkYoutubePlayer(youtubePlayer) {
+  return youtubePlayer.getPlayerState() == 0;
+}
+
+function checkStage() {
+  if (currentStage < 0) {
+    return true;
+  }
+
+  var sceneVideo = document.getElementById("sceneVideo");
+  if (sceneVideo) {
+    return checkSceneVideo(sceneVideo);
+  }
+
+  var sceneFrame = getSceneFrame();
+  if (sceneFrame) {
+    return checkSceneFrame(sceneFrame);
+  }
+
+  var youtubePlayer = document.getElementById("youtubePlayer");  
+  if (youtubePlayer) {
+    return checkYoutubePlayer(youtubePlayer);
   }
 
   return false;
@@ -233,6 +275,28 @@ function incrementStage() {
   updateStage();
 }
 
+function buildYoutubeScene(scene, clientSong) {
+  var youtubeDiv = document.createElement("div");
+  youtubeDiv.id = "youtubeDiv";
+
+  var youtubeScript = document.createElement("script");
+  youtubeScript.innerHTML = "\
+    var params = { allowScriptAccess: 'always' }; \
+    var atts = { id: 'youtubePlayer' }; \
+    swfobject.embedSWF('http://www.youtube.com/v/" + clientSong.name +
+      "?autoplay=1&enablejsapi=1&playerapiid=ytplayer&version=3', \
+      'youtubeDiv', '425', '356', '8', null, null, params, atts); ";
+
+  scene.appendChild(youtubeDiv);
+  scene.appendChild(youtubeScript);
+}
+
+function onYouTubePlayerReady(playerId) {
+  var player = document.getElementById("youtubePlayer");
+  player.style.width = "100%";
+  player.style.height = "100%";
+}
+
 function updateStage() {
   if (clientQueue.length <= 0 ||
       currentStage < 0  ||
@@ -245,6 +309,9 @@ function updateStage() {
   var scene = document.createElement("div");
   if (clientSong.type == 1) {
     scene.className = "damkaraScene"; 
+  } else if (clientSong.type == 2) {
+    scene.className = "youtubeScene";
+    buildYoutubeScene(scene, clientSong);
   } else {
     scene.className = "nicokaraScene";
   }
@@ -478,21 +545,27 @@ function bodyKeyPress(event) {
     raiseSong();
   } else if (key == " ") {
     var sceneVideo = document.getElementById("sceneVideo");
+    var sceneFrame = getSceneFrame();
+    var youtubePlayer = document.getElementById("youtubePlayer");
     if (sceneVideo) {
       if (sceneVideo.paused) {
         sceneVideo.play();
       } else {
         sceneVideo.pause();
       }
-    } else {
-      var sceneFrame = getSceneFrame();
-      if (sceneFrame && typeof sceneFrame.ext_play == "function") {
-        var status = sceneFrame.ext_getStatus();
-        if (status == "playing") {
-          sceneFrame.ext_play(false);
-        } else if (status == "paused") {
-          sceneFrame.ext_play(true);
-        }
+    } else if (sceneFrame && typeof sceneFrame.ext_play == "function") {
+      var status = sceneFrame.ext_getStatus();
+      if (status == "playing") {
+        sceneFrame.ext_play(false);
+      } else if (status == "paused") {
+        sceneFrame.ext_play(true);
+      }
+    } else if (youtubePlayer) {
+      var state = youtubePlayer.getPlayerState();
+      if (state == 1) {
+        youtubePlayer.pauseVideo();
+      } else if (state == 2) {
+        youtubePlayer.playVideo();
       }
     }
   } else if (key == "?") {

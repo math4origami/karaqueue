@@ -3,11 +3,14 @@
 <link rel="stylesheet" type="text/css" href="basic.css">
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="webSql.js"></script>
+<script type="text/javascript" src="swfobject.js"></script>
 <script type="text/javascript" src="theater.js"></script>
 
 </head>
 
 <body onkeypress="return bodyKeyPress(event);">
+
+<iframe id="nicoTemp"></iframe>
 
 <div id="theater">
 <div id="sidebar">
