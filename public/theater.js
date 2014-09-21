@@ -173,18 +173,18 @@ function checkSceneVideo(sceneVideo) {
       // var nicoTemp = document.getElementById("nicoTemp");
       // nicoTemp.src = "http://www.nicovideo.jp/watch/" + clientSong.name;
       
-      // clientSong.tempWindow = window.open("http://www.nicovideo.jp/watch/" + clientSong.name, "_blank",
-      //   "width=100, height=100, top=0, left=600");
-      // if (clientSong.tempWindow) {
-      //   clientSong.tempWindow.blur();
-      // }
+      clientSong.tempWindow = window.open("http://www.nicovideo.jp/watch/" + clientSong.name, "_blank",
+        "width=100, height=100, top=0, left=600");
+      if (clientSong.tempWindow) {
+        clientSong.tempWindow.blur();
+      }
       
       window.focus();
     } else if (now() >= clientSong.loadedTempTime + 6000) {
-      // if (clientSong.tempWindow) {
-      //   clientSong.tempWindow.close();
-      //   clientSong.tempWindow = null;
-      // }
+      if (clientSong.tempWindow) {
+        clientSong.tempWindow.close();
+        clientSong.tempWindow = null;
+      }
 
       var scene = document.createElement("iframe");
       scene.src = "scene.php?name=" + clientSong.name;
@@ -200,9 +200,9 @@ function checkSceneVideo(sceneVideo) {
 
     sceneVideo.load();
     return false;
-  // } else if (clientSong.tempWindow) {
-  //   clientSong.tempWindow.close();
-  //   clientSong.tempWindow = null;
+  } else if (clientSong.tempWindow) {
+    clientSong.tempWindow.close();
+    clientSong.tempWindow = null;
   }
 
   if (sceneVideo.ended) {
