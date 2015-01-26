@@ -11,7 +11,8 @@ function swap($queue, $i, $j, $mysqli) {
   $mysqli->query("UPDATE queued_song SET queue_index='$otherIndex' WHERE id=$id");
 }
 
-$result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=0 ORDER BY queue_index");
+$queue_id = 3;
+$result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=$queue_id ORDER BY queue_index");
 
 $queue = array();
 while ($row = $result->fetch_assoc()) {

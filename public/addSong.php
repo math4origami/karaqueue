@@ -16,8 +16,9 @@ function getTypeName($type) {
 
 function addSong($type, $name) {
   global $mysqli;
+  $queueId = 3;
 
-  $result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=0 ORDER BY queue_index");
+  $result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=$queueId ORDER BY queue_index");
   $queue = array();
   $last = -1;
   while ($row = $result->fetch_assoc()) {
@@ -28,7 +29,7 @@ function addSong($type, $name) {
   }
 
   $mysqli->query("INSERT INTO queued_song (queue_id, queue_index, type, name)
-    VALUES (0, " . ($last + 1) . ", $type, '$name')");
+    VALUES ($queueId, " . ($last + 1) . ", $type, '$name')");
 
   $typeName = getTypeName($type);
   echo "alert('Successfully added: `$name` from $typeName');";
@@ -45,7 +46,8 @@ if (isset($_GET["address"])) {
       $tags = explode("/", $parsed["path"]);
       $name = $tags[count($tags) - 1];
 
-      if (strpos($name, "sm") === 0) {
+      if (strpos($name, "sm") === 0 || 
+          strpos($name, "nm") === 0) {
         addSong(0, $name);
       }
     } else if (strpos($parsed["host"], "youtube.com") !== false &&

@@ -43,7 +43,6 @@ function reloadQueueCallback(serverQueue) {
   }
 
   if (changed) {
-    hightlightSong = -1;
     updateButtons();
   }
 }
@@ -139,6 +138,9 @@ function addQueue(serverSong, server_i) {
   queue.appendChild(queueEntry);
 
   clientQueue.push(serverSong);
+
+  highlightSong = clientQueue.length - 1;
+  updateButtons();
 }
 
 function updateQueue(serverSong, server_i) {

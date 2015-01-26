@@ -1,7 +1,8 @@
 <?php
 include_once "mysql.php";
 
-$result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=0 ORDER BY queue_index");
+$queueId = 3;
+$result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=$queueId ORDER BY queue_index");
 
 $queue = array();
 while ($row = $result->fetch_assoc()) {
