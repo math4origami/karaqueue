@@ -43,6 +43,7 @@ function reloadQueueCallback(serverQueue) {
   }
 
   if (changed) {
+    hightlightSong = -1;
     updateButtons();
   }
 }
@@ -271,7 +272,7 @@ function incrementStage() {
     return;
   }
   currentStage++;
-
+  hightlightStage = -1;
   updateStage();
 }
 
