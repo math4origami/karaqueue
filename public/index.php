@@ -1,7 +1,7 @@
 <html>
 <head>
 <script type="text/javascript">
-var address = window.location.origin + window.location.pathname;
+var address = "//" + window.location.host + window.location.pathname;
 address = address.replace("index.php", "");
 var siteLabel = "Karaqueue";
 if (window.location.host.indexOf("localhost") > -1) {
@@ -20,7 +20,7 @@ if (window.location.host.indexOf("localhost") > -1) {
 var link = document.createElement("a");
 link.innerHTML = siteLabel + " Add Song";
 link.href = "javascript:(function() { \
-  var addSongPath = '" + address + "addSong.php?'; \
+  var addSongPath = window.location.protocol + '" + address + "addSong.php?'; \
   var damData = document.getElementsByClassName('nicokaraDamData'); \
   if (damData.length > 0) { \
     addSongPath += damData[0].id; \
