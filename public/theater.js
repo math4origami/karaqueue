@@ -139,7 +139,7 @@ function addQueue(serverSong, server_i) {
 
   clientQueue.push(serverSong);
 
-  highlightSong = clientQueue.length - 1;
+  highlightStage = clientQueue.length - 1;
   updateButtons();
 }
 
@@ -274,7 +274,7 @@ function incrementStage() {
     return;
   }
   currentStage++;
-  hightlightStage = -1;
+  highlightStage = -1;
   updateStage();
 }
 
@@ -365,6 +365,8 @@ function updateButtons(dontScroll) {
   deleteSongButton.disabled = actIndex < 0 || actIndex >= clientQueue.length;
   raiseSongButton.disabled = actIndex < 1 || actIndex >= clientQueue.length;
   lowerSongButton.disabled = actIndex < 0 || actIndex >= clientQueue.length-1;
+  
+  console.log('highlight '+highlightStage);
 
   if (scrollToId > -1 && !dontScroll) {
     var scrollToEntry = document.getElementById("queueEntry_" + scrollToId);
