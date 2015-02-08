@@ -47,7 +47,7 @@ function autoloadCallback(responseText) {
     } else if (tag[0] == "closed" && tag[1]) {
       var loginError = document.createElement("div");
       loginError.className = "nicokaraSceneLoginError";
-      loginError.innerHTML = "<p>Please make sure you are logged into <a href='www.nicovideo.jp'>NicoNicoDouga</a>.</p>";
+      loginError.innerHTML = "<p>Please make sure you are logged into <a href='http://www.nicovideo.jp'>NicoNicoDouga</a>.</p>";
       nicokaraScene.appendChild(loginError);
       break;
     }
