@@ -231,3 +231,11 @@ div.nicokaraSceneLoginError p {
   height: 20px;
   margin-top: -10px;
 }
+
+div.nicokaraSceneLoginError a:link {
+  color: #7bf;
+}
+
+div.nicokaraSceneLoginError a:visited {
+  color: #aaa;
+}
