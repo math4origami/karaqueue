@@ -13,9 +13,13 @@ if (window.location.host.indexOf("localhost") > -1) {
 <body>
 <div><h1>Karaqueue</h1></div>
 
-<div id="theater" style="margin-bottom:20;">Go to <a href="theater.php">Theater</a></div>
+<div id="theater" style="margin-bottom: 2;">Go to <a href="theater.php">Theater</a></div>
+<div id="extension" style="font-style: italic; margin-left: 10px;">
+Requires Extension: <a href="https://chrome.google.com/webstore/detail/karaqueueextension/jbioiajcgjedimmhoflicdgjidjihobb">Karaqueue Extension</a>
+</div>
 
-<div id="bookmark">Bookmarklet: </div>
+
+<div id="bookmark" style="margin-top: 20;">Bookmarklet: </div>
 <script type="text/javascript">
 var link = document.createElement("a");
 link.innerHTML = siteLabel + " Add Song";
@@ -38,11 +42,7 @@ var bookmark = document.getElementById("bookmark");
 bookmark.appendChild(link);
 </script>
 
-<div>
-Extension/script: <a href="extension.crx">Karaqueue Extension</a>
-</div>
-
-<div style="margin-top:20;">
+<div style="margin-top:30;">
   2014 Russell Chou <a href="http://www.twitter.com/math4origami/">@math4origami</a>
 </div>
 </body>
