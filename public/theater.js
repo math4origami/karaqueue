@@ -366,8 +366,6 @@ function updateButtons(dontScroll) {
   raiseSongButton.disabled = actIndex < 1 || actIndex >= clientQueue.length;
   lowerSongButton.disabled = actIndex < 0 || actIndex >= clientQueue.length-1;
   
-  console.log('highlight '+highlightStage);
-
   if (scrollToId > -1 && !dontScroll) {
     var scrollToEntry = document.getElementById("queueEntry_" + scrollToId);
     var queueContainer = document.getElementById("queueContainer");

@@ -1,27 +1,55 @@
-function autoload () {
+function httpRequest(url, callback, errorCallback) {
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.onreadystatechange = function() {
+    if (xmlHttp.readyState==4) {
+      console.log(xmlHttp);
+      if (xmlHttp.status==200 && callback) {
+        callback(xmlHttp.responseText);
+      }
+      xmlHttp.onreadystatechange = null;
+    }
+  }
+  xmlHttp.open("GET", url, true);
+  xmlHttp.send();
+}
+
+function getNicokaraScene() {
   var nicokaraScenes = document.getElementsByClassName("nicokaraScene");
   if (nicokaraScenes.length > 0) {
     var nicokaraScene = nicokaraScenes[0];
-    if (nicokaraScene.childNodes.length > 0) {
-      return;
+    if (nicokaraScene.childNodes.length <= 0) {
+      return nicokaraScene;
     }
+  }
+  return null;
+}
 
-    var xmlRequest = new XMLHttpRequest();
-    xmlRequest.open("GET", "http://flapi.nicovideo.jp/api/getflv/" + nicokaraScene.id, false);
-    xmlRequest.send();
-    var tags = xmlRequest.responseText.split("&");
-    for (var i=0; i<tags.length; i++) {
-      var tag = tags[i].split("=");
-      if (tag[0] == "url") {
-        var video = document.createElement("video");
-        video.src = decodeURIComponent(tag[1]);
-        video.autoplay = true;
-        video.controls = true;
-        video.id = "sceneVideo";
-        nicokaraScene.appendChild(video);
+function autoload () {
+  var nicokaraScene = getNicokaraScene();
+  if (nicokaraScene) {
+    httpRequest("http://flapi.nicovideo.jp/api/getflv/" + nicokaraScene.id, autoloadCallback);
+  }
+}
 
-        break;
-      }
+function autoloadCallback(responseText) {
+  var nicokaraScene = getNicokaraScene();
+  var tags = responseText.split("&");
+  for (var i=0; i<tags.length; i++) {
+    var tag = tags[i].split("=");
+    if (tag[0] == "url") {
+      var video = document.createElement("video");
+      video.src = decodeURIComponent(tag[1]);
+      video.autoplay = true;
+      video.controls = true;
+      video.id = "sceneVideo";
+      nicokaraScene.appendChild(video);
+      break;
+    } else if (tag[0] == "closed" && tag[1]) {
+      var loginError = document.createElement("div");
+      loginError.className = "nicokaraSceneLoginError";
+      loginError.innerHTML = "<p>Please make sure you are logged into <a href='www.nicovideo.jp'>NicoNicoDouga</a>.</p>";
+      nicokaraScene.appendChild(loginError);
+      break;
     }
   }
 }
