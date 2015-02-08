@@ -226,6 +226,7 @@ div.nicokaraSceneLoginError {
 }
 
 div.nicokaraSceneLoginError p {
+  width: 100%;
   position: absolute;
   top: 50%;
   height: 20px;
