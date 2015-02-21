@@ -1,3 +1,8 @@
+<?php 
+include_once "user.php";
+$user = User::load();
+$queue_id = $user->queue_id;
+?>
 <html>
 <head>
 <script type="text/javascript">
@@ -13,7 +18,7 @@ if (window.location.host.indexOf("localhost") > -1) {
 <body>
 <div><h1>Karaqueue</h1></div>
 
-<div id="theater" style="margin-bottom: 2;">Go to <a href="theater.php">Theater</a></div>
+<div id="theater" style="margin-bottom: 2;">Go to <a href="theater.php?queue_id=<?= $queue_id ?>">Theater</a></div>
 <div id="extension" style="font-style: italic; margin-left: 10px;">
 Requires Extension: <a href="https://chrome.google.com/webstore/detail/karaqueueextension/jbioiajcgjedimmhoflicdgjidjihobb">Karaqueue Extension</a>
 </div>

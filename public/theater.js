@@ -1,4 +1,5 @@
 
+var queue_id = parseSearch('queue_id');
 var clientQueue = [];
 var currentStage = -1;
 var highlightStage = -1;
@@ -12,7 +13,7 @@ function getActIndex() {
 }
 
 function reloadQueue() {
-  httpRequest("queue.php", reloadQueueServer);
+  httpRequest("queue.php?queue_id="+queue_id, reloadQueueServer);
 }
 
 function reloadQueueServer(response) {
@@ -26,6 +27,7 @@ function reloadQueueCallback(serverQueue) {
     var serverSong = serverQueue[server_i];
     if (server_i == clientQueue.length) {
       addQueue(serverSong, server_i);
+      changed = true;
     } else if (server_i > clientQueue.length) {
       console.log("server queue jumped past client queue, discard");
       break;
@@ -40,6 +42,7 @@ function reloadQueueCallback(serverQueue) {
 
   while (serverQueue.length < clientQueue.length) {
     popQueue();
+    changed = true;
   }
 
   if (changed) {
@@ -140,7 +143,6 @@ function addQueue(serverSong, server_i) {
   clientQueue.push(serverSong);
 
   highlightStage = clientQueue.length - 1;
-  updateButtons();
 }
 
 function updateQueue(serverSong, server_i) {
@@ -454,10 +456,16 @@ function setCurrent() {
   }
 }
 
+function doActSong(action, id) {
+  var address = "actSong.php?queue_id=" + queue_id +
+    "&act=" + action + "&id=" + id;
+  httpRequest(address, reloadQueue);
+}
+
 function deleteSong() {
   var actIndex = getActIndex();
   if (actIndex >= 0 && actIndex < clientQueue.length) {
-    httpRequest("actSong.php?act=delete&id=" + clientQueue[actIndex].id, reloadQueue);
+    doActSong("delete", clientQueue[actIndex].id);
 
     if (currentStage == actIndex) {
       if (currentStage >= clientQueue.length-1) {
@@ -484,7 +492,7 @@ function deleteSong() {
 function raiseSong() {
   var actIndex = getActIndex();
   if (actIndex > 0 && actIndex < clientQueue.length) {
-    httpRequest("actSong.php?act=raise&id=" + clientQueue[actIndex].id, reloadQueue);
+    doActSong("raise", clientQueue[actIndex].id);
     
     if (actIndex == highlightStage) {
       highlightStage--;
@@ -500,7 +508,7 @@ function raiseSong() {
 function lowerSong() {
   var actIndex = getActIndex();
   if (actIndex >= 0 && actIndex < clientQueue.length-1) {
-    httpRequest("actSong.php?act=lower&id=" + clientQueue[actIndex].id, reloadQueue);
+    doActSong("lower", clientQueue[actIndex].id);
     
     if (actIndex == highlightStage) {
       highlightStage++;

@@ -1,5 +1,6 @@
 <?php
 include_once "mysql.php";
+include_once "user.php";
 
 function getTypeName($type) {
   switch ($type) {
@@ -16,7 +17,8 @@ function getTypeName($type) {
 
 function addSong($type, $name) {
   global $mysqli;
-  $queueId = 3;
+  $user = User::load();
+  $queueId = $user->queue_id;
 
   $result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=$queueId ORDER BY queue_index");
   $queue = array();

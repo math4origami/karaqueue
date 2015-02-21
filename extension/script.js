@@ -2,7 +2,6 @@ function httpRequest(url, callback, errorCallback) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function() {
     if (xmlHttp.readyState==4) {
-      console.log(xmlHttp);
       if (xmlHttp.status==200 && callback) {
         callback(xmlHttp.responseText);
       }
@@ -33,6 +32,9 @@ function autoload () {
 
 function autoloadCallback(responseText) {
   var nicokaraScene = getNicokaraScene();
+  if (!nicokaraScene) {
+    return;
+  }
   var tags = responseText.split("&");
   for (var i=0; i<tags.length; i++) {
     var tag = tags[i].split("=");
@@ -117,7 +119,6 @@ function addArtistDamButtons () {
         "&contentsId=" + contentsIds[0] +
         "&karaokeContentsId=" + contentsIds[1] +
         "&siteCode=" + contentsIds[2];
-      console.log(args);
     }
   }
 };

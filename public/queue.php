@@ -1,7 +1,7 @@
 <?php
 include_once "mysql.php";
 
-$queueId = 3;
+$queueId = isset($_GET["queue_id"]) ? $_GET["queue_id"] : 0;
 $result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=$queueId ORDER BY queue_index");
 
 $queue = array();

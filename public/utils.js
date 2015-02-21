@@ -68,3 +68,16 @@ function getFirstElementByTagName(className, doc) {
     return null;
   }
 }
+
+function parseSearch(key) {
+  var args = {};
+  var search = window.location.search.substr(1).split("&").forEach(function (item) {
+    var tags = item.split("=");
+    args[tags[0]] = decodeURIComponent(tags[1]);
+  });
+  if (key) {
+    return args[key];
+  } else {
+    return args;
+  }
+}
