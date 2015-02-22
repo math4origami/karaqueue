@@ -7,6 +7,25 @@ var highlightStage = -1;
 var SceneObject = function() {
   var that = {};
 
+  that.getCurrentSceneObject = function() {
+    var sceneVideo = SceneVideo();
+    if (sceneVideo) {
+      return sceneVideo;
+    }
+
+    var sceneFrame = SceneFrame();
+    if (sceneFrame) {
+      return sceneFrame;
+    }
+
+    var youtubePlayer = YoutubePlayer();
+    if (youtubePlayer) {
+      return youtubePlayer;
+    }
+
+    return null;
+  }
+
   that.isEnded = function() {
     return false;
   }
@@ -203,25 +222,6 @@ function YoutubePlayer() {
   }
 
   return that;
-}
-
-SceneObject.getCurrentSceneObject = function() {
-  var sceneVideo = SceneVideo();
-  if (sceneVideo) {
-    return sceneVideo;
-  }
-
-  var sceneFrame = SceneFrame();
-  if (sceneFrame) {
-    return sceneFrame;
-  }
-
-  var youtubePlayer = YoutubePlayer();
-  if (youtubePlayer) {
-    return youtubePlayer;
-  }
-
-  return null;
 }
 
 function getActIndex() {
