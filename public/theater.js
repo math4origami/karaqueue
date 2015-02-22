@@ -4,6 +4,226 @@ var clientQueue = [];
 var currentStage = -1;
 var highlightStage = -1;
 
+var SceneObject = function() {
+  var that = {};
+
+  that.isEnded = function() {
+    return false;
+  }
+
+  that.clientSong = function() {
+    return clientQueue[currentStage];
+  }
+
+  that.togglePause = function() {
+
+  }
+
+  that.getCurrentTime = function() {
+    return 0;
+  }
+
+  that.getTotalTime = function() {
+    return 0;
+  }
+
+  return that;
+}
+
+var SceneVideo = function() {
+  var that = SceneObject();
+  var sceneVideo = document.getElementById("sceneVideo");
+  if (!sceneVideo) {
+    return null;
+  }
+  var TEMP_TIMEOUT = 6000;
+
+  function loadTemp() {
+    var clientSong = that.clientSong();
+    if (!clientSong.loadedTemp && false) {
+      clientSong.loadedTemp = true;
+      clientSong.loadedTempTime = now();
+
+      // var nicoTemp = document.getElementById("nicoTemp");
+      // nicoTemp.src = "http://www.nicovideo.jp/watch/" + clientSong.name;
+
+      clientSong.tempWindow = window.open("http://www.nicovideo.jp/watch/" + clientSong.name, "_blank",
+        "width=100, height=100, top=0, left=600");
+      if (clientSong.tempWindow) {
+        clientSong.tempWindow.blur();
+      }
+
+      window.focus();
+    } else if (now() >= clientSong.loadedTempTime + TEMP_TIMEOUT || true) {
+      if (clientSong.tempWindow) {
+        clientSong.tempWindow.close();
+        clientSong.tempWindow = null;
+      }
+
+      var scene = document.createElement("iframe");
+      scene.src = "scene.php?name=" + clientSong.name;
+      scene.scrolling = false;
+      scene.className = "sceneFrame";
+
+      var stage = document.getElementById("stage");
+      removeAllChildren(stage);
+      stage.appendChild(scene);
+
+      return false;
+    }
+
+    sceneVideo.load();
+  }
+
+  function cleanupTemp() {
+    var clientSong = that.clientSong();
+    if (clientSong.tempWindow) {
+      clientSong.tempWindow.close();
+      clientSong.tempWindow = null;
+    }
+  }
+
+  that.isLoaded = function() {
+    if (sceneVideo.readyState != 4 || true) {
+      loadTemp();
+      return false;
+    }
+    cleanupTemp();
+    return true;
+  }
+
+  that.isEnded = function() {
+    if (!that.isLoaded()) {
+      return false;
+    }
+    return sceneVideo.ended;
+  }
+
+  that.togglePause = function() {
+    if (sceneVideo.paused) {
+      sceneVideo.play();
+    } else {
+      sceneVideo.pause();
+    }
+  }
+
+  that.getCurrentTime = function() {
+    return sceneVideo.currentTime;
+  }
+
+  that.getTotalTime = function() {
+    return sceneVideo.duration;
+  }
+
+  return that;
+}
+
+var SceneFrame = function() {
+  var that = SceneObject();
+  var sceneFrame = getFirstElementByClassName("sceneFrame");
+  if (!sceneFrame) {
+    return null;
+  }
+  var embed = getFirstElementByTagName("embed", sceneFrame.contentDocument);
+  if (!embed) {
+    return null;
+  }
+  that.embed = embed;
+
+  function embedFunction(name, none, arg) {
+    if (typeof embed[name] == "function") {
+      return embed[name](arg);
+    }
+    if (none !== undefined) {
+      return none;
+    } else {
+      return null;
+    }
+  }
+
+  function getStatus() {
+    return embedFunction("ext_getStatus");
+  }
+
+  that.hideComments = function() {
+    embedFunction("ext_setCommentVisible", null, false);
+  }
+
+  that.isEnded = function() {
+    that.hideComments();
+    return getStatus() == "end";
+  }
+
+  that.togglePause = function() {
+    var status = getStatus();
+    if (status == "playing") {
+      embed.ext_play(false);
+    } else if (status == "paused") {
+      embed.ext_play(true);
+    }
+  }
+
+  that.getCurrentTime = function() {
+    return embedFunction("ext_getPlayheadTime", 0);
+  }
+
+  that.getTotalTime = function() {
+    return embedFunction("ext_getTotalTime", 0);
+  }
+
+  return that;
+}
+
+function YoutubePlayer() {
+  var that = SceneObject();
+  var youtubePlayer = document.getElementById("youtubePlayer");
+  if (!youtubePlayer) {
+    return null;
+  }
+
+  that.isEnded = function() {
+    return youtubePlayer.getPlayerState() == 0;
+  }
+
+  that.togglePause = function() {
+    var state = youtubePlayer.getPlayerState();
+    if (state == 1) {
+      youtubePlayer.pauseVideo();
+    } else if (state == 2) {
+      youtubePlayer.playVideo();
+    }
+  }
+
+  that.getCurrentTime = function() {
+    return youtubePlayer.getCurrentTime();
+  }
+
+  that.getTotalTime = function() {
+    return youtubePlayer.getDuration();;
+  }
+
+  return that;
+}
+
+SceneObject.getCurrentSceneObject = function() {
+  var sceneVideo = SceneVideo();
+  if (sceneVideo) {
+    return sceneVideo;
+  }
+
+  var sceneFrame = SceneFrame();
+  if (sceneFrame) {
+    return sceneFrame;
+  }
+
+  var youtubePlayer = YoutubePlayer();
+  if (youtubePlayer) {
+    return youtubePlayer;
+  }
+
+  return null;
+}
+
 function getActIndex() {
   if (highlightStage > -1) {
     return highlightStage;
@@ -168,104 +388,14 @@ function refreshStage() {
   }
 }
 
-function checkSceneVideo(sceneVideo) {
-  var clientSong = clientQueue[currentStage];
-  if (sceneVideo.readyState != 4) {
-    if (!clientSong.loadedTemp) {
-      clientSong.loadedTemp = true;
-      clientSong.loadedTempTime = now();
-
-      // var nicoTemp = document.getElementById("nicoTemp");
-      // nicoTemp.src = "http://www.nicovideo.jp/watch/" + clientSong.name;
-      
-      clientSong.tempWindow = window.open("http://www.nicovideo.jp/watch/" + clientSong.name, "_blank",
-        "width=100, height=100, top=0, left=600");
-      if (clientSong.tempWindow) {
-        clientSong.tempWindow.blur();
-      }
-      
-      window.focus();
-    } else if (now() >= clientSong.loadedTempTime + 6000) {
-      if (clientSong.tempWindow) {
-        clientSong.tempWindow.close();
-        clientSong.tempWindow = null;
-      }
-
-      var scene = document.createElement("iframe");
-      scene.src = "scene.php?name=" + clientSong.name;
-      scene.scrolling = false;
-      scene.className = "sceneFrame";
-
-      var stage = document.getElementById("stage");
-      removeAllChildren(stage);
-      stage.appendChild(scene);
-
-      return false;
-    }
-
-    sceneVideo.load();
-    return false;
-  } else if (clientSong.tempWindow) {
-    clientSong.tempWindow.close();
-    clientSong.tempWindow = null;
-  }
-
-  if (sceneVideo.ended) {
-    return true;
-  }
-
-  return false;
-}
-
-function getSceneFrame() {
-  var stageFrame = getFirstElementByClassName("sceneFrame");
-  if (!stageFrame) {
-    return null;
-  }
-
-  var embed = getFirstElementByTagName("embed", stageFrame.contentDocument);
-  if (!embed) {
-    return null;
-  }
-
-  return embed;
-}
-
-function checkSceneFrame(sceneFrame) {
-  if (typeof sceneFrame.ext_setCommentVisible == "function") {
-    sceneFrame.ext_setCommentVisible(false);
-  }
-  if (typeof sceneFrame.ext_getStatus == "function") {
-    if (sceneFrame.ext_getStatus() == "end") {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function checkYoutubePlayer(youtubePlayer) {
-  return youtubePlayer.getPlayerState() == 0;
-}
-
 function checkStage() {
   if (currentStage < 0) {
     return true;
   }
 
-  var sceneVideo = document.getElementById("sceneVideo");
-  if (sceneVideo) {
-    return checkSceneVideo(sceneVideo);
-  }
-
-  var sceneFrame = getSceneFrame();
-  if (sceneFrame) {
-    return checkSceneFrame(sceneFrame);
-  }
-
-  var youtubePlayer = document.getElementById("youtubePlayer");  
-  if (youtubePlayer) {
-    return checkYoutubePlayer(youtubePlayer);
+  var sceneObject = SceneObject.getCurrentSceneObject();
+  if (sceneObject) {
+    return sceneObject.isEnded();
   }
 
   return false;
@@ -555,29 +685,9 @@ function bodyKeyPress(event) {
   } else if (key == "p") {
     raiseSong();
   } else if (key == " ") {
-    var sceneVideo = document.getElementById("sceneVideo");
-    var sceneFrame = getSceneFrame();
-    var youtubePlayer = document.getElementById("youtubePlayer");
-    if (sceneVideo) {
-      if (sceneVideo.paused) {
-        sceneVideo.play();
-      } else {
-        sceneVideo.pause();
-      }
-    } else if (sceneFrame && typeof sceneFrame.ext_play == "function") {
-      var status = sceneFrame.ext_getStatus();
-      if (status == "playing") {
-        sceneFrame.ext_play(false);
-      } else if (status == "paused") {
-        sceneFrame.ext_play(true);
-      }
-    } else if (youtubePlayer) {
-      var state = youtubePlayer.getPlayerState();
-      if (state == 1) {
-        youtubePlayer.pauseVideo();
-      } else if (state == 2) {
-        youtubePlayer.playVideo();
-      }
+    var sceneObject = SceneObject.getCurrentSceneObject();
+    if (sceneObject) {
+      sceneObject.togglePause();
     }
   } else if (key == "?") {
     displayHelp();
