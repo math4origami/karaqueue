@@ -122,13 +122,13 @@ div.queueButton:hover {
 div.queueButtonHighlight {
   width: 292;
   height: 165;
-  border: 10 #7bf solid;
+  border: 10px #7bf solid;
 }
 
 div.queueButtonCurrent {
   width: 292;
   height: 165;
-  border: 10 #44f solid;
+  border: 10px #44f solid;
 }
 
 iframe.queue {
@@ -141,7 +141,7 @@ div.damQueue {
   width: 272;
   height: 145;
   padding: 10;
-  border: 10 #ccc solid;
+  border: 10px #ccc solid;
 }
 
 div.damTitle {
@@ -160,7 +160,7 @@ img.damLogo {
 div.youtubeQueue {
   width: 292;
   height: 165;
-  border: 10 #ccc solid;
+  border: 10px #ccc solid;
 }
 
 div.youtubeTitle {

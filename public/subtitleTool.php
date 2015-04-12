@@ -5,11 +5,11 @@
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="swfobject.js"></script>
 <script type="text/javascript" src="queue.js"></script>
-<script type="text/javascript" src="theater.js"></script>
+<script type="text/javascript" src="subtitleTool.js"></script>
 </head>
 
 <body onkeypress="return bodyKeyPress(event);">
-
+  
 <div id="theater">
 <div id="sidebar">
   <div id="menu">

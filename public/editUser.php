@@ -2,7 +2,7 @@
 include_once "user.php";
 
 if (isset($_GET["id"])) {
-  $user = User::load($_GET["id"]);
+  $user = User::load((int)$_GET["id"]);
 } else {
   $user = User::load();
 }

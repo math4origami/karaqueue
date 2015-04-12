@@ -8,6 +8,7 @@ class User {
   public $created_time;
 
   public static function load($id = 0) {
+    $id = (int)$id;
     $db = KaraqueueDB::instance();
     $result = $db->query("SELECT * FROM users WHERE id=$id");
     if ($row = $result->fetch_assoc()) {
@@ -22,8 +23,8 @@ class User {
 
   public function update() {
     $db = KaraqueueDB::instance();
-    $id = $this->id;
-    $queue_id = $this->queue_id;
+    $id = (int)$this->id;
+    $queue_id = (int)$this->queue_id;
     $db->query("UPDATE users SET queue_id=$queue_id WHERE id=$id");
   }
 }

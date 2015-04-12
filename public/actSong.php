@@ -5,13 +5,13 @@ function swap($queue, $i, $j, $mysqli) {
   $id = $queue[$i]["id"];
   $index = $queue[$i]["queue_index"];
   $other = $queue[$j]["id"];
-  $otherIndex = $queue[$j]["queue_index"]; error_log("$id $index, $other $otherIndex");
+  $otherIndex = $queue[$j]["queue_index"];
   $mysqli->query("UPDATE queued_song SET queue_index='-1' WHERE id=$id");
   $mysqli->query("UPDATE queued_song SET queue_index='$index' WHERE id=$other");
   $mysqli->query("UPDATE queued_song SET queue_index='$otherIndex' WHERE id=$id");
 }
 
-$queue_id = isset($_GET["queue_id"]) ? $_GET["queue_id"] : 0;
+$queue_id = isset($_GET["queue_id"]) ? (int)$_GET["queue_id"] : 0;
 $result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=$queue_id ORDER BY queue_index");
 
 $queue = array();
@@ -24,7 +24,7 @@ if (!isset($_GET["act"]) || !isset($_GET["id"])) {
 }
 
 $act = $_GET["act"];
-$id = $_GET["id"];
+$id = (int)$_GET["id"];
 if ($act == "delete") {
   $mysqli->query("DELETE FROM queued_song WHERE id = $id");
 } else if ($act == "raise") {

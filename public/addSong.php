@@ -1,6 +1,7 @@
 <?php
 include_once "mysql.php";
 include_once "user.php";
+include_once "song.php";
 
 function getTypeName($type) {
   switch ($type) {
@@ -30,8 +31,10 @@ function addSong($type, $name) {
     }
   }
 
-  $mysqli->query("INSERT INTO queued_song (queue_id, queue_index, type, name)
-    VALUES ($queueId, " . ($last + 1) . ", $type, '$name')");
+  $song = Song::getSongByType($type, $name);
+
+  $mysqli->query("INSERT INTO queued_song (queue_id, queue_index, song_id, type, name)
+    VALUES ($queueId, " . ($last + 1) . ", " . $song->id . ", $type, '$name')");
 
   $typeName = getTypeName($type);
   echo "alert('Successfully added: `$name` from $typeName');";
