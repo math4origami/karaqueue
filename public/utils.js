@@ -23,7 +23,7 @@ function run(callback, interval) {
   setInterval(callback, interval);
 }
 
-function httpRequest(url, callback) {
+function httpRequest(url, callback, post) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function() {
     if (xmlHttp.readyState==4 && xmlHttp.status==200) {
@@ -33,8 +33,14 @@ function httpRequest(url, callback) {
       xmlHttp.onreadystatechange = null;
     }
   }
-  xmlHttp.open("GET", url, true);
-  xmlHttp.send();
+  if (post) {
+    xmlHttp.open("POST", url, true);
+    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlHttp.send(post);
+  } else {
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send();
+  }
 }
 
 function now() {

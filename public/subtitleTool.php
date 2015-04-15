@@ -25,6 +25,12 @@
   </div>
 </div>
 <div id="stage"></div>
+<div id="stageSubtitles">
+  <div id="stageSubtitlesMenu">
+    <input type="button" id="updateSong" value="Save Subtitles" onclick="updateSong()" disabled="true">
+  </div>
+  <textarea id="stageSubtitlesTextarea" disabled="true"></textarea>
+</div>
 </div>
 <div id="help" onclick="displayHelp()">
 <div><span class="helpKey">j</span> - previous song</div>

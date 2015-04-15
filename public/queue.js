@@ -41,11 +41,7 @@ function reloadQueueCallback(serverQueue) {
       break;
     }
 
-    var clientSong = clientQueue[server_i];
-    if (clientSong.name != serverSong.name) {
-      updateQueue(serverSong, server_i);
-      changed = true;
-    }
+    changed = updateQueue(serverSong, server_i);
   }
 
   while (serverQueue.length < clientQueue.length) {
@@ -157,6 +153,12 @@ function addQueue(serverSong, server_i) {
 }
 
 function updateQueue(serverSong, server_i) {
+  var clientSong = clientQueue[server_i];
+  if (clientSong.name == serverSong.name && clientSong.type == serverSong.type) {
+    clientSong.subtitles = serverSong.subtitles;
+    return false;
+  }
+
   var clientEntry = document.getElementById("queue_" + server_i);
   var clientParent = clientEntry.parentNode;
   clientParent.removeChild(clientEntry);
@@ -165,6 +167,7 @@ function updateQueue(serverSong, server_i) {
   clientParent.appendChild(newEntry);
 
   clientQueue[server_i] = serverSong;
+  return true;
 }
 
 function popQueue() {
@@ -221,7 +224,15 @@ function updateCurrentField(field, event) {
   return false;
 }
 
+function canSetCurrent() {
+  return true;
+}
+
 function setCurrent() {
+  if (!canSetCurrent()) {
+    return;
+  }
+
   var newId = getActIndex();
   if (newId < 0 || clientQueue.length <= 0) {
     newId = 0;
@@ -308,6 +319,11 @@ function lowerSong() {
 }
 
 function bodyKeyPress(event) {
+  var tag = event.path[0];
+  if (["INPUT", "TEXTAREA"].indexOf(tag.tagName) > -1) {
+    return true;
+  }
+
   var key = String.fromCharCode(event.charCode);
 
   if (key == "j") {
@@ -347,7 +363,8 @@ function bodyKeyPress(event) {
   } else if (key == "?") {
     displayHelp();
   }
-  return false;
+
+  return true;
 }
 
 function displayHelp() {

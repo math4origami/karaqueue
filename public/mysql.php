@@ -16,11 +16,17 @@ class KaraqueueDb {
 
   public function __construct() {
     $this->mysqli = new mysqli("localhost", "karaqueue", "contact80", "karaqueue");
+    $this->mysqli->set_charset("utf8");
   }
 
   public function __call($name, $arguments) {
     if (method_exists($this->mysqli, $name)) {
-      return call_user_func_array(array($this->mysqli, $name), $arguments);
+      $result = call_user_func_array(array($this->mysqli, $name), $arguments);
+      if ($this->mysqli->error) {
+        error_log(var_export($arguments, true));
+        error_log($this->mysqli->error);
+      }
+      return $result;
     } else {
       return parent::__call($name, $arguments);
     }

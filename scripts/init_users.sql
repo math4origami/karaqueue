@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS `users` (
   `name` varchar(255) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;

@@ -7,6 +7,11 @@ $result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=$queueId ORDE
 
 $queue = array();
 while ($row = $result->fetch_assoc()) {
+  $song = Song::load($row["song_id"]);
+  if ($song) {
+    $row["subtitles"] = $song->subtitles;
+  }
+
   $queue[] = $row;
 }
 

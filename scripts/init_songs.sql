@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS `songs` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `type_name` (`type`,`name`)
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;

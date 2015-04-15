@@ -84,6 +84,40 @@ div#stage {
   right: 0;
 }
 
+div#stageSubtitles {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 333;
+  right: 0;
+  z-index: 1;
+}
+
+div#stageSubtitlesMenu {
+  background-color: #eee;
+  height: 30;
+  padding: 2;
+}
+
+input#updateSong {
+  
+}
+
+textarea#stageSubtitlesTextarea {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 30;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border: 0;
+  width: 100%;
+  resize: none;
+}
 
 iframe.sceneFrame {
   border: 0;

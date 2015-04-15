@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `queued_song` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `location` (`queue_id`,`queue_index`)
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 ALTER TABLE  `queued_song`
 ADD `song_id` int(11) NOT NULL DEFAULT '0'
