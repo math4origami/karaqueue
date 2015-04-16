@@ -19,8 +19,13 @@ function removeAllChildren(node) {
 }
 
 function run(callback, interval) {
-  callback();
-  setInterval(callback, interval);
+  // callback();
+  // setInterval(callback, interval);
+  var timeout = function() {
+    callback();
+    setTimeout(timeout, interval);
+  }
+  timeout();
 }
 
 function httpRequest(url, callback, post) {

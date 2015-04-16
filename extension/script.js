@@ -41,7 +41,7 @@ function autoloadCallback(responseText) {
     if (tag[0] == "url") {
       var video = document.createElement("video");
       video.src = decodeURIComponent(tag[1]);
-      // video.autoplay = true;
+      video.autoplay = true;
       video.controls = true;
       video.id = "sceneVideo";
       nicokaraScene.appendChild(video);

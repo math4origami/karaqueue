@@ -352,16 +352,15 @@ function bodyKeyPress(event) {
     deleteSong();
   } else if (key == "o") {
     setCurrent();
+    return false;
   } else if (key == "n") {
     lowerSong();
   } else if (key == "p") {
     raiseSong();
-  } else if (key == " ") {
-    if (typeof handleSpace == "function") {
-      handleSpace();
-    }
   } else if (key == "?") {
     displayHelp();
+  } else if (typeof handleKey == "function") {
+    handleKey(key);
   }
 
   return true;

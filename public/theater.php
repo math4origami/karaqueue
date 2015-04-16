@@ -25,6 +25,9 @@
   </div>
 </div>
 <div id="stage"></div>
+<div id="stageSubtitles" style="visibility:hidden;">
+  <div id="stageSubtitlesText"></div>
+</div>
 </div>
 <div id="help" onclick="displayHelp()">
 <div><span class="helpKey">j</span> - previous song</div>
@@ -34,6 +37,11 @@
 <div><span class="helpKey">n</span> - lower song</div>
 <div><span class="helpKey">p</span> - raise song</div>
 <div><span class="helpKey">space</span> - play/pause</div>
+<div><span class="helpKey">s</span> - toggle subtitles</div>
+<div><span class="helpKey">c</span> - toggle subtitles continuous</div>
+<div><span class="helpKey">a</span> - scroll subtitles back</div>
+<div><span class="helpKey">z</span> - scroll subtitles forward</div>
+<div><span class="helpKey">x</span> - scroll subtitles reset</div>
 <div><span class="helpKey">?</span> - display help</div>
 </div>
 

@@ -26,6 +26,18 @@ function canSetCurrent() {
   return true;
 }
 
+function setStageDisabled(disabled) {
+  var textarea = getStageSubtitles();
+  if (textarea) {
+    textarea.disabled = disabled;
+  }
+
+  var updateSong = document.getElementById("updateSong");
+  if (updateSong) {
+    updateSong.disabled = disabled;
+  }
+}
+
 function doUpdateStage() {
   var clientSong = getClientSong();
   if (!clientSong) {
@@ -38,10 +50,8 @@ function doUpdateStage() {
   }
 
   textarea.value = clientSong.subtitles;
-  textarea.disabled = false;
-
-  var updateSong = document.getElementById("updateSong");
-  updateSong.disabled = false;
+  setStageDisabled(false);
+  textarea.focus();
 }
 
 function updateSong() {
@@ -55,10 +65,28 @@ function updateSong() {
     return;
   }
 
-  httpRequest("updateSong.php?song_id="+clientSong.song_id, updateSongCallback,
-    "subtitles="+encodeURIComponent(textarea.value));
+  if (clientSong.subtitles == textarea.value) {
+    alert("No changes to update.");
+  } else {
+    httpRequest("updateSong.php?song_id="+clientSong.song_id, updateSongCallback,
+      "subtitles="+encodeURIComponent(textarea.value));
+    setStageDisabled(true);
+  }
 }
 
 function updateSongCallback(response) {
   alert(response);
+  setStageDisabled(false);
+}
+
+function textareaKeyDown(event) {
+  if (event.keyCode == 27) {
+    getStageSubtitles().blur();
+  }
+}
+
+function handleKey(key) {
+  if (key == "s") {
+    updateSong();
+  }
 }

@@ -29,17 +29,18 @@
   <div id="stageSubtitlesMenu">
     <input type="button" id="updateSong" value="Save Subtitles" onclick="updateSong()" disabled="true">
   </div>
-  <textarea id="stageSubtitlesTextarea" disabled="true"></textarea>
+  <textarea id="stageSubtitlesTextarea" disabled="true" onkeydown="textareaKeyDown(event)"></textarea>
 </div>
 </div>
 <div id="help" onclick="displayHelp()">
 <div><span class="helpKey">j</span> - previous song</div>
 <div><span class="helpKey">k</span> - next song</div>
-<div><span class="helpKey">o</span> - set song</div>
+<div><span class="helpKey">o</span> - edit song subtitles</div>
 <div><span class="helpKey">d</span> - delete song</div>
 <div><span class="helpKey">n</span> - lower song</div>
 <div><span class="helpKey">p</span> - raise song</div>
-<div><span class="helpKey">space</span> - play/pause</div>
+<div><span class="helpKey">esc</span> - go back to songs</div>
+<div><span class="helpKey">s</span> - save subtitles</div>
 <div><span class="helpKey">?</span> - display help</div>
 </div>
 

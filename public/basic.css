@@ -1,3 +1,5 @@
+@charset "utf8";
+
 body {
   margin: 0;
   padding: 0;
@@ -87,7 +89,6 @@ div#stage {
 div#stageSubtitles {
   margin: 0;
   padding: 0;
-  background-color: #000;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -103,7 +104,7 @@ div#stageSubtitlesMenu {
 }
 
 input#updateSong {
-  
+
 }
 
 textarea#stageSubtitlesTextarea {
@@ -117,6 +118,15 @@ textarea#stageSubtitlesTextarea {
   border: 0;
   width: 100%;
   resize: none;
+}
+
+div#stageSubtitlesText {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  white-space: pre-wrap;
+  color: #eee;
+  font-weight: bold;
 }
 
 iframe.sceneFrame {
@@ -213,12 +223,12 @@ img.youtubeThumbnail {
 
 div#help {
   position: fixed;
-  width: 200;
-  height: 200;
+  width: 300;
+  height: 300;
   top: 50%;
   left: 50%;
-  margin-top: -100;
-  margin-left: -100; 
+  margin-top: -150;
+  margin-left: -150; 
   visibility: hidden;
   background-color: #eee;
   padding: 20;
@@ -229,7 +239,7 @@ div#help:hover {
 }
 
 span.helpKey {
-  width: 40;
+  width: 50;
   display: inline-block;
 }
 
