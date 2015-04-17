@@ -41,7 +41,7 @@ function reloadQueueCallback(serverQueue) {
       break;
     }
 
-    changed = updateQueue(serverSong, server_i);
+    changed = changed || updateQueue(serverSong, server_i);
   }
 
   while (serverQueue.length < clientQueue.length) {

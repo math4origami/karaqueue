@@ -23,6 +23,7 @@ if (window.location.host.indexOf("localhost") > -1) {
 Requires Extension: <a href="https://chrome.google.com/webstore/detail/karaqueueextension/jbioiajcgjedimmhoflicdgjidjihobb">Karaqueue Extension</a>
 </div>
 
+<div id="subtitles" style="margin-top: 20;">Edit <a href="subtitleTool.php?queue_id=<?= $queue_id ?>">Subtitles</a></div>
 
 <div id="bookmark" style="margin-top: 20;">Bookmarklet: </div>
 <script type="text/javascript">
