@@ -145,6 +145,7 @@ div#stageSubtitlesText {
   white-space: pre-wrap;
   color: #eee;
   font-weight: bold;
+  font-family: monospace;
 }
 
 iframe.sceneFrame {
