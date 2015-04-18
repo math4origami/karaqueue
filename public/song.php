@@ -61,7 +61,7 @@ class Song {
   public function update() {
     $db = KaraqueueDB::instance();
     $id = $this->id;
-    $subtitles = $this->subtitles;
+    $subtitles = $db->escape_string($this->subtitles);
     $db->query("UPDATE songs SET subtitles='$subtitles' WHERE id=$id");
   }
 }
