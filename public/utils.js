@@ -92,3 +92,19 @@ function parseSearch(key) {
     return args;
   }
 }
+
+
+function callObjFunction(obj, name, none, arg) {
+  if (typeof obj[name] === "function") {
+    if (arg == undefined) {
+      return obj[name]();
+    } else {
+      return obj[name](arg);
+    }
+  }
+  if (none !== undefined) {
+    return none;
+  } else {
+    return null;
+  }
+}

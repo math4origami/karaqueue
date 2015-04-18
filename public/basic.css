@@ -43,7 +43,7 @@ div#sidebar {
 }
 
 div#menu {
-  height: 30;
+  height: 26;
   padding: 2;
 }
 
@@ -99,7 +99,7 @@ div#stageSubtitles {
 
 div#stageSubtitlesMenu {
   background-color: #eee;
-  height: 30;
+  height: 26;
   padding: 2;
 }
 
@@ -120,10 +120,27 @@ textarea#stageSubtitlesTextarea {
   resize: none;
 }
 
+div#stageSubtitlesTheaterMenu {
+  position: fixed;
+  top: 0;
+  left: 333;
+  right: 0;
+  height: 26;
+  padding: 2 10;
+  z-index: 2;
+  visibility: hidden;
+}
+
+div#stageSubtitles:hover > div#stageSubtitlesTheaterMenu,
+div#stageSubtitlesText:hover + div#stageSubtitlesTheaterMenu,
+div#stageSubtitlesTheaterMenu:hover {
+  visibility: visible;
+}
+
 div#stageSubtitlesText {
+  position: absolute;
   margin: 0;
   padding: 0;
-  position: absolute;
   white-space: pre-wrap;
   color: #eee;
   font-weight: bold;
@@ -224,10 +241,10 @@ img.youtubeThumbnail {
 div#help {
   position: fixed;
   width: 300;
-  height: 300;
+  height: 400;
   top: 50%;
   left: 50%;
-  margin-top: -150;
+  margin-top: -200;
   margin-left: -150; 
   visibility: hidden;
   background-color: #eee;

@@ -35,7 +35,7 @@
 <div id="help" onclick="displayHelp()">
 <div><span class="helpKey">j</span> - previous song</div>
 <div><span class="helpKey">k</span> - next song</div>
-<div><span class="helpKey">o</span> - edit song subtitles</div>
+<div><span class="helpKey">o</span> - select song</div>
 <div><span class="helpKey">d</span> - delete song</div>
 <div><span class="helpKey">n</span> - lower song</div>
 <div><span class="helpKey">p</span> - raise song</div>

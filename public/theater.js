@@ -1,4 +1,6 @@
 
+const TEMP_TIMEOUT = 6000;
+
 var SceneObject = function() {
   var that = {};
 
@@ -15,7 +17,7 @@ var SceneObject = function() {
   }
 
   that.getTotalTime = function() {
-    return 0;
+    return 1;
   }
 
   return that;
@@ -46,7 +48,6 @@ var SceneVideo = function() {
   if (!sceneVideo) {
     return null;
   }
-  var TEMP_TIMEOUT = 6000;
 
   function loadTemp() {
     var clientSong = getClientSong();
@@ -68,14 +69,7 @@ var SceneVideo = function() {
       }
       sceneVideo.pause();
 
-      var scene = document.createElement("iframe");
-      scene.src = "scene.php?name=" + clientSong.name;
-      scene.scrolling = false;
-      scene.className = "sceneFrame";
-
-      var stage = document.getElementById("stage");
-      removeAllChildren(stage);
-      stage.appendChild(scene);
+      buildSceneFrame(clientSong);
 
       return false;
     }
@@ -92,11 +86,13 @@ var SceneVideo = function() {
   }
 
   that.isLoaded = function() {
-    if (sceneVideo.readyState != 4) {
+    var clientSong = getClientSong();
+    if (sceneVideo.readyState != 4 && !clientSong.hasLoaded) {
       loadTemp();
       return false;
     } else {
       cleanupTemp();
+      clientSong.hasLoaded = true;
       return true;
     }
   }
@@ -140,14 +136,7 @@ var SceneFrame = function() {
   that.embed = embed;
 
   function embedFunction(name, none, arg) {
-    if (typeof embed[name] == "function") {
-      return embed[name](arg);
-    }
-    if (none !== undefined) {
-      return none;
-    } else {
-      return null;
-    }
+    return callObjFunction(embed, name, none, arg);
   }
 
   function getStatus() {
@@ -177,7 +166,7 @@ var SceneFrame = function() {
   }
 
   that.getTotalTime = function() {
-    return embedFunction("ext_getTotalTime", 0);
+    return embedFunction("ext_getTotalTime", 1);
   }
 
   return that;
@@ -190,25 +179,33 @@ var YoutubePlayer = function() {
     return null;
   }
 
+  function playerFunction(name, none) {
+    return callObjFunction(youtubePlayer, name, none);
+  }
+
+  function getPlayerState() {
+    return playerFunction("getPlayerState", -1);
+  }
+
   that.isEnded = function() {
-    return youtubePlayer.getPlayerState() == 0;
+    return getPlayerState() == 0;
   }
 
   that.togglePause = function() {
-    var state = youtubePlayer.getPlayerState();
+    var state = getPlayerState();
     if (state == 1) {
-      youtubePlayer.pauseVideo();
+      playerFunction("pauseVideo");
     } else if (state == 2) {
-      youtubePlayer.playVideo();
+      playerFunction("playVideo");
     }
   }
 
   that.getCurrentTime = function() {
-    return youtubePlayer.getCurrentTime();
+    return playerFunction("getCurrentTime", 0);
   }
 
   that.getTotalTime = function() {
-    return youtubePlayer.getDuration();;
+    return playerFunction("getDuration", 1);
   }
 
   return that;
@@ -228,9 +225,31 @@ function checkStage() {
   var sceneObject = SceneObject.getCurrentSceneObject();
   if (sceneObject) {
     return sceneObject.isEnded();
+  } else {
+    checkSceneFrame();
   }
 
   return false;
+}
+
+function checkSceneFrame() {
+  var clientSong = getClientSong();
+  if (clientSong.nicokaraSceneTime &&
+      clientSong.nicokaraSceneTime + TEMP_TIMEOUT < now()) {
+    clientSong.nicokaraSceneTime = null;
+    buildSceneFrame(clientSong);
+  }
+}
+
+function buildSceneFrame(clientSong) {
+  var scene = document.createElement("iframe");
+  scene.src = "scene.php?name=" + clientSong.name;
+  scene.scrolling = false;
+  scene.className = "sceneFrame";
+
+  var stage = getStage();
+  removeAllChildren(stage);
+  stage.appendChild(scene);
 }
 
 function buildYoutubeScene(scene, clientSong) {
@@ -269,10 +288,11 @@ function doUpdateStage() {
     buildYoutubeScene(scene, clientSong);
   } else {
     scene.className = "nicokaraScene";
+    clientSong.nicokaraSceneTime = now();
   }
   scene.id = clientSong.name;
 
-  var stage = document.getElementById("stage");
+  var stage = getStage();
   removeAllChildren(stage);
   stage.appendChild(scene);
 
@@ -299,9 +319,10 @@ function getStageSubtitlesText() {
   return document.getElementById("stageSubtitlesText");
 }
 
-var subtitlesVisible = false;
-var subtitlesContinuous = false;
+var subtitlesVisible = true;
+var subtitlesContinuous = true;
 var subtitlesOffset = 0;
+var subtitlesSize = 0;
 
 function handleKey(key) {
   if (key == " ") {
@@ -311,12 +332,34 @@ function handleKey(key) {
   } else if (key == "c") {
     subtitlesContinuous = !subtitlesContinuous;
   } else if (key == "a") {
-    subtitlesOffset++;
+    scrollSubtitlesOffset(1);
   } else if (key == "z") {
-    subtitlesOffset--;
+    scrollSubtitlesOffset(-1);
   } else if (key == "x") {
-    subtitlesOffset = 0;
+    resetSubtitlesOffset();
+  } else if (key == "+") {
+    incrementSubtitlesSize(1);
+  } else if (key == "-") {
+    incrementSubtitlesSize(-1);
+  } else if (key == "=") {
+    resetSubtitlesSize();
   }
+}
+
+function scrollSubtitlesOffset(inc) {
+  subtitlesOffset += inc;
+}
+
+function resetSubtitlesOffset() {
+  subtitlesOffset = 0;
+}
+
+function incrementSubtitlesSize(inc) {
+  subtitlesSize += inc;
+}
+
+function resetSubtitlesSize() {
+  subtitlesSize = 0;
 }
 
 function toggleSubtitles() {
@@ -350,6 +393,7 @@ function refreshSubtitles() {
 const RATIO = 16/9;
 var cachedVideoHeight = 1;
 var cachedVideoLeft = 0;
+var cachedSubtitlesSize = 0;
 
 function calculateVideoHeight() {
   var stage = getStage();
@@ -370,20 +414,27 @@ function calculateVideoLeft(videoHeight) {
   return (stageWidth - videoHeight * RATIO) / 2;
 }
 
+function calculateSubtitlesSize() {
+  return 0.1 * Math.pow(1.1, subtitlesSize);
+}
+
 function formatSubtitles(videoHeight) {
   var videoLeft = calculateVideoLeft(videoHeight);
   var stageSubtitlesText = getStageSubtitlesText();
   if (stageSubtitlesText && 
-      (videoHeight != cachedVideoHeight || videoLeft != cachedVideoLeft)) {
+      (videoHeight != cachedVideoHeight || 
+       videoLeft != cachedVideoLeft ||
+       subtitlesSize != cachedSubtitlesSize)) {
     var padding = videoHeight * RATIO * 0.05;
     stageSubtitlesText.style.left = videoLeft;
     stageSubtitlesText.style.right =  videoLeft;
     stageSubtitlesText.style.paddingLeft = padding;
     stageSubtitlesText.style.paddingRight = padding; 
-    stageSubtitlesText.style.fontSize = videoHeight * 0.1;
+    stageSubtitlesText.style.fontSize = videoHeight * calculateSubtitlesSize();
     setTextShadow(videoHeight);
     cachedVideoHeight = videoHeight;
     cachedVideoLeft = videoLeft;
+    cachedSubtitlesSize = subtitlesSize;
   }
 }
 
@@ -393,8 +444,8 @@ function setTextShadow(videoHeight, color) {
   }
 
   var radius = 1;
-  var offset = videoHeight * 0.005;
-  var count = offset * Math.PI / radius / 2;
+  var offset = videoHeight * calculateSubtitlesSize() * 0.05;
+  var count = offset * Math.PI / radius;
 
   var textShadow = [];
   for (var i=0; i<count; i++) {
@@ -409,22 +460,28 @@ function scrollSubtitles(videoHeight) {
   var stageSubtitles = getStageSubtitles();
   var stageSubtitlesText = getStageSubtitlesText();
   var sceneObject = SceneObject.getCurrentSceneObject();
-  if (!stageSubtitles || !stageSubtitlesText || !sceneObject) {
+  var timeParam = 0;
+  if (!stageSubtitles || !stageSubtitlesText) {
     return;
   }
-
-  var heightDiff = stageSubtitlesText.offsetHeight - stageSubtitles.offsetHeight;
-  var timeParam = sceneObject.getCurrentTime() / sceneObject.getTotalTime();
-  timeParam = Math.min(1, Math.max(0, (timeParam - 0.5) * 1.25 + 0.5));
-  var offset = -(heightDiff * timeParam);
-
-  var lineHeight = videoHeight * 0.15;
-  if (!subtitlesContinuous) {
-    offset = Math.round(offset / lineHeight) * lineHeight;
+  if (sceneObject && sceneObject.getTotalTime() > 0) {
+    timeParam = sceneObject.getCurrentTime() / sceneObject.getTotalTime();
   }
 
-  offset += subtitlesOffset * lineHeight;
-  stageSubtitlesText.style.top = offset;
+  timeParam = Math.min(1, Math.max(0, (timeParam - 0.5) * 1.33 + 0.5));
+  var heightDiff = stageSubtitlesText.offsetHeight - stageSubtitles.offsetHeight;
+  var videoHeightDiff = stageSubtitlesText.offsetHeight - videoHeight;
+  var videoOffset = -(videoHeightDiff * timeParam);
+  videoOffset += (stageSubtitles.offsetHeight - videoHeight) / 2;
+  videoOffset = Math.min(0, Math.max(-heightDiff, videoOffset));
+
+  var lineHeight = videoHeight * calculateSubtitlesSize() * 1.5 / 2;
+  if (!subtitlesContinuous) {
+    videoOffset = Math.round(videoOffset / lineHeight) * lineHeight;
+  }
+
+  videoOffset += subtitlesOffset * lineHeight;
+  stageSubtitlesText.style.top = videoOffset;
 }
 
 run(refreshStage, 3000);
