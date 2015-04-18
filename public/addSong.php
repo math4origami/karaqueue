@@ -18,6 +18,7 @@ function getTypeName($type) {
 
 function addSong($type, $name) {
   global $mysqli;
+  $name = $mysqli->escape_string($name);
   $user = User::load();
   $queueId = $user->queue_id;
 

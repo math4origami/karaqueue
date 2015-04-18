@@ -7,7 +7,7 @@ function updateSong() {
     return false;
   }
 
-  $song = Song::load($_GET["song_id"]);
+  $song = Song::load((int)$_GET["song_id"]);
   if (!$song) {
     return false;
   }
