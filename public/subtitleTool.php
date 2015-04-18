@@ -29,7 +29,7 @@
   <div id="stageSubtitlesMenu">
     <input type="button" id="updateSong" value="Save Subtitles" onclick="updateSong()" disabled="true">
   </div>
-  <textarea id="stageSubtitlesTextarea" disabled="true" onkeydown="textareaKeyDown(event)"></textarea>
+  <textarea id="stageSubtitlesTextarea" disabled="true" onkeydown="return textareaKeyDown(event)"></textarea>
 </div>
 </div>
 <div id="help" onclick="displayHelp()">

@@ -80,9 +80,15 @@ function updateSongCallback(response) {
 }
 
 function textareaKeyDown(event) {
+  var key = String.fromCharCode(event.keyCode);
   if (event.keyCode == 27) {
     getStageSubtitles().blur();
+  } else if ((key == "S" || key == "s") && event.ctrlKey) {
+    updateSong();
+    return false;
   }
+
+  return true;
 }
 
 function handleKey(key) {
