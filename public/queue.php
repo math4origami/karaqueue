@@ -10,6 +10,7 @@ while ($row = $result->fetch_assoc()) {
   $song = Song::load($row["song_id"]);
   if ($song) {
     $row["subtitles"] = $song->subtitles;
+    $row["furigana"] = $song->furigana;
   }
 
   $queue[] = $row;

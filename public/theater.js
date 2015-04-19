@@ -381,13 +381,64 @@ function refreshSubtitles() {
 
   var subtitlesText = getStageSubtitlesText();
   var clientSong = getClientSong();
-  if (clientSong && subtitlesText) {
-    subtitlesText.innerHTML = clientSong.subtitles;
+  if (clientSong && subtitlesText &&
+      clientSong.cachedSubtitles != clientSong.subtitles) {
+    subtitlesText.innerHTML = constructRuby(clientSong);
+    clientSong.cachedSubtitles = clientSong.subtitles;
   }
 
   var videoHeight = calculateVideoHeight();
   formatSubtitles(videoHeight);
   scrollSubtitles(videoHeight);
+}
+
+function constructRuby(clientSong) {
+  var done = "";
+  var subtitles = clientSong.subtitles;
+  for (var i=0; i<clientSong.parsedFurigana.length; i++) {
+    var tag = clientSong.parsedFurigana[i];
+    var word = tag[0];
+    var rt = tag[1];
+    var position = subtitles.indexOf(word);
+    if (position < 0 || rt.length < 1) {
+      continue;
+    }
+    done += subtitles.slice(0, position);
+    done += makeRubyTags(word, rt);
+    subtitles = subtitles.slice(position + word.length); 
+  }
+
+  return done + subtitles;
+}
+
+function makeRubyTags(word, rt) {
+  var done = "";
+
+  for (var word_i=word.length-1; word_i>=0; word_i--) {
+    var word_char = word.charAt(word_i);
+    var rt_i = rt.lastIndexOf(word_char);
+    if (rt_i < 0) {
+      continue;
+    }
+    if (rt_i < rt.length-1 || word_i < word.length-1) {
+      var word2 = word.slice(word_i+1);
+      var rt2 = rt.slice(rt_i+1);
+      done = makeRubyTag(word2, rt2) + done;
+    }
+    done = word_char + done;
+    word = word.slice(0, word_i);
+    rt = rt.slice(0, rt_i);
+  }
+
+  if (word.length > 0 || rt.length > 0) {
+    done = makeRubyTag(word, rt) + done;
+  }
+  
+  return done;
+}
+
+function makeRubyTag(word, rt) {
+  return "<ruby>"+word+"<rt>"+rt+"</rt></ruby>";
 }
 
 const RATIO = 16/9;

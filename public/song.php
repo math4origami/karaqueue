@@ -6,6 +6,7 @@ class Song {
   public $type;
   public $name;
   public $subtitles;
+  public $furigana;
   public $timestamp;
 
   public static function load($id) {
@@ -62,6 +63,8 @@ class Song {
     $db = KaraqueueDB::instance();
     $id = $this->id;
     $subtitles = $db->escape_string($this->subtitles);
-    $db->query("UPDATE songs SET subtitles='$subtitles' WHERE id=$id");
+    $furigana = $db->escape_string($this->furigana);
+    $query = "UPDATE songs SET subtitles='$subtitles', furigana='$furigana' WHERE id=$id";
+    $db->query($query);
   }
 }
