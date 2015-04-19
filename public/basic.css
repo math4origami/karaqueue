@@ -148,6 +148,12 @@ div#stageSubtitlesText {
   font-family: monospace;
 }
 
+div#stageSubtitlesText span {
+  padding-left: 10%;
+  text-indent: -10%;
+  display: inline-block;
+}
+
 iframe.sceneFrame {
   border: 0;
   height: 100%;

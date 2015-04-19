@@ -383,7 +383,7 @@ function refreshSubtitles() {
   var clientSong = getClientSong();
   if (clientSong && subtitlesText &&
       cachedSubtitlesText != clientSong.subtitles) {
-    subtitlesText.innerHTML = constructRuby(clientSong);
+    subtitlesText.innerHTML = addLineSpans(constructRuby(clientSong));
     cachedSubtitlesText = clientSong.subtitles;
   }
 
@@ -393,6 +393,10 @@ function refreshSubtitles() {
 }
 
 function constructRuby(clientSong) {
+  if (!clientSong.parsedFurigana) {
+    return clientSong.subtitles;
+  }
+  
   var done = "";
   var subtitles = clientSong.subtitles;
   for (var i=0; i<clientSong.parsedFurigana.length; i++) {
@@ -439,6 +443,11 @@ function makeRubyTags(word, rt) {
 
 function makeRubyTag(word, rt) {
   return "<ruby>"+word+"<rt>"+rt+"</rt></ruby>";
+}
+
+function addLineSpans(text) {
+  var lines = text.split("\n");
+  return "<span>"+lines.join("</span>\n<span>")+"</span>";
 }
 
 const RATIO = 16/9;
