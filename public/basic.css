@@ -152,6 +152,7 @@ div#stageSubtitlesText span {
   padding-left: 10%;
   text-indent: -10%;
   display: inline-block;
+  width: 90%;
 }
 
 iframe.sceneFrame {
