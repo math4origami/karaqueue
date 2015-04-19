@@ -91,11 +91,15 @@ div#stageSubtitles {
   padding: 0;
   position: fixed;
   top: 0;
-  bottom: 40;
+  bottom: 0;
   left: 333;
   right: 0;
   z-index: 1;
   overflow: hidden;
+}
+
+div.stageSubtitlesTheater#stageSubtitles {
+  bottom: 40;
 }
 
 div#stageSubtitlesMenu {

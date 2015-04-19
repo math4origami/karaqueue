@@ -26,7 +26,7 @@
   </div>
 </div>
 <div id="stage"></div>
-<div id="stageSubtitles">
+<div id="stageSubtitles" class="stageSubtitlesTheater">
   <div id="stageSubtitlesTheaterMenu">
     <input type="button" id="scrollSubtitlesBackButton" value="<<" onclick="scrollSubtitlesOffset(1)">
     <input type="button" id="scrollSubtitlesResetButton" value="|" onclick="resetSubtitlesOffset()">
