@@ -65,17 +65,17 @@ function updateSong() {
     return;
   }
 
-  //if (clientSong.subtitles == textarea.value) {
-  //  alert("No changes to update.");
-  //} else {
+  if (clientSong.subtitles == textarea.value) {
+   alert("No changes to update.");
+  } else {
     httpRequest("updateSong.php?song_id="+clientSong.song_id, updateSongCallback,
       "subtitles="+encodeURIComponent(textarea.value));
     setStageDisabled(true);
-  //}
+  }
 }
 
 function updateSongCallback(response) {
-  console.log(response);
+  alert(response);
   setStageDisabled(false);
 }
 

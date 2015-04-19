@@ -14,7 +14,6 @@ function updateSong() {
 
   $song->subtitles = $_POST["subtitles"];
   $song->furigana = createFurigana($song->subtitles);
-  echo $song->furigana;
   $song->update();
   return true;
 }
@@ -47,5 +46,5 @@ function createFurigana($subtitles) {
 if (!updateSong()) {
   echo "Update song error";
 } else {
-  //echo "Update song success";
+  echo "Update song success";
 }

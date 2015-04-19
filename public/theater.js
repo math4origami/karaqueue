@@ -382,9 +382,9 @@ function refreshSubtitles() {
   var subtitlesText = getStageSubtitlesText();
   var clientSong = getClientSong();
   if (clientSong && subtitlesText &&
-      clientSong.cachedSubtitles != clientSong.subtitles) {
+      cachedSubtitlesText != clientSong.subtitles) {
     subtitlesText.innerHTML = constructRuby(clientSong);
-    clientSong.cachedSubtitles = clientSong.subtitles;
+    cachedSubtitlesText = clientSong.subtitles;
   }
 
   var videoHeight = calculateVideoHeight();
@@ -445,6 +445,7 @@ const RATIO = 16/9;
 var cachedVideoHeight = 1;
 var cachedVideoLeft = 0;
 var cachedSubtitlesSize = 0;
+var cachedSubtitlesText = "";
 
 function calculateVideoHeight() {
   var stage = getStage();
