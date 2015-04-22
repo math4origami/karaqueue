@@ -161,6 +161,7 @@ function updateQueue(serverSong, server_i) {
       clientSong.parsedFurigana = JSON.parse(clientSong.furigana);
     } catch (err) {
       //do nothing
+      clientSong.parsedFurigana = null;
     }
     return false;
   }

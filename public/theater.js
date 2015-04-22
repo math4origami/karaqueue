@@ -476,7 +476,7 @@ function calculateVideoLeft(videoHeight) {
 }
 
 function calculateSubtitlesSize() {
-  return 0.1 * Math.pow(1.1, subtitlesSize);
+  return 0.08 * Math.pow(1.1, subtitlesSize);
 }
 
 function formatSubtitles(videoHeight) {
@@ -529,7 +529,7 @@ function scrollSubtitles(videoHeight) {
     timeParam = sceneObject.getCurrentTime() / sceneObject.getTotalTime();
   }
 
-  timeParam = Math.min(1, Math.max(0, (timeParam - 0.5) * 1.33 + 0.5));
+  timeParam = Math.min(1, Math.max(0, timeParam * 1.4 - 0.25));
   var heightDiff = stageSubtitlesText.offsetHeight - stageSubtitles.offsetHeight;
   var videoHeightDiff = stageSubtitlesText.offsetHeight - videoHeight;
   var videoOffset = -(videoHeightDiff * timeParam);

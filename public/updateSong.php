@@ -19,8 +19,25 @@ function updateSong() {
 }
 
 function createFurigana($subtitles) {
-  $mecab = new Mecab_Tagger();
-  $parsed = $mecab->parse($subtitles);
+  $parsed = "";
+  if (class_exists("Mecab_Tagger")) {
+    $mecab = new Mecab_Tagger();
+    $parsed = $mecab->parse($subtitles);
+  } else if (stripos(PHP_OS, "WIN") === 0) {
+    $path = 'C:/"Program Files (x86)"/MeCab/bin/mecab.exe';
+    $descriptorSpec = array(
+      array("pipe", "r"),
+      array("pipe", "w")
+    );
+    $process = proc_open($path, $descriptorSpec, $pipes);
+    if (is_resource($process)) {
+      fwrite($pipes[0], $subtitles);
+      fclose($pipes[0]);
+      $parsed = stream_get_contents($pipes[1]);
+      fclose($pipes[1]);
+      proc_close($process);
+    }
+  }
   $tags = explode("\n", $parsed);
   $furigana = array();
   foreach ($tags as $tag) {
