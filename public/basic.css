@@ -102,6 +102,10 @@ div.stageSubtitlesTheater#stageSubtitles {
   bottom: 40;
 }
 
+div.stageSubtitlesTheater {
+  pointer-events: none;
+}
+
 div#stageSubtitlesMenu {
   background-color: #eee;
   height: 26;
