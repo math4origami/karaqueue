@@ -298,6 +298,8 @@ function doUpdateStage() {
 
   clientSong.loadedTemp = false;
   subtitlesOffset = 0;
+  textShadowSize = 0;
+  subtitlesOpacity = 0;
 }
 
 function togglePause() {
