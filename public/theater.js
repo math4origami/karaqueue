@@ -55,7 +55,7 @@ var SceneVideo = function() {
       clientSong.loadedTemp = true;
       clientSong.loadedTempTime = now();
 
-      clientSong.tempWindow = window.open("http://www.nicovideo.jp/watch/" + clientSong.name, "_blank",
+      clientSong.tempWindow = window.open("https://www.nicovideo.jp/watch/" + clientSong.name, "_blank",
         "width=100, height=100, top=0, left=600");
       if (clientSong.tempWindow) {
         clientSong.tempWindow.blur();
@@ -174,7 +174,7 @@ var SceneFrame = function() {
 
 var YoutubePlayer = function() {
   var that = SceneObject();
-  var youtubePlayer = document.getElementById("youtubePlayer");
+  var youtubePlayer = YoutubePlayer.player;
   if (!youtubePlayer) {
     return null;
   }
@@ -209,6 +209,10 @@ var YoutubePlayer = function() {
   }
 
   return that;
+}
+
+YoutubePlayer.reset = function() {
+  YoutubePlayer.player = null;
 }
 
 function refreshStage() {
@@ -255,23 +259,37 @@ function buildSceneFrame(clientSong) {
 function buildYoutubeScene(scene, clientSong) {
   var youtubeDiv = document.createElement("div");
   youtubeDiv.id = "youtubeDiv";
+  scene.appendChild(youtubeDiv);
+
+  var loadScript = "\
+    YoutubePlayer.player = new YT.Player('youtubeDiv', { \
+      videoId: '" + clientSong.name + "', \
+      height: '100%', \
+      width: '100%', \
+      events: { \
+        'onReady': onYouTubePlayerReady \
+      } \
+    }); \
+  ";
 
   var youtubeScript = document.createElement("script");
-  youtubeScript.innerHTML = "\
-    var params = { allowScriptAccess: 'always' }; \
-    var atts = { id: 'youtubePlayer' }; \
-    swfobject.embedSWF('http://www.youtube.com/v/" + clientSong.name +
-      "?autoplay=1&enablejsapi=1&playerapiid=ytplayer&version=3', \
-      'youtubeDiv', '425', '356', '8', null, null, params, atts); ";
 
-  scene.appendChild(youtubeDiv);
+  if (typeof YT == "undefined") {
+    var youtubeApi = document.createElement("script");
+    youtubeApi.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(youtubeApi, firstScriptTag);
+
+    youtubeScript.innerHTML = "function onYouTubeIframeAPIReady() { " + loadScript + " }";
+  } else {
+    youtubeScript.innerHTML = loadScript;
+  }
+
   scene.appendChild(youtubeScript);
 }
 
-function onYouTubePlayerReady(playerId) {
-  var player = document.getElementById("youtubePlayer");
-  player.style.width = "100%";
-  player.style.height = "100%";
+function onYouTubePlayerReady(event) {
+  event.target.playVideo();
 }
 
 function doUpdateStage() {
@@ -280,9 +298,13 @@ function doUpdateStage() {
     return;
   }
 
+  YoutubePlayer.reset();
+  var stage = getStage();
+  removeAllChildren(stage);
+
   var scene = document.createElement("div");
   if (clientSong.type == 1) {
-    scene.className = "damkaraScene"; 
+    scene.className = "damkaraScene";
   } else if (clientSong.type == 2) {
     scene.className = "youtubeScene";
     buildYoutubeScene(scene, clientSong);
@@ -291,9 +313,6 @@ function doUpdateStage() {
     clientSong.nicokaraSceneTime = now();
   }
   scene.id = clientSong.name;
-
-  var stage = getStage();
-  removeAllChildren(stage);
   stage.appendChild(scene);
 
   clientSong.loadedTemp = false;
@@ -437,7 +456,7 @@ function constructRuby(clientSong) {
   if (!clientSong.parsedFurigana) {
     return clientSong.subtitles;
   }
-  
+
   var done = "";
   var subtitles = clientSong.subtitles;
   for (var i=0; i<clientSong.parsedFurigana.length; i++) {
@@ -450,7 +469,7 @@ function constructRuby(clientSong) {
     }
     done += subtitles.slice(0, position);
     done += makeRubyTags(word, rt);
-    subtitles = subtitles.slice(position + word.length); 
+    subtitles = subtitles.slice(position + word.length);
   }
 
   return done + subtitles;
@@ -478,7 +497,7 @@ function makeRubyTags(word, rt) {
   if (word.length > 0 || rt.length > 0) {
     done = makeRubyTag(word, rt) + done;
   }
-  
+
   return done;
 }
 
@@ -524,8 +543,8 @@ function calculateSubtitlesSize() {
 function formatSubtitles(videoHeight) {
   var videoLeft = calculateVideoLeft(videoHeight);
   var stageSubtitlesText = getStageSubtitlesText();
-  if (stageSubtitlesText && 
-      (videoHeight != cachedVideoHeight || 
+  if (stageSubtitlesText &&
+      (videoHeight != cachedVideoHeight ||
        videoLeft != cachedVideoLeft ||
        subtitlesSize != cachedSubtitlesSize ||
        textShadowSize != cachedTextShadowSize)) {
@@ -533,7 +552,7 @@ function formatSubtitles(videoHeight) {
     stageSubtitlesText.style.left = videoLeft;
     stageSubtitlesText.style.right =  videoLeft;
     stageSubtitlesText.style.paddingLeft = padding;
-    stageSubtitlesText.style.paddingRight = padding; 
+    stageSubtitlesText.style.paddingRight = padding;
     stageSubtitlesText.style.fontSize = videoHeight * calculateSubtitlesSize();
     setTextShadow(videoHeight);
     cachedVideoHeight = videoHeight;

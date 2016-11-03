@@ -64,16 +64,16 @@ function buildYoutubeSong(name, queueSong) {
 
 function buildYoutubeSongCallback(response, queueSong) {
   var youtube = JSON.parse(response);
-  
+
   var youtubeTitle = document.createElement("div");
   youtubeTitle.className = "youtubeTitle";
-  
+
   var youtubeThumbnail = document.createElement("img");
   youtubeThumbnail.className = "youtubeThumbnail";
 
   if (youtube.items.length > 0) {
     youtubeTitle.innerHTML = youtube.items[0].snippet.title;
-    youtubeThumbnail.src = youtube.items[0].snippet.thumbnails.high.url; 
+    youtubeThumbnail.src = youtube.items[0].snippet.thumbnails.high.url;
   }
 
   queueSong.appendChild(youtubeThumbnail);
@@ -169,7 +169,7 @@ function updateQueue(serverSong, server_i) {
   var clientEntry = document.getElementById("queue_" + server_i);
   var clientParent = clientEntry.parentNode;
   clientParent.removeChild(clientEntry);
-  
+
   var newEntry = buildQueueSong(serverSong, server_i);
   clientParent.appendChild(newEntry);
 
@@ -215,7 +215,7 @@ function updateCurrentField(field, event) {
   if (!/\d/.test(String.fromCharCode(event.charCode))) {
     return false;
   }
-  
+
   var newId = parseInt(field.value + String.fromCharCode(event.charCode));
   if (newId < 0 || clientQueue.length <= 0) {
     field.value = 0;
@@ -297,7 +297,7 @@ function raiseSong() {
   var actIndex = getActIndex();
   if (actIndex > 0 && actIndex < clientQueue.length) {
     doActSong("raise", clientQueue[actIndex].id);
-    
+
     if (actIndex == highlightStage) {
       highlightStage--;
     }
@@ -313,7 +313,7 @@ function lowerSong() {
   var actIndex = getActIndex();
   if (actIndex >= 0 && actIndex < clientQueue.length-1) {
     doActSong("lower", clientQueue[actIndex].id);
-    
+
     if (actIndex == highlightStage) {
       highlightStage++;
     }
@@ -417,7 +417,7 @@ function updateButtons(dontScroll) {
   deleteSongButton.disabled = actIndex < 0 || actIndex >= clientQueue.length;
   raiseSongButton.disabled = actIndex < 1 || actIndex >= clientQueue.length;
   lowerSongButton.disabled = actIndex < 0 || actIndex >= clientQueue.length-1;
-  
+
   if (scrollToId > -1 && !dontScroll) {
     var scrollToEntry = document.getElementById("queueEntry_" + scrollToId);
     var queueContainer = document.getElementById("queueContainer");
