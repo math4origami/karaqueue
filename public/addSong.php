@@ -43,16 +43,16 @@ function addSong($type, $name) {
 
 if (isset($_GET["address"])) {
   $address = $_GET["address"];
-  
+
   $parsed = parse_url($address);
 
   if (isset($parsed["host"])) {
-    if (strpos($parsed["host"], "nicovideo.jp") !== false && 
+    if (strpos($parsed["host"], "nicovideo.jp") !== false &&
         isset($parsed["path"])) {
       $tags = explode("/", $parsed["path"]);
       $name = $tags[count($tags) - 1];
 
-      if (strpos($name, "sm") === 0 || 
+      if (strpos($name, "sm") === 0 ||
           strpos($name, "nm") === 0) {
         addSong(0, $name);
       }
@@ -67,8 +67,8 @@ if (isset($_GET["address"])) {
       }
     }
   }
-} else if (isset($_GET["contentsId"]) && 
-           isset($_GET["karaokeContentsId"]) && 
+} else if (isset($_GET["contentsId"]) &&
+           isset($_GET["karaokeContentsId"]) &&
            isset($_GET["siteCode"])) {
   $damData = array(
     "contentsId" => $_GET["contentsId"],

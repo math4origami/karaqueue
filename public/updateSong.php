@@ -1,5 +1,6 @@
 <?php
 include_once "song.php";
+include_once "yahooApplication.php";
 
 function updateSong() {
   if (!isset($_GET["song_id"]) ||
@@ -19,6 +20,13 @@ function updateSong() {
 }
 
 function createFurigana($subtitles) {
+  $yahooApplication = new YahooApplication();
+  $furigana = $yahooApplication->getFurigana($subtitles);
+  return json_encode($furigana);
+}
+
+// Deprecated
+function createMecabFurigana($subtitles) {
   $parsed = "";
   if (class_exists("Mecab_Tagger")) {
     $mecab = new Mecab_Tagger();
