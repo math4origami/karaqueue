@@ -350,6 +350,7 @@ var subtitlesOpacity = 0;
 function handleKey(key) {
   if (key == " ") {
     togglePause();
+    return false;
   } else if (key == "s") {
     toggleSubtitles();
   } else if (key == "c") {
@@ -379,6 +380,8 @@ function handleKey(key) {
   } else if (key == "/") {
     resetSubtitlesOpacity();
   }
+
+  return true;
 }
 
 function scrollSubtitlesOffset(inc) {

@@ -369,7 +369,7 @@ function bodyKeyPress(event) {
   } else if (key == "?") {
     displayHelp();
   } else if (typeof handleKey == "function") {
-    handleKey(key);
+    return handleKey(key);
   }
 
   return true;
