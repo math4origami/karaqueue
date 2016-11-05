@@ -9,7 +9,7 @@
 </head>
 
 <body onkeypress="return bodyKeyPress(event);">
-  
+
 <div id="theater">
 <div id="sidebar">
   <div id="menu">
@@ -24,8 +24,7 @@
     <div id="queue"></div>
   </div>
 </div>
-<div id="stage"></div>
-<div id="stageSubtitles">
+<div id="stageSubtitles" class="subtitleToolStageSubtitles">
   <div id="stageSubtitlesMenu">
     <input type="button" id="updateSong" value="Save Subtitles" onclick="updateSong()" disabled="true">
   </div>

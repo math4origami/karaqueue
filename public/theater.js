@@ -536,6 +536,11 @@ function calculateVideoLeft(videoHeight) {
   return (stageWidth - videoHeight * RATIO) / 2;
 }
 
+function calculateVideoLeftDeltaWithSidebar(videoLeft) {
+  var sidebarWidth = 333;
+  return Math.max(0, sidebarWidth - videoLeft);
+}
+
 function calculateSubtitlesSize() {
   return 0.08 * Math.pow(1.1, subtitlesSize);
 }
@@ -549,7 +554,8 @@ function formatSubtitles(videoHeight) {
        subtitlesSize != cachedSubtitlesSize ||
        textShadowSize != cachedTextShadowSize)) {
     var padding = videoHeight * RATIO * 0.05;
-    stageSubtitlesText.style.left = videoLeft;
+    var videoLeftDelta = calculateVideoLeftDeltaWithSidebar(videoLeft);
+    stageSubtitlesText.style.left = videoLeft + videoLeftDelta;
     stageSubtitlesText.style.right =  videoLeft;
     stageSubtitlesText.style.paddingLeft = padding;
     stageSubtitlesText.style.paddingRight = padding;
@@ -593,7 +599,7 @@ function scrollSubtitles(videoHeight) {
     timeParam = sceneObject.getCurrentTime() / sceneObject.getTotalTime();
   }
 
-  timeParam = Math.min(1, Math.max(0, timeParam * 1.4 - 0.3));
+  timeParam = Math.min(1, Math.max(0, timeParam * 1.4 - 0.2));
   var heightDiff = stageSubtitlesText.offsetHeight - stageSubtitles.offsetHeight;
   var videoHeightDiff = stageSubtitlesText.offsetHeight - videoHeight;
   var videoOffset = -(videoHeightDiff * timeParam);

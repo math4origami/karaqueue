@@ -2,6 +2,8 @@ var queue_id = parseSearch('queue_id');
 var clientQueue = [];
 var currentStage = -1;
 var highlightStage = -1;
+var sidebarContainerHasMouse = false;
+var sidebarContainerLastInputTime = 0;
 
 function getClientSong() {
   if (clientQueue.length <= 0 ||
@@ -143,8 +145,8 @@ function addQueue(serverSong, server_i) {
   var queueSong = buildQueueSong(serverSong, server_i);
 
   var queue = document.getElementById("queue");
-  queueEntry.appendChild(queueButton);
   queueEntry.appendChild(queueSong);
+  queueEntry.appendChild(queueButton);
   queue.appendChild(queueEntry);
 
   clientQueue.push(serverSong);
@@ -391,6 +393,7 @@ function updateButtons(dontScroll) {
     var queueButton = buttons[i];
     queueButton.className = queueButton.className.replace("queueButtonCurrent", "");
     queueButton.className = queueButton.className.replace("queueButtonHighlight", "");
+    queueButton.className = queueButton.className.trim();
   }
 
   if (currentStage > -1) {
@@ -434,6 +437,7 @@ function updateButtons(dontScroll) {
     } else if (bottom - scrolled > queueHeight) {
       queueContainer.scrollTop = bottom - queueHeight;
     }
+    autoShowSidebar();
   }
 }
 
@@ -452,6 +456,42 @@ function incrementStage() {
   currentStage++;
   highlightStage = -1;
   updateStage();
+}
+
+function getSidebarContainer() {
+  return document.getElementById("sidebarContainer");
+}
+
+function showSidebar() {
+  var sidebarContainer = getSidebarContainer();
+  sidebarContainer.className = "sidebarContainerHover";
+}
+
+function hideSidebar() {
+  var sidebarContainer = getSidebarContainer();
+  sidebarContainer.className = "sidebarContainer";
+}
+
+function sidebarContainerOnMouseOver() {
+  sidebarContainerHasMouse = true;
+  showSidebar();
+}
+
+function sidebarContainerOnMouseOut() {
+  sidebarContainerHasMouse = false;
+  autoHideSidebar();
+}
+
+function autoShowSidebar() {
+  sidebarContainerLastInputTime = Date.now();
+  showSidebar();
+  setTimeout(autoHideSidebar, 5000);
+}
+
+function autoHideSidebar() {
+  if (!sidebarContainerHasMouse && Date.now() >= sidebarContainerLastInputTime + 4000) {
+    hideSidebar();
+  }
 }
 
 run(reloadQueue, 1000);

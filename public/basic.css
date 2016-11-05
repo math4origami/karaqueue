@@ -13,7 +13,6 @@ iframe#nicoTemp {
   right: 0;
   width: 500;
   height: 500;
-  z-index: -1;
 }
 
 div#theater {
@@ -31,12 +30,32 @@ div#theater_row {
   padding: 0;
 }
 
+div#sidebarContainer {
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  bottom: 40;
+}
+
+div.sidebarContainer {
+  width: 666;
+  left: -333;
+  transition: width 0.25s, left 0.25s;
+}
+
+div.sidebarContainerHover {
+  left: 0;
+  width:333;
+  transition: width 0.25s, left 0.25s;
+}
+
 div#sidebar {
   margin: 0;
   padding: 0;
   background-color: #eee;
   width: 333;
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
@@ -82,7 +101,7 @@ div#stage {
   position: fixed;
   top: 0;
   bottom: 0;
-  left: 333;
+  left: 0;
   right: 0;
 }
 
@@ -92,10 +111,14 @@ div#stageSubtitles {
   position: fixed;
   top: 0;
   bottom: 0;
-  left: 333;
+  left: 0;
   right: 0;
   z-index: 1;
   overflow: hidden;
+}
+
+div.subtitleToolStageSubtitles#stageSubtitles {
+  left: 333;
 }
 
 div.stageSubtitlesTheater#stageSubtitles {
@@ -149,7 +172,7 @@ div#stageSubtitlesTheaterMenu:hover {
 div#stageSubtitlesText {
   position: absolute;
   margin: 0;
-  padding: 0;
+  padding: 30 0 0 0;
   white-space: pre-wrap;
   color: #eee;
   font-weight: bold;
@@ -189,7 +212,9 @@ div.queueEntry {
 div.queueButton {
   position: absolute;
   width: 312;
-  height: 185; 
+  height: 185;
+  z-index: 1;
+  top: 0;
 }
 
 div.queueButton:hover {
@@ -229,7 +254,6 @@ div.damTitle {
 
 img.damLogo {
   position: absolute;
-  z-index: -1;
   width: 200;
   bottom: 20;
   right: 20;
@@ -251,7 +275,6 @@ img.youtubeThumbnail {
   position: absolute;
   width: 292;
   height: 165;
-  z-index: -1;
   opacity: 0.5;
 }
 
@@ -262,7 +285,7 @@ div#help {
   top: 50%;
   left: 50%;
   margin-top: -200;
-  margin-left: -150; 
+  margin-left: -150;
   visibility: hidden;
   background-color: #eee;
   padding: 20;

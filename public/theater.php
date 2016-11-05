@@ -11,21 +11,23 @@
 <body onkeypress="return bodyKeyPress(event);">
 
 <div id="theater">
-<div id="sidebar">
-  <div id="menu">
-    <input type="text" id="currentIdField" onkeypress="return updateCurrentField(this, event);">
-    <input type="button" id="currentIdButton" value="Set" onclick="setCurrent()">
-    <input type="button" id="deleteSongButton" value="X" onclick="deleteSong()">
-    <input type="button" id="raiseSongButton" value="/\" onclick="raiseSong()">
-    <input type="button" id="lowerSongButton" value="V" onclick="lowerSong()">
-    <input type="button" id="displayHelpButton" value="?" onclick="displayHelp()">
-    <input type="button" id="toggleSubtitlesButton" value="S" onclick="toggleSubtitles()">
-  </div>
-  <div id="queueContainer" onmouseleave="queueContainerLeave()">
-    <div id="queue"></div>
+<div id="stage"></div>
+<div id="sidebarContainer" class="sidebarContainer" onmouseover="sidebarContainerOnMouseOver()" onmouseout="sidebarContainerOnMouseOut()">
+  <div id="sidebar">
+    <div id="menu">
+      <input type="text" id="currentIdField" onkeypress="return updateCurrentField(this, event);">
+      <input type="button" id="currentIdButton" value="Set" onclick="setCurrent()">
+      <input type="button" id="deleteSongButton" value="X" onclick="deleteSong()">
+      <input type="button" id="raiseSongButton" value="/\" onclick="raiseSong()">
+      <input type="button" id="lowerSongButton" value="V" onclick="lowerSong()">
+      <input type="button" id="displayHelpButton" value="?" onclick="displayHelp()">
+      <input type="button" id="toggleSubtitlesButton" value="S" onclick="toggleSubtitles()">
+    </div>
+    <div id="queueContainer" onmouseleave="queueContainerLeave()">
+      <div id="queue"></div>
+    </div>
   </div>
 </div>
-<div id="stage"></div>
 <div id="stageSubtitles" class="stageSubtitlesTheater">
   <div id="stageSubtitlesTheaterMenu">
     <input type="button" id="scrollSubtitlesBackButton" value="<<" onclick="scrollSubtitlesOffset(1)">
