@@ -49,52 +49,8 @@ var SceneVideo = function() {
     return null;
   }
 
-  function loadTemp() {
-    var clientSong = getClientSong();
-    if (!clientSong.loadedTemp) {
-      clientSong.loadedTemp = true;
-      clientSong.loadedTempTime = now();
-
-      clientSong.tempWindow = window.open("https://www.nicovideo.jp/watch/" + clientSong.name, "_blank",
-        "width=100, height=100, top=0, left=600");
-      if (clientSong.tempWindow) {
-        clientSong.tempWindow.blur();
-      }
-
-      window.focus();
-    } else if (now() >= clientSong.loadedTempTime + TEMP_TIMEOUT) {
-      if (clientSong.tempWindow) {
-        clientSong.tempWindow.close();
-        clientSong.tempWindow = null;
-      }
-      sceneVideo.pause();
-
-      buildSceneFrame(clientSong);
-
-      return false;
-    }
-
-    sceneVideo.load();
-  }
-
-  function cleanupTemp() {
-    var clientSong = getClientSong();
-    if (clientSong.tempWindow) {
-      clientSong.tempWindow.close();
-      clientSong.tempWindow = null;
-    }
-  }
-
   that.isLoaded = function() {
-    var clientSong = getClientSong();
-    if (sceneVideo.readyState != 4 && !clientSong.hasLoaded) {
-      loadTemp();
-      return false;
-    } else {
-      cleanupTemp();
-      clientSong.hasLoaded = true;
-      return true;
-    }
+    return sceneVideo.readyState == 4;
   }
 
   that.isEnded = function() {
@@ -315,7 +271,6 @@ function doUpdateStage() {
   scene.id = clientSong.name;
   stage.appendChild(scene);
 
-  clientSong.loadedTemp = false;
   subtitlesOffset = 0;
   textShadowSize = 0;
   subtitlesOpacity = 0;

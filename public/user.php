@@ -8,7 +8,7 @@ class User {
   public $cookie_id;
   public $created_time;
 
-  public static function load($id) {
+  public static function load($id = 0) {
     $id = (int)$id;
     $db = KaraqueueDB::instance();
     $result = $db->query("SELECT * FROM users WHERE id=$id");

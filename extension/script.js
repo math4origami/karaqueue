@@ -26,11 +26,20 @@ function getNicokaraScene() {
 function autoload () {
   var nicokaraScene = getNicokaraScene();
   if (nicokaraScene) {
-    httpRequest("http://flapi.nicovideo.jp/api/getflv/" + nicokaraScene.id, autoloadCallback);
+    httpRequest("http://embed.nicovideo.jp/play/" + nicokaraScene.id, autoloadCallbackGotKey);
   }
 }
 
-function autoloadCallback(responseText) {
+function autoloadCallbackGotKey(response) {
+  var keys = JSON.parse(response);
+  var thumbWatchPlayKey = keys["thumbWatchPlayKey"];
+  var nicokaraScene = getNicokaraScene();
+  if (thumbWatchPlayKey) {
+    httpRequest("http://ext.nicovideo.jp/thumb_watch/"+nicokaraScene.id+"?k="+thumbWatchPlayKey+"&device=html5_watch", autoloadCallbackGotVideo);
+  }
+}
+
+function autoloadCallbackGotVideo(responseText) {
   var nicokaraScene = getNicokaraScene();
   if (!nicokaraScene) {
     return;
@@ -82,7 +91,7 @@ function autodam () {
     videoFrame.id = "sceneFrame";
     videoFrame.scrolling = "no";
     videoFrame.src = 'http://www.clubdam.com/app/service/leaf/karaokeAtDam.do?' +
-      'contentsId=' + damData.contentsId + 
+      'contentsId=' + damData.contentsId +
       '&karaokeContentsId=' + damData.karaokeContentsId +
       '&siteCode=' + damData.siteCode +
       '&token=' + token;

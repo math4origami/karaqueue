@@ -1,9 +1,13 @@
-function getArgs() {
+function getArgs(uri) {
   var args = {};
-  var search = window.location.search;
-  if (search.length > 0) {
-    search = search.substr(1);
-    var pairs = search.split("&");
+  if (!uri) {
+    var search = window.location.search;
+    if (search.length > 0) {
+      uri = search.substr(1);
+    }
+  }
+  if (uri) {
+    var pairs = uri.split("&");
     for (var i in pairs) {
       var tags = pairs[i].split("=");
       args[tags[0]] = tags[1];
@@ -93,7 +97,6 @@ function parseSearch(key) {
   }
 }
 
-
 function callObjFunction(obj, name, none, arg) {
   if (typeof obj[name] === "function") {
     if (arg == undefined) {
@@ -107,4 +110,11 @@ function callObjFunction(obj, name, none, arg) {
   } else {
     return null;
   }
+}
+
+function idx(obj, name) {
+  if (typeof obj[name] != "undefined") {
+    return obj[name];
+  }
+  return null;
 }
