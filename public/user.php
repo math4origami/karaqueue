@@ -5,12 +5,26 @@ class User {
   public $id;
   public $queue_id;
   public $name;
+  public $cookie_id;
   public $created_time;
 
-  public static function load($id = 0) {
+  public static function load($id) {
     $id = (int)$id;
     $db = KaraqueueDB::instance();
     $result = $db->query("SELECT * FROM users WHERE id=$id");
+    if ($row = $result->fetch_assoc()) {
+      $user = new User();
+      foreach ($row as $key => $value) {
+        $user->$key = $value;
+      }
+      return $user;
+    }
+    return null;
+  }
+
+  public static function add() {
+    $db = KaraqueueDB::instance();
+    $result = $db->query("INSERT INTO users");
     if ($row = $result->fetch_assoc()) {
       $user = new User();
       foreach ($row as $key => $value) {

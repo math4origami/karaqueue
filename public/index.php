@@ -1,8 +1,9 @@
-<?php 
+<?php
 include_once "user.php";
 $user = User::load();
 $queue_id = $user->queue_id;
 ?>
+
 <html>
 <head>
 <script type="text/javascript">
@@ -49,7 +50,7 @@ bookmark.appendChild(link);
 </script>
 
 <div style="margin-top:30;">
-  2014 Russell Chou <a href="http://www.twitter.com/math4origami/">@math4origami</a>
+  2016 Russell Chou <a href="http://www.twitter.com/math4origami/">@math4origami</a>
 </div>
 </body>
 </html>
