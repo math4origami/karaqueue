@@ -11,7 +11,7 @@
 <body onkeypress="return bodyKeyPress(event);">
 
 <div id="theater">
-<div id="stage"></div>
+<div id="stage" class="stage"></div>
 <div id="sidebarContainer" class="sidebarContainer" onmouseover="sidebarContainerOnMouseOver()" onmouseout="sidebarContainerOnMouseOut()">
   <div id="sidebar">
     <div id="menu">

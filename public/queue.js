@@ -464,12 +464,26 @@ function getSidebarContainer() {
 
 function showSidebar() {
   var sidebarContainer = getSidebarContainer();
-  sidebarContainer.className = "sidebarContainerHover";
+  if (sidebarContainer) {
+    sidebarContainer.className = "sidebarContainerHover";
+  }
+
+  if (typeof getStage == "function") {
+    var stage = getStage();
+    stage.className = "stageHover";
+  }
 }
 
 function hideSidebar() {
   var sidebarContainer = getSidebarContainer();
-  sidebarContainer.className = "sidebarContainer";
+  if (sidebarContainer) {
+    sidebarContainer.className = "sidebarContainer";
+  }
+
+  if (typeof getStage == "function") {
+    var stage = getStage();
+    stage.className = "stage";
+  }
 }
 
 function sidebarContainerOnMouseOver() {

@@ -35,19 +35,19 @@ div#sidebarContainer {
   padding: 0;
   position: fixed;
   top: 0;
-  bottom: 40;
+  bottom: 0;
 }
 
 div.sidebarContainer {
   width: 666;
   left: -333;
-  transition: width 0.25s, left 0.25s;
+  transition: width 1s, left 1s;
 }
 
 div.sidebarContainerHover {
   left: 0;
   width:333;
-  transition: width 0.25s, left 0.25s;
+  transition: width 1s, left 1s;
 }
 
 div#sidebar {
@@ -94,6 +94,17 @@ div#queue {
   padding: 0;
 }
 
+div.stage {
+  left: 0;
+  transition: left 1s;
+}
+
+div.stageHover {
+  left: 333;
+  transition: left 1s;
+}
+
+
 div#stage {
   margin: 0;
   padding: 0;
@@ -101,7 +112,6 @@ div#stage {
   position: fixed;
   top: 0;
   bottom: 0;
-  left: 0;
   right: 0;
 }
 
