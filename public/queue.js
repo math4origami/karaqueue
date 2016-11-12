@@ -159,12 +159,6 @@ function updateQueue(serverSong, server_i) {
   if (clientSong.name == serverSong.name && clientSong.type == serverSong.type) {
     clientSong.subtitles = serverSong.subtitles;
     clientSong.furigana = serverSong.furigana;
-    try {
-      clientSong.parsedFurigana = JSON.parse(clientSong.furigana);
-    } catch (err) {
-      //do nothing
-      clientSong.parsedFurigana = null;
-    }
     return false;
   }
 
