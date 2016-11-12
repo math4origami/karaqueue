@@ -483,28 +483,29 @@ var cachedVideoLeft = 0;
 var cachedSubtitlesSize = 0;
 var cachedTextShadowSize = 0;
 var cachedSubtitlesText = "";
+var sidebarWidth = 333;
 
 function calculateVideoHeight() {
   var stage = getStage();
-  if (!stage) {
+  var stageSubtitles = getStageSubtitles();
+  if (!stage || !stageSubtitles) {
     return 1;
   }
   var stageHeight = stage.offsetHeight;
-  var stageHeightFromWidth = stage.offsetWidth / RATIO;
+  var stageHeightFromWidth = Math.max(1, stageSubtitles.offsetWidth - sidebarWidth) / RATIO;
   return Math.min(stageHeight, stageHeightFromWidth);
 }
 
 function calculateVideoLeft(videoHeight) {
-  var stage = getStage();
-  if (!stage) {
+  var stageSubtitles = getStageSubtitles();
+  if (!stageSubtitles) {
     return 0;
   }
-  var stageWidth = stage.offsetWidth;
+  var stageWidth = stageSubtitles.offsetWidth;
   return (stageWidth - videoHeight * RATIO) / 2;
 }
 
 function calculateVideoLeftDeltaWithSidebar(videoLeft) {
-  var sidebarWidth = 333;
   return Math.max(0, sidebarWidth - videoLeft);
 }
 
@@ -523,7 +524,7 @@ function formatSubtitles(videoHeight) {
     var padding = videoHeight * RATIO * 0.05;
     var videoLeftDelta = calculateVideoLeftDeltaWithSidebar(videoLeft);
     stageSubtitlesText.style.left = videoLeft + videoLeftDelta;
-    stageSubtitlesText.style.right =  videoLeft;
+    stageSubtitlesText.style.right = videoLeft - videoLeftDelta;
     stageSubtitlesText.style.paddingLeft = padding;
     stageSubtitlesText.style.paddingRight = padding;
     stageSubtitlesText.style.fontSize = videoHeight * calculateSubtitlesSize();
