@@ -492,8 +492,9 @@ function sidebarContainerOnMouseOver() {
 }
 
 function sidebarContainerOnMouseOut() {
+  sidebarContainerLastInputTime = Date.now();
   sidebarContainerHasMouse = false;
-  autoHideSidebar();
+  setTimeout(autoHideSidebar, 5000);
 }
 
 function autoShowSidebar() {
