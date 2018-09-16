@@ -411,17 +411,15 @@ function refreshSubtitles() {
 }
 
 function constructRuby(clientSong) {
-  if (typeof clientSong.parsedFurigana == "undefined") {
-    try {
-      clientSong.parsedFurigana = JSON.parse(clientSong.furigana);
-    } catch (err) {
-      //do nothing
-      clientSong.parsedFurigana = null;
-    }
+  try {
+    clientSong.parsedFurigana = JSON.parse(clientSong.furigana);
+  } catch (err) {
+    //do nothing
+    clientSong.parsedFurigana = null;
+  }
 
-    if (!clientSong.parsedFurigana) {
-      return clientSong.subtitles;
-    }
+  if (!clientSong.parsedFurigana) {
+    return clientSong.subtitles;
   }
 
   var done = "";

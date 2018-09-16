@@ -41,13 +41,15 @@ div#sidebarContainer {
 div.sidebarContainer {
   width: 666;
   left: -333;
-  transition: width 1s, left 1s;
+  transition: width 250ms, left 250ms;
+  transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
 }
 
 div.sidebarContainerHover {
   left: 0;
   width:333;
-  transition: width 1s, left 1s;
+  transition: width 300ms, left 300ms;
+  transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
 }
 
 div#sidebar {
@@ -96,12 +98,14 @@ div#queue {
 
 div.stage {
   left: 0;
-  transition: left 1s;
+  transition: left 250ms;
+  transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
 }
 
 div.stageHover {
   left: 333;
-  transition: left 1s;
+  transition: left 300ms;
+  transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
 }
 
 
@@ -162,7 +166,7 @@ textarea#stageSubtitlesTextarea {
   resize: none;
 }
 
-div#stageSubtitlesTheaterMenu {
+div#stageSubtitlesTheaterMenuContainer {
   position: fixed;
   top: 0;
   left: 333;
@@ -170,12 +174,13 @@ div#stageSubtitlesTheaterMenu {
   height: 26;
   padding: 2 10;
   z-index: 2;
+}
+
+div#stageSubtitlesTheaterMenu {
   visibility: hidden;
 }
 
-div#stageSubtitles:hover > div#stageSubtitlesTheaterMenu,
-div#stageSubtitlesText:hover + div#stageSubtitlesTheaterMenu,
-div#stageSubtitlesTheaterMenu:hover {
+div#stageSubtitlesTheaterMenuContainer:hover > div#stageSubtitlesTheaterMenu {
   visibility: visible;
 }
 
@@ -286,6 +291,35 @@ img.youtubeThumbnail {
   width: 292;
   height: 165;
   opacity: 0.5;
+}
+
+div#newSongToaster {
+  position: fixed;
+  width: 312;
+  top: 0;
+  left: 50%;
+  margin-left: -156;
+  pointer-events: none;
+}
+
+div.toasterContainer {
+  position: relative;
+  background-color: #eee;
+  overflow: hidden;
+}
+
+div.toasterContainerHide {
+  height: 0;
+  opacity: 0;
+  transition: opacity 250ms, height 250ms;
+  transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
+}
+
+div.toasterContainerShow {
+  height: 185;
+  opacity: 1;
+  transition: opacity 300ms, height 300ms;
+  transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
 }
 
 div#help {

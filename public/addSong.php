@@ -41,6 +41,7 @@ function addSong($type, $name) {
   echo "alert('Successfully added: `$name` from $typeName');";
 }
 
+$success = false;
 if (isset($_GET["address"])) {
   $address = $_GET["address"];
 
@@ -55,6 +56,7 @@ if (isset($_GET["address"])) {
       if (strpos($name, "sm") === 0 ||
           strpos($name, "nm") === 0) {
         addSong(0, $name);
+        $success = true;
       }
     } else if (strpos($parsed["host"], "youtube.com") !== false &&
                isset($parsed["query"])) {
@@ -63,6 +65,7 @@ if (isset($_GET["address"])) {
         $tags = explode("=", $pair);
         if (count($tags) > 1 && $tags[0] == "v") {
           addSong(2, $tags[1]);
+          $success = true;
         }
       }
     }
@@ -87,6 +90,11 @@ if (isset($_GET["address"])) {
   }
 
   addSong(1, json_encode($damData, JSON_UNESCAPED_UNICODE));
+  $success = true;
+}
+
+if (!$success) {
+  echo "alert('Error, unable to add song.');";
 }
 
 ?>

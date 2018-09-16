@@ -22,16 +22,14 @@ function getActIndex() {
   }
 }
 
-function reloadQueue() {
-  httpRequest("queue.php?queue_id="+queue_id, reloadQueueServer);
+function reloadQueue(callback) {
+  httpRequest("queue.php?queue_id="+queue_id, function(response) {
+    reloadQueueCallback(response, callback);
+  });
 }
 
-function reloadQueueServer(response) {
+function reloadQueueCallback(response, callback) {
   var serverQueue = JSON.parse(response);
-  reloadQueueCallback(serverQueue);
-}
-
-function reloadQueueCallback(serverQueue) {
   var changed = false;
   for (var server_i in serverQueue) {
     var serverSong = serverQueue[server_i];
@@ -52,8 +50,9 @@ function reloadQueueCallback(serverQueue) {
   }
 
   if (changed) {
-    updateButtons();
+    updateButtons(true);
   }
+  callback();
 }
 
 function buildYoutubeSong(name, queueSong) {
@@ -152,6 +151,35 @@ function addQueue(serverSong, server_i) {
   clientQueue.push(serverSong);
 
   highlightStage = clientQueue.length - 1;
+
+  addNewSongToaster(buildQueueSong(serverSong, server_i));
+}
+
+function addNewSongToaster(queueSong) {
+  var toaster = document.getElementById("newSongToaster");
+  if (!toaster) {
+    return;
+  }
+
+  var toasterContainer = document.createElement("div");
+  toasterContainer.className = "toasterContainer toasterContainerHide";
+  toasterContainer.appendChild(queueSong);
+
+  if (toaster.children.length == 0) {
+    toaster.appendChild(toasterContainer);
+  } else {
+    toaster.insertBefore(toasterContainer, toaster.children[0]);
+  }
+
+  setTimeout(function() {
+    toasterContainer.className = "toasterContainer toasterContainerShow";
+  }, 1);
+  setTimeout(function() {
+    toasterContainer.className = "toasterContainer toasterContainerHide";
+    setTimeout(function() {
+      toaster.removeChild(toasterContainer);
+    }, 300);
+  }, 5000);
 }
 
 function updateQueue(serverSong, server_i) {
@@ -379,7 +407,7 @@ function displayHelp() {
   document.getElementById("help").style.visibility = help;
 }
 
-function updateButtons(dontScroll) {
+function updateButtons(dontShowSidebar) {
   var scrollToId = -1;
   var scrollToCurrent = false;
   var buttons = document.getElementsByClassName("queueButton");
@@ -415,7 +443,7 @@ function updateButtons(dontScroll) {
   raiseSongButton.disabled = actIndex < 1 || actIndex >= clientQueue.length;
   lowerSongButton.disabled = actIndex < 0 || actIndex >= clientQueue.length-1;
 
-  if (scrollToId > -1 && !dontScroll) {
+  if (scrollToId > -1) {
     var scrollToEntry = document.getElementById("queueEntry_" + scrollToId);
     var queueContainer = document.getElementById("queueContainer");
     var queueHeight = queueContainer.offsetHeight;
@@ -431,7 +459,9 @@ function updateButtons(dontScroll) {
     } else if (bottom - scrolled > queueHeight) {
       queueContainer.scrollTop = bottom - queueHeight;
     }
-    autoShowSidebar();
+    if (!dontShowSidebar) {
+      autoShowSidebar();
+    }
   }
 }
 
@@ -503,4 +533,7 @@ function autoHideSidebar() {
   }
 }
 
-run(reloadQueue, 1000);
+function repeatReloadQueue() {
+  setTimeout(reloadQueue(repeatReloadQueue), 1000);
+}
+reloadQueue(repeatReloadQueue);
