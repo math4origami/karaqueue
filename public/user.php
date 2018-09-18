@@ -1,5 +1,6 @@
 <?php
 include_once "mysql.php";
+include_once "id.php";
 
 class User {
   public $id;
@@ -24,14 +25,14 @@ class User {
 
   public static function add() {
     $db = KaraqueueDB::instance();
-    $result = $db->query("INSERT INTO users");
-    if ($row = $result->fetch_assoc()) {
-      $user = new User();
-      foreach ($row as $key => $value) {
-        $user->$key = $value;
+    for ($try = 0; $try < 3; $try++) {
+      $id = Id::generate();
+      $result = $db->query("INSERT INTO users (id, name, queue_id) VALUES ($id->value, '', 0)");
+      if ($result) {
+        return self::load($id->value);
       }
-      return $user;
     }
+    error_log("Could not add user.");
     return null;
   }
 
