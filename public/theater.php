@@ -1,7 +1,27 @@
+<?php
+include_once "client.php";
+
+if (!empty($_GET["join_queue_id"])) {
+  $client = Client::setUserQueue($_GET["join_queue_id"]);
+  if (!$client->queueId) {
+    header('Location: index.php?join_queue_error=' . $_GET["join_queue_id"]);
+    exit();
+  }
+} else if (!empty($_GET["new_queue"])) {
+  $client = Client::addUserQueue();
+} else {
+  $client = Client::getOrAddQueue();
+}
+?>
 <html>
 
 <head>
+<title>Karaqueue Theater</title>
 <link rel="stylesheet" type="text/css" href="basic.css">
+<script type="text/javascript">
+var path = window.location.pathname + "?queue_id=" + "<?= $client->encodedQueueId ?>";
+window.history.replaceState({}, document.title, path);
+</script>
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="swfobject.js"></script>
 <script type="text/javascript" src="queue.js"></script>

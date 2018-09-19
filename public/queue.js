@@ -23,7 +23,7 @@ function getActIndex() {
 }
 
 function reloadQueue(callback) {
-  httpRequest("queue.php?queue_id="+queue_id, function(response) {
+  httpRequest("viewQueue.php?queue_id="+queue_id, function(response) {
     reloadQueueCallback(response, callback);
   });
 }

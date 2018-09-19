@@ -1,33 +1,74 @@
 <?php
-include_once "user.php";
-$user = User::load();
-$queue_id = $user->queue_id;
+include_once "client.php";
+
+$client = Client::getUserQueue();
 ?>
 
 <html>
 <head>
+<title>Karaqueue</title>
 <script type="text/javascript">
 var address = "//" + window.location.host + window.location.pathname;
 address = address.replace("index.php", "");
-var siteLabel = "Karaqueue";
-if (window.location.host.indexOf("localhost") > -1) {
-  siteLabel = "Localhost";
+var joinValue = "";
+
+function isEnter(event) {
+  return event.key == "Enter";
+}
+
+function isValidInput(string) {
+  return /^\w*$/.test(string) && string.length <= 6;
+}
+
+function pressedJoin(input, event) {
+  if (!isEnter(event)) {
+    return;
+  }
+  if (input.value.length != 6) {
+    document.getElementById("joinTheaterError").innerHTML = "Queue ids must be 6 characters.";
+    return;
+  }
+  window.location.href = address + "theater.php?join_queue_id=" + input.value;
+}
+
+function inputJoin(input, event) {
+  if (!isValidInput(input.value)) {
+    input.value = joinValue;
+  }
+  joinValue = input.value;
 }
 </script>
+<script type="text/javascript" src="utils.js"></script>
 </head>
 
 <body>
 <div><h1>Karaqueue</h1></div>
 
-<div id="theater" style="margin-bottom: 2;">Go to <a href="theater.php?queue_id=<?= $queue_id ?>">Theater</a></div>
+<?php if ($client->queueId) { ?>
+<div id="goTheater" style="margin-bottom: 2;">Go to your <a href="theater.php?queue_id=<?= $client->encodedQueueId ?>">Queue</a></div>
+<?php } ?>
+
+<div id="newTheater" style="margin-bottom: 2;">Start a <a href="theater.php?new_queue=1"> new Queue</a></div>
+
+<div id="joinTheater" style="margin-bottom: 2;">
+  Join a Queue 
+  <input type="text" name="queue_id" onkeypress="pressedJoin(this, event)" oninput="inputJoin(this, event)"/>
+  <span id="joinTheaterError" style="color: red;"></span>
+</div>
+
 <div id="extension" style="font-style: italic; margin-left: 10px;">
 Requires Extension: <a href="https://chrome.google.com/webstore/detail/karaqueueextension/jbioiajcgjedimmhoflicdgjidjihobb">Karaqueue Extension</a>
 </div>
 
-<div id="subtitles" style="margin-top: 20;">Edit <a href="subtitleTool.php?queue_id=<?= $queue_id ?>">Subtitles</a></div>
+<div id="subtitles" style="margin-top: 20;">Edit <a href="subtitleTool.php?queue_id=<?= $client->encodedQueueId ?>">Subtitles</a></div>
 
 <div id="bookmark" style="margin-top: 20;">Bookmarklet: </div>
 <script type="text/javascript">
+var siteLabel = "Karaqueue";
+if (window.location.host.indexOf("localhost") > -1) {
+  siteLabel = "Localhost";
+}
+
 var link = document.createElement("a");
 link.innerHTML = siteLabel + " Add Song";
 link.href = "javascript:(function() { \
@@ -47,10 +88,16 @@ link.href = "javascript:(function() { \
   // document.body.appendChild(bookmark); \
 var bookmark = document.getElementById("bookmark");
 bookmark.appendChild(link);
+
+
+var join_queue_error = parseSearch("join_queue_error");
+if (join_queue_error) {
+  document.getElementById("joinTheaterError").innerHTML = "Queue with id " + join_queue_error + " does not exist.";
+}
 </script>
 
 <div style="margin-top:30;">
-  2016 Russell Chou <a href="http://www.twitter.com/math4origami/">@math4origami</a>
+  2018 Russell Chou <a href="http://www.twitter.com/math4origami/">@math4origami</a>
 </div>
 </body>
 </html>

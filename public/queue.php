@@ -1,20 +1,36 @@
 <?php
 include_once "mysql.php";
-include_once "song.php";
+include_once "id.php";
 
-$queueId = isset($_GET["queue_id"]) ? (int)$_GET["queue_id"] : 0;
-$result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=$queueId ORDER BY queue_index");
+class Queue {
+  public $id;
+  public $name;
+  public $timestamp;
 
-$queue = array();
-while ($row = $result->fetch_assoc()) {
-  $song = Song::load($row["song_id"]);
-  if ($song) {
-    $row["subtitles"] = $song->subtitles;
-    $row["furigana"] = $song->furigana;
+  public static function load($id) {
+    $id = (int)$id;
+    $db = KaraqueueDB::instance();
+    $result = $db->query("SELECT * FROM queues WHERE id=$id");
+    if ($row = $result->fetch_assoc()) {
+      $queue = new Queue();
+      foreach ($row as $key => $value) {
+        $queue->$key = $value;
+      }
+      return $queue;
+    }
+    return null;
+  } 
+
+  public static function add() {
+    $db = KaraqueueDB::instance();
+    for ($try = 0; $try < 3; $try++) {
+      $id = Id::generate();
+      $result = $db->query("INSERT INTO queues (id, name) VALUES ($id->value, '')");
+      if ($result) {
+        return self::load($id->value);
+      }
+    }
+    error_log("Could not add queue.");
+    return null;
   }
-
-  $queue[] = $row;
 }
-
-echo json_encode($queue);
-?>

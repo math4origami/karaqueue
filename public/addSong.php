@@ -1,6 +1,6 @@
 <?php
+include_once "client.php";
 include_once "mysql.php";
-include_once "user.php";
 include_once "song.php";
 
 function getTypeName($type) {
@@ -19,15 +19,12 @@ function getTypeName($type) {
 function addSong($type, $name) {
   global $mysqli;
   $name = $mysqli->escape_string($name);
-  $user = User::load();
-  $queueId = $user->queue_id;
+  $client = Client::getOrAddQueue();
 
-  $result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=$queueId ORDER BY queue_index");
-  $queue = array();
-  $last = -1;
-  while ($row = $result->fetch_assoc()) {
-    $queue[] = $row;
-    if ($row['queue_index'] > $last) {
+  $result = $mysqli->query("SELECT MAX(queue_index) AS queue_index FROM queued_song WHERE queue_id=$client->queueId");
+  $last = 0;
+  if ($row = $result->fetch_assoc()) {
+    if (!empty($row['queue_index'])) {
       $last = $row['queue_index'];
     }
   }
@@ -35,10 +32,10 @@ function addSong($type, $name) {
   $song = Song::getSongByType($type, $name);
 
   $mysqli->query("INSERT INTO queued_song (queue_id, queue_index, song_id, type, name)
-    VALUES ($queueId, " . ($last + 1) . ", " . $song->id . ", $type, '$name')");
+    VALUES ($client->queueId, " . ($last + 1) . ", " . $song->id . ", $type, '$name')");
 
   $typeName = getTypeName($type);
-  echo "alert('Successfully added: `$name` from $typeName');";
+  echo "alert('Successfully added `$name` from $typeName to queue `$client->encodedQueueId`.');";
 }
 
 $success = false;

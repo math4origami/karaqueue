@@ -12,7 +12,7 @@ class UserCookie {
   public static function load() {
     $cookie = new UserCookie();
     $cookie->userId = idx($_COOKIE, self::KARAQUEUE_USER_ID);
-    $cookie->cookieId = idx($_COOKIE, self::KARAQUEUE_COOKIE_ID, 0);
+    $cookie->cookieId = idx($_COOKIE, self::KARAQUEUE_COOKIE_ID);
     return $cookie;
   }
 

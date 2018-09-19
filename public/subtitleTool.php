@@ -1,6 +1,7 @@
 <html>
 
 <head>
+<title>Edit Subtitles</title>
 <link rel="stylesheet" type="text/css" href="basic.css">
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="swfobject.js"></script>
