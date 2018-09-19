@@ -17,7 +17,17 @@ class UserCookie {
   }
 
   public function update() {
-    setcookie(self::KARAQUEUE_USER_ID, $this->userId, self::EXPIRATION);
-    setcookie(self::KARAQUEUE_COOKIE_ID, $this->cookieId, self::EXPIRATION);
+    $domain = $this->getDomain();
+    setcookie(self::KARAQUEUE_USER_ID, $this->userId, self::EXPIRATION, '/', $domain);
+    setcookie(self::KARAQUEUE_COOKIE_ID, $this->cookieId, self::EXPIRATION, '/', $domain);
+  }
+
+  private function getDomain() {
+    $host = $_SERVER['HTTP_HOST'];
+    if (strpos($host, 'localhost') !== false) {
+      return "localhost";
+    } else {
+      return ".karaqueue.com";
+    }
   }
 }
