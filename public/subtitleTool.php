@@ -1,8 +1,18 @@
+<?php
+include_once "client.php";
+
+$client = Client::getSearchOrUserQueue();
+if (!$client->queueId) {
+  header('Location: index.php?join_queue_error=' . $_GET["queue_id"]);
+  exit();
+}
+?>
 <html>
 
 <head>
-<title>Edit Subtitles</title>
+<title>Karaqueue Subtitles</title>
 <link rel="stylesheet" type="text/css" href="basic.css">
+<?= $client->fixUrl() ?>
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="swfobject.js"></script>
 <script type="text/javascript" src="queue.js"></script>
@@ -13,6 +23,10 @@
 
 <div id="theater">
 <div id="sidebar">
+  <div id="menuTop">
+    <span class="leftLink"><a href="/">Home</a></span>
+    <span class="centerLink"><a href="theater.php?queue_id=<?= $client->encodedQueueId ?>">Theater</a></span>
+  </div>
   <div id="menu">
     <input type="text" id="currentIdField" onkeypress="return updateCurrentField(this, event);">
     <input type="button" id="currentIdButton" value="Set" onclick="setCurrent()">

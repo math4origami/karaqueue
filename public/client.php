@@ -4,8 +4,8 @@ include_once "userManager.php";
 include_once "queueManager.php";
 
 class Client {
-  public $queueId;
-  public $encodedQueueId;
+  public $queueId = 0;
+  public $encodedQueueId = "";
 
   public static function getUserQueue() {
     $userManager = new UserManager();
@@ -14,42 +14,78 @@ class Client {
 
     $user = $userManager->loadUser();
     if ($user) {
-      $client->setQueue($queueManager->getUserQueue($user));
-    } else {
-      $client->setQueue(null);
+      $client->setQueue($queueManager->getQueue($user->queue_id));
+    }
+    return $client;
+  }
+
+  public static function getSearchOrUserQueue() {
+    $queueManager = new QueueManager();
+    $queue = $queueManager->getSearchQueue();
+    if ($queue) {
+      $client = new Client();
+      $client->setQueue($queue);
+      return $client;
+    }
+
+    return self::getUserQueue();
+  }
+
+  public static function getOrAddUserQueue() {
+    $userManager = new UserManager();
+    $queueManager = new QueueManager();
+
+    $user = $userManager->loadOrAddUser();
+    $queue = $queueManager->getQueue($user->queue_id);
+    if ($queue) {
+      $client = new Client();
+      $client->setQueue($queue);
+      return $client;
+    }
+
+    return self::addUserQueue($user);
+  }
+
+  public static function addUserQueue($user = null) {
+    if (!$user) {
+      $userManager = new UserManager();
+      $user = $userManager->loadOrAddUser();
+    }
+    $queue = Queue::add();
+
+    $client = new Client();
+    $client->updateUser($user, $queue);
+    $client->setQueue($queue);
+    return $client;
+  }
+
+  public static function setUserQueue($encodedQueueId) {
+    $client = new Client();
+
+    $id = Id::decode($encodedQueueId);
+    $queue = Queue::load($id->value);
+    if ($queue) {
+      $userManager = new UserManager();
+      $user = $userManager->loadOrAddUser();
+      $client->updateUser($user, $queue);
+      $client->setQueue($queue);
     }
 
     return $client;
   }
 
-  public static function getOrAddQueue() {
-    $userManager = new UserManager();
-    $queueManager = new QueueManager();
-    $client = new Client();
-
-    $user = $userManager->loadOrAddUser();
-    $client->setQueue($queueManager->getOrAddQueue($user));
-    return $client;
+  public function fixUrl() {
+    return "<script type='text/javascript'>" .
+           "var path = window.location.pathname + '?queue_id=$this->encodedQueueId';" .
+           "window.history.replaceState({}, document.title, path);" .
+           "</script>";
   }
 
-  public static function addUserQueue() {
-    $userManager = new UserManager();
-    $queueManager = new QueueManager();
-    $client = new Client();
-
-    $user = $userManager->loadOrAddUser();
-    $client->setQueue($queueManager->addUserQueue($user));
-    return $client;
-  }
-
-  public static function setUserQueue($encodedQueueId) {
-    $userManager = new UserManager();
-    $queueManager = new QueueManager();
-    $client = new Client();
-
-    $user = $userManager->loadOrAddUser();
-    $client->setQueue($queueManager->setUserQueue($user, $encodedQueueId));
-    return $client;
+  private function updateUser($user, $queue) {
+    if ($user && $queue) {
+      $user->queue_id = $queue->id;
+      $user->update();
+    }
   }
 
   private function setQueue($queue) {
@@ -57,9 +93,6 @@ class Client {
       $this->queueId = $queue->id;
       $id = Id::encode($queue->id);
       $this->encodedQueueId = $id->encoded;
-    } else {
-      $this->queueId = 0;
-      $this->encodedQueueId = "";
     }
   }
 }

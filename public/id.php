@@ -6,20 +6,20 @@ class Id {
   public $encoded;
 
   public static function generate() {
-    return Id::encode(Id::random());
+    return self::encode(self::random());
   }
 
   public static function encode($value) {
     $id = new Id();
-    $id->value = $value;
-    $id->encoded = Id::encodeValue($id->value);
+    $id->value = (int)$value;
+    $id->encoded = self::encodeValue($id->value);
     return $id;
   }
 
   public static function decode($encoded) {
     $id = new Id();
-    $id->value = $id->decodeValue($encoded);
-    $id->encoded = $encoded;
+    $id->encoded = (string)$encoded;
+    $id->value = $id->decodeValue($id->encoded);
     return $id;
   }
 
@@ -31,7 +31,7 @@ class Id {
     $encoded = "";
     for ($i = 0; $i < 6; $i++) {
       $bits = 63 & $value;
-      $encoded = Id::char($bits) . $encoded;
+      $encoded = self::char($bits) . $encoded;
       $value = $value >> 6;
     }
     return $encoded;
@@ -39,9 +39,9 @@ class Id {
 
   private static function decodeValue($encoded) {
     $value = 0;
-    for ($i = 0; $i < 6; $i++) {
+    for ($i = 0; $i < 6 && strlen($encoded) > 0; $i++) {
       $value = $value << 6;
-      $value += Id::bits($encoded[0]);
+      $value += self::bits($encoded[0]);
       $encoded = substr($encoded, 1);
     }
     return $value;
@@ -51,11 +51,11 @@ class Id {
     if ($bits < 0 || $bits >= 64) {
       $bits = 0;
     }
-    return Id::$chars[$bits];
+    return self::$chars[$bits];
   }
 
   private static function bits($char) {
-    $bits = strpos(Id::$chars, $char);
+    $bits = strpos(self::$chars, $char);
     return $bits === false ? 0 : $bits;
   }
 

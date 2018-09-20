@@ -17,7 +17,7 @@ function isEnter(event) {
 }
 
 function isValidInput(string) {
-  return /^\w*$/.test(string) && string.length <= 6;
+  return /^[\w-_]*$/.test(string) && string.length <= 6;
 }
 
 function pressedJoin(input, event) {
@@ -28,7 +28,7 @@ function pressedJoin(input, event) {
     document.getElementById("joinTheaterError").innerHTML = "Queue ids must be 6 characters.";
     return;
   }
-  window.location.href = address + "theater.php?join_queue_id=" + input.value;
+  window.location.href = address + "theater.php?join=1&queue_id=" + input.value;
 }
 
 function inputJoin(input, event) {
@@ -45,10 +45,14 @@ function inputJoin(input, event) {
 <div><h1>Karaqueue</h1></div>
 
 <?php if ($client->queueId) { ?>
-<div id="goTheater" style="margin-bottom: 2;">Go to your <a href="theater.php?queue_id=<?= $client->encodedQueueId ?>">Queue</a></div>
+<div id="goTheater" style="margin-bottom: 2;">
+  <a href="theater.php?queue_id=<?= $client->encodedQueueId ?>">Go to your Queue</a>
+</div>
 <?php } ?>
 
-<div id="newTheater" style="margin-bottom: 2;">Start a <a href="theater.php?new_queue=1"> new Queue</a></div>
+<div id="newTheater" style="margin-bottom: 2;">
+  <a href="theater.php?new_queue=1">Start a new Queue</a>
+</div>
 
 <div id="joinTheater" style="margin-bottom: 2;">
   Join a Queue 
@@ -59,8 +63,6 @@ function inputJoin(input, event) {
 <div id="extension" style="font-style: italic; margin-left: 10px;">
 Requires Extension: <a href="https://chrome.google.com/webstore/detail/karaqueueextension/jbioiajcgjedimmhoflicdgjidjihobb">Karaqueue Extension</a>
 </div>
-
-<div id="subtitles" style="margin-top: 20;">Edit <a href="subtitleTool.php?queue_id=<?= $client->encodedQueueId ?>">Subtitles</a></div>
 
 <div id="bookmark" style="margin-top: 20;">Bookmarklet: </div>
 <script type="text/javascript">

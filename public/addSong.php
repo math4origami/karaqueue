@@ -19,7 +19,7 @@ function getTypeName($type) {
 function addSong($type, $name) {
   global $mysqli;
   $name = $mysqli->escape_string($name);
-  $client = Client::getOrAddQueue();
+  $client = Client::getOrAddUserQueue();
 
   $result = $mysqli->query("SELECT MAX(queue_index) AS queue_index FROM queued_song WHERE queue_id=$client->queueId");
   $last = 0;

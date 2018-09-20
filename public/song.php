@@ -46,17 +46,6 @@ class Song {
     $song->insert();
     $result = self::loadByType($type, $name);
     return $result;
-  } 
-
-  public function insert() {
-    $db = KaraqueueDB::instance();
-    $pairs = get_object_vars($this);
-    unset($pairs['id']);
-    unset($pairs['timestamp']);
-    $keys = implode(",", array_keys($pairs));
-    $values = implode("','", array_values($pairs));
-    $query = "INSERT INTO songs ($keys) VALUES ('$values')";
-    $db->query($query);
   }
 
   public function update() {
@@ -66,5 +55,21 @@ class Song {
     $furigana = $db->escape_string($this->furigana);
     $query = "UPDATE songs SET subtitles='$subtitles', furigana='$furigana' WHERE id=$id";
     $db->query($query);
+  }
+
+  private function insert() {
+    $db = KaraqueueDB::instance();
+    $pairs = get_object_vars($this);
+    unset($pairs['timestamp']);
+
+    for ($try = 0; $try < 3; $try++) {
+      $id = Id::generate();
+      $pairs['id'] = $id->value;
+      $keys = implode(",", array_keys($pairs));
+      $values = implode("','", array_values($pairs));
+      $query = "INSERT INTO songs ($keys) VALUES ('$values')";
+      $db->query($query);
+    }
+    error_log("Could not add song.");
   }
 }

@@ -1,16 +1,17 @@
 <?php
 include_once "client.php";
+include_once "utils.php";
 
-if (!empty($_GET["join_queue_id"])) {
-  $client = Client::setUserQueue($_GET["join_queue_id"]);
-  if (!$client->queueId) {
-    header('Location: index.php?join_queue_error=' . $_GET["join_queue_id"]);
-    exit();
-  }
+if (!empty($_GET["join"])) {
+  $client = Client::setUserQueue($_GET["queue_id"]);
 } else if (!empty($_GET["new_queue"])) {
   $client = Client::addUserQueue();
 } else {
-  $client = Client::getOrAddQueue();
+  $client = Client::getSearchOrUserQueue();
+}
+if (!$client->queueId) {
+  header('Location: index.php?join_queue_error=' . idx($_GET,"queue_id"));
+  exit();
 }
 ?>
 <html>
@@ -18,10 +19,7 @@ if (!empty($_GET["join_queue_id"])) {
 <head>
 <title>Karaqueue Theater</title>
 <link rel="stylesheet" type="text/css" href="basic.css">
-<script type="text/javascript">
-var path = window.location.pathname + "?queue_id=" + "<?= $client->encodedQueueId ?>";
-window.history.replaceState({}, document.title, path);
-</script>
+<?= $client->fixUrl() ?>
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="swfobject.js"></script>
 <script type="text/javascript" src="queue.js"></script>
@@ -34,6 +32,11 @@ window.history.replaceState({}, document.title, path);
 <div id="stage" class="stage"></div>
 <div id="sidebarContainer" class="sidebarContainer" onmouseover="sidebarContainerOnMouseOver()" onmouseout="sidebarContainerOnMouseOut()">
   <div id="sidebar">
+    <div id="menuTop">
+      <span class="leftLink"><a href="/">Home</a></span>
+      <span class="centerLink"><a href="subtitleTool.php?queue_id=<?= $client->encodedQueueId ?>">Subtitles</a></span>
+      <span class="rightLink"><a href="theater.php?join=1&queue_id=<?= $client->encodedQueueId ?>">Join Link</a></span>
+    </div>
     <div id="menu">
       <input type="text" id="currentIdField" onkeypress="return updateCurrentField(this, event);">
       <input type="button" id="currentIdButton" value="Set" onclick="setCurrent()">

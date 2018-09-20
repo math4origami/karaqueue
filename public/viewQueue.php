@@ -11,7 +11,9 @@ if ($queue) {
 
   $queue = array();
   while ($row = $result->fetch_assoc()) {
-    $song = Song::load($row["song_id"]);
+    $id = Id::encode($row["song_id"]);
+    $row["song_id"] = $id->encoded;
+    $song = Song::load($id->value);
     if ($song) {
       $row["subtitles"] = $song->subtitles;
       $row["furigana"] = $song->furigana;

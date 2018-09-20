@@ -1,4 +1,5 @@
 <?php
+include_once "id.php";
 include_once "song.php";
 include_once "yahooApplication.php";
 
@@ -8,7 +9,8 @@ function updateSong() {
     return false;
   }
 
-  $song = Song::load((int)$_GET["song_id"]);
+  $id = Id::decode($_GET["song_id"]);
+  $song = Song::load($id->value);
   if (!$song) {
     return false;
   }
@@ -69,7 +71,7 @@ function createMecabFurigana($subtitles) {
 }
 
 if (!updateSong()) {
-  echo "Update song error";
+  echo "Update song error.";
 } else {
-  echo "Update song success";
+  echo "Update song success.";
 }
