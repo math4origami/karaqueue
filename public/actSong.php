@@ -1,4 +1,5 @@
 <?php
+include_once "queueManager.php";
 include_once "mysql.php";
 
 function swap($queue, $i, $j, $mysqli) { 
@@ -11,16 +12,21 @@ function swap($queue, $i, $j, $mysqli) {
   $mysqli->query("UPDATE queued_song SET queue_index='$otherIndex' WHERE id=$id");
 }
 
-$queue_id = isset($_GET["queue_id"]) ? (int)$_GET["queue_id"] : 0;
-$result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=$queue_id ORDER BY queue_index");
+if (!isset($_GET["act"]) || !isset($_GET["id"])) {
+  exit();
+}
+
+$queueManager = new QueueManager();
+$queue = $queueManager->getSearchQueue();
+if (!$queue) {
+  exit();
+}
+
+$result = $mysqli->query("SELECT * FROM queued_song WHERE queue_id=$queue->id ORDER BY queue_index");
 
 $queue = array();
 while ($row = $result->fetch_assoc()) {
   $queue[] = $row;
-}
-
-if (!isset($_GET["act"]) || !isset($_GET["id"])) {
-  exit();
 }
 
 $act = $_GET["act"];
