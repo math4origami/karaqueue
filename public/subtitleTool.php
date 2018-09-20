@@ -1,9 +1,10 @@
 <?php
-include_once "client.php";
+include_once "../private/client.php";
+include_once "../private/utils.php";
 
 $client = Client::getSearchOrUserQueue();
 if (!$client->queueId) {
-  header('Location: index.php?join_queue_error=' . $_GET["queue_id"]);
+  header('Location: index.php?join_queue_error=' . idx($_GET,"queue_id"));
   exit();
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
-include_once "client.php";
+include_once "../private/client.php";
 
 $client = Client::getUserQueue();
 ?>

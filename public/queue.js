@@ -52,7 +52,9 @@ function reloadQueueCallback(response, callback) {
   if (changed) {
     updateButtons(true);
   }
-  callback();
+  if (callback) {
+    callback();
+  }
 }
 
 function buildYoutubeSong(name, queueSong) {

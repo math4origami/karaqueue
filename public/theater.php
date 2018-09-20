@@ -1,6 +1,6 @@
 <?php
-include_once "client.php";
-include_once "utils.php";
+include_once "../private/client.php";
+include_once "../private/utils.php";
 
 if (!empty($_GET["join"])) {
   $client = Client::setUserQueue($_GET["queue_id"]);

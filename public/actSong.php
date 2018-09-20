@@ -1,6 +1,6 @@
 <?php
-include_once "queueManager.php";
-include_once "mysql.php";
+include_once "../private/queueManager.php";
+include_once "../private/mysql.php";
 
 function swap($queue, $i, $j, $mysqli) { 
   $id = $queue[$i]["id"];

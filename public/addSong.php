@@ -1,7 +1,7 @@
 <?php
-include_once "client.php";
-include_once "mysql.php";
-include_once "song.php";
+include_once "../private/client.php";
+include_once "../private/mysql.php";
+include_once "../private/song.php";
 
 function getTypeName($type) {
   switch ($type) {

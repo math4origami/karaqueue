@@ -1,7 +1,7 @@
 <?php
-include_once "id.php";
-include_once "song.php";
-include_once "yahooApplication.php";
+include_once "../private/id.php";
+include_once "../private/song.php";
+include_once "../private/yahooApplication.php";
 
 function updateSong() {
   if (!isset($_GET["song_id"]) ||

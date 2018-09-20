@@ -1,7 +1,7 @@
 <?php
-include_once "mysql.php";
-include_once "queueManager.php";
-include_once "song.php";
+include_once "../private/mysql.php";
+include_once "../private/queueManager.php";
+include_once "../private/song.php";
 
 $queueManager = new QueueManager();
 $queue = $queueManager->getSearchQueue();
