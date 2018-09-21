@@ -12,12 +12,12 @@ if (!$client->queueId) {
 
 <head>
 <title>Karaqueue Subtitles</title>
-<link rel="stylesheet" type="text/css" href="basic.css">
+<link rel="stylesheet" type="text/css" href="styles/basic.css">
 <?= $client->fixUrl() ?>
-<script type="text/javascript" src="utils.js"></script>
-<script type="text/javascript" src="swfobject.js"></script>
-<script type="text/javascript" src="queue.js"></script>
-<script type="text/javascript" src="subtitleTool.js"></script>
+<script type="text/javascript" src="scripts/utils.js"></script>
+<script type="text/javascript" src="scripts/swfobject.js"></script>
+<script type="text/javascript" src="scripts/queue.js"></script>
+<script type="text/javascript" src="scripts/subtitleTool.js"></script>
 </head>
 
 <body onkeypress="return bodyKeyPress(event);">

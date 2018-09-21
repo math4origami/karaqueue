@@ -102,7 +102,7 @@ function buildQueueSong(serverSong, server_i) {
 
     var damLogo = document.createElement("img");
     damLogo.className = "damLogo";
-    damLogo.src = "clubdam.gif";
+    damLogo.src = "images/clubdam.gif";
 
     queueSong = document.createElement("div");
     queueSong.className = "damQueue";

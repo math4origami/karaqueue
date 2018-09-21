@@ -18,12 +18,12 @@ if (!$client->queueId) {
 
 <head>
 <title>Karaqueue Theater</title>
-<link rel="stylesheet" type="text/css" href="basic.css">
+<link rel="stylesheet" type="text/css" href="styles/basic.css">
 <?= $client->fixUrl() ?>
-<script type="text/javascript" src="utils.js"></script>
-<script type="text/javascript" src="swfobject.js"></script>
-<script type="text/javascript" src="queue.js"></script>
-<script type="text/javascript" src="theater.js"></script>
+<script type="text/javascript" src="scripts/utils.js"></script>
+<script type="text/javascript" src="scripts/swfobject.js"></script>
+<script type="text/javascript" src="scripts/queue.js"></script>
+<script type="text/javascript" src="scripts/theater.js"></script>
 </head>
 
 <body onkeypress="return bodyKeyPress(event);">
