@@ -4,7 +4,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family:'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
+  font-family:'メイリオ',Meiryo,'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','ＭＳ Ｐゴシック',sans-serif;
 }
 
 iframe#nicoTemp {
@@ -65,6 +65,16 @@ div#sidebar {
 
 div#menuTop {
   height: 22;
+}
+
+div#menuTop a {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+div#menuTop a:hover {
+  color: #777;
 }
 
 span.leftLink {

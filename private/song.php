@@ -68,7 +68,9 @@ class Song {
       $keys = implode(",", array_keys($pairs));
       $values = implode("','", array_values($pairs));
       $query = "INSERT INTO songs ($keys) VALUES ('$values')";
-      $db->query($query);
+      if ($db->query($query)) {
+        return;
+      }
     }
     error_log("Could not add song.");
   }

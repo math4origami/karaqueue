@@ -8,7 +8,7 @@ if (isset($_GET['name'])) {
 
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="basic.css">
+<link rel="stylesheet" type="text/css" href="styles/basic.css">
 </head>
 
 <body>

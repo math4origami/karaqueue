@@ -21,10 +21,16 @@ class Client {
 
   public static function getSearchOrUserQueue() {
     $queueManager = new QueueManager();
-    $queue = $queueManager->getSearchQueue();
-    if ($queue) {
+
+    if ($queueManager->hasSearchQueue()) {
       $client = new Client();
-      $client->setQueue($queue);
+      $queue = $queueManager->getSearchQueue();
+
+      if ($queue) {
+        $client->setQueue($queue);
+      } else {
+        $client->encodedQueueId = $queueManager->getSearchQueueId();
+      }
       return $client;
     }
 
@@ -59,16 +65,18 @@ class Client {
     return $client;
   }
 
-  public static function setUserQueue($encodedQueueId) {
+  public static function setUserQueue() {
+    $queueManager = new QueueManager();
     $client = new Client();
 
-    $id = Id::decode($encodedQueueId);
-    $queue = Queue::load($id->value);
+    $queue = $queueManager->getSearchQueue();
     if ($queue) {
       $userManager = new UserManager();
       $user = $userManager->loadOrAddUser();
       $client->updateUser($user, $queue);
       $client->setQueue($queue);
+    } else {
+      $client->encodedQueueId = $queueManager->getSearchQueueId();
     }
 
     return $client;

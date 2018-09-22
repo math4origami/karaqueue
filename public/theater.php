@@ -3,14 +3,14 @@ include_once "../private/client.php";
 include_once "../private/utils.php";
 
 if (!empty($_GET["join"])) {
-  $client = Client::setUserQueue($_GET["queue_id"]);
+  $client = Client::setUserQueue();
 } else if (!empty($_GET["new_queue"])) {
   $client = Client::addUserQueue();
 } else {
   $client = Client::getSearchOrUserQueue();
 }
 if (!$client->queueId) {
-  header('Location: index.php?join_queue_error=' . idx($_GET,"queue_id"));
+  header('Location: /?join_queue_error=' . $client->encodedQueueId);
   exit();
 }
 ?>

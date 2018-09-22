@@ -25,8 +25,7 @@ class Queue {
     $db = KaraqueueDB::instance();
     for ($try = 0; $try < 3; $try++) {
       $id = Id::generate();
-      $result = $db->query("INSERT INTO queues (id, name) VALUES ($id->value, '')");
-      if ($result) {
+      if ($db->query("INSERT INTO queues (id, name) VALUES ($id->value, '')")) {
         return self::load($id->value);
       }
     }

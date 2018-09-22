@@ -31,8 +31,9 @@ function createBookmarklet() {
   if (window.location.host.indexOf("localhost") > -1) {
     siteLabel = "Localhost";
   }
-  var link = document.createElement("a");
-  link.innerHTML = siteLabel + " Add Song";
+  var div = document.getElementById("bookmarkletDiv");
+  div.innerHTML = siteLabel + " Add Song";
+  var link = document.getElementById("bookmarkletLink");
   link.href = "javascript:(function() { \
     var addSongPath = window.location.protocol + '//" + window.location.host + "/addSong.php?'; \
     var damData = document.getElementsByClassName('nicokaraDamData'); \
@@ -45,14 +46,14 @@ function createBookmarklet() {
     script.src = addSongPath; \
     document.body.appendChild(script); \
   })();";
-
-  var bookmark = document.getElementById("bookmark");
-  bookmark.appendChild(link);
 }
 
 function displayError() {
   var join_queue_error = parseSearch("join_queue_error");
   if (join_queue_error) {
-    document.getElementById("joinTheaterError").innerHTML = "Queue with id " + join_queue_error + " does not exist.";
+    var error = document.getElementById("joinTheaterError");
+    error.innerHTML = "Queue with id " + join_queue_error + " does not exist.";
+    error.style.visibility = "visible";
+    window.history.replaceState({}, document.title, window.location.origin);
   }
 }

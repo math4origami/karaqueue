@@ -1,8 +1,17 @@
 <?php
 include_once "id.php";
 include_once "queue.php";
+include_once "utils.php";
 
 class QueueManager {
+  public function hasSearchQueue() {
+    return isset($_GET["queue_id"]);
+  }
+
+  public function getSearchQueueId() {
+    return idx($_GET, "queue_id");
+  }
+
   public function getSearchQueue() {
     if (!isset($_GET["queue_id"])) {
       return null;

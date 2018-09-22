@@ -4,7 +4,7 @@ include_once "../private/utils.php";
 
 $client = Client::getSearchOrUserQueue();
 if (!$client->queueId) {
-  header('Location: index.php?join_queue_error=' . idx($_GET,"queue_id"));
+  header('Location: /?join_queue_error=' . $client->encodedQueueId);
   exit();
 }
 ?>
