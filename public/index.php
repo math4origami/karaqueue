@@ -22,12 +22,12 @@ $client = Client::getUserQueue();
 
 <div class="actionBar">
   <div class="centerColumn">
-    <?php if ($client->queueId) { ?>
-    <a href="theater.php?queue_id=<?= $client->encodedQueueId ?>"><div id="goTheater" class="actionButton">
-      Go to your Queue
-    </div></a><?php } ?><a href="theater.php?new_queue=1"><div id="newTheater" class="actionButton">
+    <a href="theater.php?new_queue=1"><div id="newTheater" class="actionButton">
       Start a new Queue
-    </div></a>
+    </div></a><?php if ($client->queueId) {
+      ?><a href="theater.php?queue_id=<?= $client->encodedQueueId ?>"><div id="goTheater" class="actionButton">
+      Go to your Queue
+    </div></a><?php } ?>
 
     <div id="joinTheater" class="actionButton actionButtonRight">
       Join a Queue 
