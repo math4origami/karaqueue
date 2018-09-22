@@ -52,7 +52,7 @@ $client = Client::getUserQueue();
       <a id="bookmarkletLink"><div id="bookmarkletDiv" class="contentButton"></div></a>
       <div class="description">
         Drag this Bookmarklet to your Bookmarks bar. 
-        Click it while on any Youtube or NicoNicoDouga video page to add the song to your current queue.
+        Click it while on any Youtube or NicoNicoDouga video page to add the video to your current queue.
       </div>
     </div>
 
