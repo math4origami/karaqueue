@@ -16,14 +16,29 @@ div.centerColumn {
 
 div.headerBar {
   background-color: #fff;
-  height: 90;
+}
+
+div.headerBar div.centerColumn {
   position: relative;
+  height: 90;
 }
 
 div.headerBar h1 {
   position: absolute;
   margin-bottom: 10;
   bottom: 0;
+}
+
+div#joinTheaterError {
+  visibility: hidden;
+  background-color: #eee;
+  color: red;
+  padding: 10 15;
+  border-radius: 5px;
+  position: absolute;
+  margin-bottom: 10;
+  bottom: 0;
+  right: 0;
 }
 
 div.actionBar {
@@ -53,16 +68,6 @@ div.actionButton input {
   margin-left: 10;
 }
 
-div#joinTheaterError {
-  visibility: hidden;
-  background-color: #ddd;
-  color: red;
-  float: right;
-  margin-top: 10;
-  padding: 10 15;
-  border-radius: 5px;
-}
-
 div.contentRow {
   margin-top: 20;
   white-space: nowrap;
@@ -70,7 +75,7 @@ div.contentRow {
 
 div.contentButton {
   background-color: #5a5;
-  color: black;
+  color: white;
   display: inline-block;
   margin-right: 20;
   padding: 15 20;

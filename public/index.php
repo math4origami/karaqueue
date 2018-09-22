@@ -16,6 +16,7 @@ $client = Client::getUserQueue();
 <div class="headerBar">
   <div class="centerColumn">
     <h1>Karaqueue</h1>
+    <div id="joinTheaterError"></div>
   </div>
 </div>
 
@@ -37,8 +38,6 @@ $client = Client::getUserQueue();
 
 <div class="contentBar">
   <div class="centerColumn">
-    <div id="joinTheaterError"></div>
-
     <div class="contentRow">
       <a href="https://chrome.google.com/webstore/detail/karaqueueextension/jbioiajcgjedimmhoflicdgjidjihobb">
       <div class="contentButton">
