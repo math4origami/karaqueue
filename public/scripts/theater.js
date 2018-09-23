@@ -107,8 +107,42 @@ var SceneFrame = function() {
     }
   }
 
-  that.getCurrentTime = function() {
-    return instance().currentTime;
+  function smooth(time) {
+    var data = instance();
+    if (time < data.lastCurrentTime && (data.lastCurrentTime - time) < 1000) {
+      return data.lastCurrentTime;
+    } else {
+      data.lastCurrentTime = time;
+      return time;
+    }
+  }
+
+  that.getCurrentTime = function(data) {
+    var data = instance();
+    switch (data.status) {
+      case 1:
+        return 0;
+      case 2:
+        var time = data.currentTime;
+        if (data.playTime > data.updateTime) {
+          time += performance.now() - data.playTime;
+          if (data.pauseTime > data.updateTime) {
+            time += data.pauseTime - data.updateTime;
+          }
+        } else {
+          time += performance.now() - data.updateTime;
+        }
+        return smooth(time);
+      case 3:
+        if (data.pauseTime > data.updateTime) {
+          return data.currentTime + data.pauseTime - data.updateTime;
+        } else {
+          return data.currentTime;
+        }
+      case 4:
+        return that.getTotalTime();
+    }
+    return data.currentTime;
   }
 
   that.getTotalTime = function() {
@@ -124,7 +158,11 @@ SceneFrame.init = function(iframe) {
     iframe: iframe,
     status: 0,
     currentTime: 0,
-    totalTime: 1
+    totalTime: 1,
+    updateTime: 0,
+    playTime: 0,
+    pauseTime: 0,
+    lastCurrentTime: 0
   };
 }
 
@@ -132,13 +170,20 @@ window.addEventListener("message", (event) => {
   if (event.origin != SceneFrame.origin) {
     return;
   }
+  var instance = SceneFrame.instance;
   switch (event.data.eventName) {
     case "playerStatusChange":
-      SceneFrame.instance.status = event.data.data.playerStatus;
+      instance.status = event.data.data.playerStatus;
+      if (instance.status == 2) {
+        instance.playTime = performance.now();
+      } else if (instance.status == 3) {
+        instance.pauseTime = performance.now();
+      }
       break;
     case "playerMetadataChange":
-      SceneFrame.instance.currentTime = idx(event.data.data, "currentTime", 0);
-      SceneFrame.instance.totalTime = idx(event.data.data, "duration", 0);
+      instance.currentTime = idx(event.data.data, "currentTime", 0);
+      instance.totalTime = idx(event.data.data, "duration", 0);
+      instance.updateTime = performance.now();
       break;
     case "loadComplete":
       SceneFrame().togglePause();
