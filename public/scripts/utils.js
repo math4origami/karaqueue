@@ -112,9 +112,9 @@ function callObjFunction(obj, name, none, arg) {
   }
 }
 
-function idx(obj, name) {
+function idx(obj, name, def = null) {
   if (typeof obj[name] != "undefined") {
     return obj[name];
   }
-  return null;
+  return def;
 }

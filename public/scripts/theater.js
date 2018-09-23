@@ -80,53 +80,73 @@ var SceneVideo = function() {
 }
 
 var SceneFrame = function() {
+  function instance() {
+    return SceneFrame.instance;
+  }
+  function sendMessage(message) {
+    message.sourceConnectorType = 1;
+    instance().iframe.contentWindow.postMessage(message, SceneFrame.origin);
+  }
+
   var that = SceneObject();
   var sceneFrame = getFirstElementByClassName("sceneFrame");
   if (!sceneFrame) {
     return null;
   }
-  var embed = getFirstElementByTagName("embed", sceneFrame.contentDocument);
-  if (!embed) {
-    return null;
-  }
-  that.embed = embed;
-
-  function embedFunction(name, none, arg) {
-    return callObjFunction(embed, name, none, arg);
-  }
-
-  function getStatus() {
-    return embedFunction("ext_getStatus");
-  }
-
-  that.hideComments = function() {
-    embedFunction("ext_setCommentVisible", null, false);
-  }
 
   that.isEnded = function() {
-    that.hideComments();
-    return getStatus() == "end";
+    return instance().status == 4;
   }
 
   that.togglePause = function() {
-    var status = getStatus();
-    if (status == "playing") {
-      embed.ext_play(false);
-    } else if (status == "paused") {
-      embed.ext_play(true);
+    var status = instance().status;
+    if (status == 2) {
+      sendMessage({eventName: "pause"});
+    } else {
+      sendMessage({eventName: "play"});
     }
   }
 
   that.getCurrentTime = function() {
-    return embedFunction("ext_getPlayheadTime", 0);
+    return instance().currentTime;
   }
 
   that.getTotalTime = function() {
-    return embedFunction("ext_getTotalTime", 1);
+    return instance().totalTime;
   }
 
   return that;
 }
+
+SceneFrame.origin = "http://embed.nicovideo.jp";
+SceneFrame.init = function(iframe) {
+  SceneFrame.instance = {
+    iframe: iframe,
+    status: 0,
+    currentTime: 0,
+    totalTime: 1
+  };
+}
+
+window.addEventListener("message", (event) => {
+  if (event.origin != SceneFrame.origin) {
+    return;
+  }
+  switch (event.data.eventName) {
+    case "playerStatusChange":
+      SceneFrame.instance.status = event.data.data.playerStatus;
+      break;
+    case "playerMetadataChange":
+      SceneFrame.instance.currentTime = idx(event.data.data, "currentTime", 0);
+      SceneFrame.instance.totalTime = idx(event.data.data, "duration", 0);
+      break;
+    case "loadComplete":
+      SceneFrame().togglePause();
+      break;
+    default:
+      console.log(event);
+  }
+});
 
 var YoutubePlayer = function() {
   var that = SceneObject();
@@ -183,27 +203,17 @@ function checkStage() {
   }
 
   var sceneObject = SceneObject.getCurrentSceneObject();
-  if (sceneObject) {
-    return sceneObject.isEnded();
-  } else {
-    checkSceneFrame();
+  if (!sceneObject) {
+    return true;
   }
 
-  return false;
-}
-
-function checkSceneFrame() {
-  var clientSong = getClientSong();
-  if (clientSong.nicokaraSceneTime &&
-      clientSong.nicokaraSceneTime + TEMP_TIMEOUT < now()) {
-    clientSong.nicokaraSceneTime = null;
-    buildSceneFrame(clientSong);
-  }
+  return sceneObject.isEnded();
 }
 
 function buildSceneFrame(clientSong) {
   var scene = document.createElement("iframe");
-  scene.src = "scene.php?name=" + clientSong.name;
+  SceneFrame.init(scene);
+  scene.src = SceneFrame.origin + "/watch/" + clientSong.name + "?jsapi=1";
   scene.scrolling = false;
   scene.className = "sceneFrame";
 
@@ -265,8 +275,7 @@ function doUpdateStage() {
     scene.className = "youtubeScene";
     buildYoutubeScene(scene, clientSong);
   } else {
-    scene.className = "nicokaraScene";
-    clientSong.nicokaraSceneTime = now();
+    buildSceneFrame(clientSong);
   }
   scene.id = clientSong.name;
   stage.appendChild(scene);
