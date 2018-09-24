@@ -39,16 +39,6 @@ $client = Client::getUserQueue();
 <div class="contentBar">
   <div class="centerColumn">
     <div class="contentRow">
-      <a href="https://chrome.google.com/webstore/detail/karaqueueextension/jbioiajcgjedimmhoflicdgjidjihobb">
-      <div class="contentButton">
-        Karaqueue Extension
-      </div></a>
-      <div class="description">
-        Install from the Chrome Web Store to quickly load NicoNicoDouga videos.
-      </div>
-    </div>
-
-    <div class="contentRow">
       <a id="bookmarkletLink"><div id="bookmarkletDiv" class="contentButton"></div></a>
       <div class="description">
         Drag this Bookmarklet to your Bookmarks bar. 
