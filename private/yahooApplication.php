@@ -29,7 +29,12 @@ class YahooApplication {
     $xmlText = curl_exec($ch);
     curl_close($ch);
 
-    $xml = new SimpleXMLElement($xmlText);
+    try {
+      $xml = new SimpleXMLElement($xmlText);
+    } catch (Exception $e) {
+      error_log($e);
+      return null;
+    }
     if (!isset($xml->Result)) {
       return null;
     }

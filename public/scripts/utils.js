@@ -118,3 +118,20 @@ function idx(obj, name, def = null) {
   }
   return def;
 }
+
+function pushAll(array1, array2) {
+  for (var element of array2) {
+    array1.push(element);
+  }
+}
+
+function unshiftAll(array1, array2) {
+  array2.reverse();
+  for (var element of array2) {
+    array1.unshift(element);
+  }
+}
+
+function last(array) {
+  return array[array.length - 1];
+}

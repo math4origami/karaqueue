@@ -481,13 +481,20 @@ function constructRuby(clientSong) {
   for (var i=0; i<clientSong.parsedFurigana.length; i++) {
     var tag = clientSong.parsedFurigana[i];
     var word = tag[0];
+    if (word.length <= 0) {
+      continue;
+    }
     var rt = tag[1];
     var position = subtitles.indexOf(word);
-    if (position < 0 || rt.length < 1) {
+    if (position < 0) {
       continue;
     }
     done += subtitles.slice(0, position);
-    done += makeRubyTags(word, rt);
+    if (rt.length == 0) {
+      done += word;
+    } else {
+      done += makeRubyTags(word, rt);
+    }
     subtitles = subtitles.slice(position + word.length);
   }
 
@@ -495,33 +502,96 @@ function constructRuby(clientSong) {
 }
 
 function makeRubyTags(word, rt) {
+  var frontAndBack = [[], []];
+  makePairs(word, rt, frontAndBack[0], frontAndBack[1]);
   var done = "";
-
-  for (var word_i=word.length-1; word_i>=0; word_i--) {
-    var word_char = word.charAt(word_i);
-    var rt_i = rt.lastIndexOf(word_char);
-    if (rt_i < 0) {
-      continue;
+  for (var pairs of frontAndBack) {
+    for (var pair of pairs) {
+      if (typeof pair == "string") {
+        done += pair;
+      } else {
+        done += makeRubyTag(pair[0], pair[1]);
+      }
     }
-    if (rt_i < rt.length-1 || word_i < word.length-1) {
-      var word2 = word.slice(word_i+1);
-      var rt2 = rt.slice(rt_i+1);
-      done = makeRubyTag(word2, rt2) + done;
-    }
-    done = word_char + done;
-    word = word.slice(0, word_i);
-    rt = rt.slice(0, rt_i);
   }
-
-  if (word.length > 0 || rt.length > 0) {
-    done = makeRubyTag(word, rt) + done;
-  }
-
   return done;
 }
 
 function makeRubyTag(word, rt) {
   return "<ruby>"+word+"<rt>"+rt+"</rt></ruby>";
+}
+
+function makePairs(word, rt, done, endDone) {
+  if (word.length == 0 && rt.length == 0) {
+    return true;
+  }
+  if (word.length == 0 || rt.length == 0) {
+    done.push([word, rt]);
+    return false;
+  }
+
+  if (word[0] == rt[0]) {
+    done.push(word[0]);
+    return makePairs(word.slice(1), rt.slice(1), done, endDone);
+  }
+  if (last(word) == last(rt)) {
+    endDone.unshift(last(word));
+    return makePairs(word.slice(0, word.length-1), rt.slice(0, rt.length-1), done, endDone);
+  }
+
+  var hiragana = findAllHiragana(word, rt);
+  if (hiragana.length == 0) {
+    done.push([word, rt]);
+    return true;
+  }
+
+  for (var word_i of hiragana) {
+    if (word_i == 0 && word_i == word.length-1) {
+      continue;
+    }
+    var word_char = word.charAt(word_i);
+    var possible = findPossibleMatches(word_char, rt);
+    for (var rt_i of possible) {
+      if (rt_i == 0 || rt_i.length-1) {
+        continue;
+      }
+      var newDone = [];
+      var newEndDone = [];
+      if (makePairs(word.slice(word_i), rt.slice(rt_i), newDone, newEndDone)) {
+        done.push([word.slice(0, word_i), rt.slice(0, rt_i)]);
+        pushAll(done, newDone);
+        unshiftAll(endDone, newEndDone);
+        return true;
+      }
+    }
+  }
+  done.push([word, rt]);
+  return false;
+}
+
+function findAllHiragana(word, rt) {
+  var hiragana = [];
+  for (var word_i=0; word_i<word.length; word_i++) {
+    var word_char = word.charAt(word_i);
+    if (rt.indexOf(word_char) >= 0) {
+      hiragana.push(word_i);
+    }
+  }
+  return hiragana;
+}
+
+function findPossibleMatches(word_char, rt) {
+  var possible = [];
+  var rt_from = 0;
+  while (rt_from < rt.length) {
+    var rt_i = rt.indexOf(word_char, rt_from);
+    if (rt_i < 0) {
+      break;
+    }
+    possible.push(rt_i);
+    rt_from = rt_i + 1;
+  }
+  return possible;
 }
 
 function addLineSpans(text) {
