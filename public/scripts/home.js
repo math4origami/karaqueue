@@ -1,9 +1,5 @@
 var joinValue = "";
 
-function isEnter(event) {
-  return event.key == "Enter";
-}
-
 function isValidInput(string) {
   return /^[\w-_]*$/.test(string) && string.length <= 6;
 }
@@ -52,7 +48,7 @@ function displayError() {
   var join_queue_error = parseSearch("join_queue_error");
   if (join_queue_error) {
     var error = document.getElementById("joinTheaterError");
-    error.innerHTML = "Queue with id " + join_queue_error + " does not exist.";
+    error.innerHTML = "Queue with id \"" + join_queue_error + "\" does not exist.";
     error.style.visibility = "visible";
     window.history.replaceState({}, document.title, window.location.origin);
   }

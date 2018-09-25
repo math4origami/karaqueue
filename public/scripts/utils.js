@@ -135,3 +135,7 @@ function unshiftAll(array1, array2) {
 function last(array) {
   return array[array.length - 1];
 }
+
+function isEnter(event) {
+  return event.key == "Enter";
+}

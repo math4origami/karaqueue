@@ -21,7 +21,7 @@ if (!$client->queueId) {
 <link rel="stylesheet" type="text/css" href="styles/basic.css">
 <?= $client->fixUrl() ?>
 <script type="text/javascript" src="scripts/utils.js"></script>
-<script type="text/javascript" src="scripts/swfobject.js"></script>
+<script type="text/javascript" src="scripts/youtube.js"></script>
 <script type="text/javascript" src="scripts/queue.js"></script>
 <script type="text/javascript" src="scripts/theater.js"></script>
 </head>

@@ -46,6 +46,8 @@ $client = Client::getUserQueue();
       </div>
     </div>
 
+<?php //include_once "search.php"; ?>
+
     <div class="footer">
       2018 Russell Chou
       <a href="https://www.twitter.com/math4origami/">@math4origami</a>

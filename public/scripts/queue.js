@@ -58,9 +58,7 @@ function reloadQueueCallback(response, callback) {
 }
 
 function buildYoutubeSong(name, queueSong) {
-  var key = "AIzaSyAM1ahn1DkYNhmRvPBVnEHV0efORA52Vq4";
-  var gapi = "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + name + "&key=" + key;
-  httpRequest(gapi, function(response) {
+  youtubeQuery("videos", "id=" + name, function(response) {
     buildYoutubeSongCallback(response, queueSong);
   });
 }
@@ -76,7 +74,7 @@ function buildYoutubeSongCallback(response, queueSong) {
 
   if (youtube.items.length > 0) {
     youtubeTitle.innerHTML = youtube.items[0].snippet.title;
-    youtubeThumbnail.src = youtube.items[0].snippet.thumbnails.high.url;
+    youtubeThumbnail.src = youtube.items[0].snippet.thumbnails.medium.url;
   }
 
   queueSong.appendChild(youtubeThumbnail);
