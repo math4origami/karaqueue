@@ -1,18 +1,30 @@
 function searchYoutube(q, callback) {
-  youtubeQuery("search", "type=video&q="+encodeURIComponent(q), (r) => callback(r));
+  youtubeQuery("search", "maxResults=10&type=video&q="+q, (r) => callback(r));
+}
+
+function searchNicovideo(q, callback) {
+  var napi = "searchNicovideo.php?q=";
+  httpRequest(napi+q, (r) => callback(r));
+}
+
+function getYoutubeResults() {
+  return document.getElementById("youtubeResults");
+}
+
+function getNicovideoResults() {
+  return document.getElementById("nicovideoResults");
 }
 
 function pressedSearch(input, event) {
   if (!isEnter(event)) {
     return;
   }
-  searchYoutube(input.value, (r) => {
-    buildYoutubeResults(r);
-  });
-}
+  removeAllChildren(getYoutubeResults());
+  removeAllChildren(getNicovideoResults());
 
-function getYoutubeResults() {
-  return document.getElementById("youtubeResults");
+  var q = encodeURIComponent(input.value);
+  searchYoutube(q, (r) => buildYoutubeResults(r));
+  searchNicovideo(q, (r) => buildNicovideoResults(r));
 }
 
 function buildYoutubeResults(r) {
@@ -22,7 +34,6 @@ function buildYoutubeResults(r) {
   }
 
   var container = getYoutubeResults();
-  removeAllChildren(container);
   for (var item of response.items) {
     var title = document.createElement("div");
     title.className = "resultTitle";
@@ -33,9 +44,35 @@ function buildYoutubeResults(r) {
     img.src=item.snippet.thumbnails.medium.url;
 
     var div = document.createElement("div");
+    div.className = "resultRow";
     div.appendChild(img);
     div.appendChild(title);
     container.appendChild(div);
     console.log(item.id.videoId);
+  }
+}
+
+function buildNicovideoResults(r) {
+  var response = JSON.parse(r);
+  if (!response || !response.meta || idx(response.meta, "status") != "200") {
+    return;
+  }
+
+  var container = getNicovideoResults();
+  for (var item of response.data) {
+    var title = document.createElement("div");
+    title.className = "resultTitle";
+    title.innerHTML = item.title;
+
+    var img = document.createElement("img");
+    img.className = "resultImg";
+    img.src=item.thumbnailUrl;
+
+    var div = document.createElement("div");
+    div.className = "resultRow";
+    div.appendChild(title);
+    div.appendChild(img);
+    container.appendChild(div);
+    console.log(item.contentId+" "+item.viewCounter);
   }
 }

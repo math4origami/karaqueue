@@ -19,7 +19,7 @@ class YahooApplication {
   }
 
   public function getFurigana($sentence) {
-    $sentence = urlencode($sentence);
+    $sentence = rawurlencode($sentence);
     $appId = $this->getYahooApplicationId();
     $url = "http://jlp.yahooapis.jp/FuriganaService/V1/furigana?appid=$appId&grade=1&sentence=$sentence";
 

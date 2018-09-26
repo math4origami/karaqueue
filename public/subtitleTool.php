@@ -15,7 +15,7 @@ if (!$client->queueId) {
 <link rel="stylesheet" type="text/css" href="styles/basic.css">
 <?= $client->fixUrl() ?>
 <script type="text/javascript" src="scripts/utils.js"></script>
-<script type="text/javascript" src="scripts/youtube.js"></script>
+<?php include_once "../private/youtube.php"; ?>
 <script type="text/javascript" src="scripts/queue.js"></script>
 <script type="text/javascript" src="scripts/subtitleTool.js"></script>
 </head>

@@ -110,3 +110,74 @@ div.footer a:hover {
   text-decoration: underline;
   color: #555;
 }
+
+div.searchResults {
+  width: 960;
+  position: relative;
+}
+
+div.searchResults > div {
+  position: absolute;
+  top: 0;
+}
+
+div#youtubeResults {
+  left: 0;
+  width: 726;
+}
+
+div#nicovideoResults {
+  right: 0;
+  width: 640;
+}
+
+div.resultRow, img.resultImg {
+  height: 180;
+}
+
+div.resultRow {
+  position: relative;
+  margin: 20 0;
+}
+
+div#youtubeResults div.resultRow {
+  width: 726;
+}
+
+div#nicovideoResults div.resultRow {
+  width: 640;
+}
+
+img.resultImg {
+  display: inline-block;
+}
+
+div.resultTitle {
+  display: inline-block;
+  background-color: #ccc;
+  overflow: hidden;
+  font-weight: bold;
+  box-sizing: border-box;
+  width: 386;
+  height: 80;
+}
+
+div#youtubeResults img.resultImg {
+  width: 320;
+}
+
+div#youtubeResults div.resultTitle {
+  vertical-align: top;
+  margin: 0 20 0 0;
+  padding: 5 20 5 40;
+}
+
+div#nicovideoResults img.resultImg {
+  width: 234;
+}
+
+div#nicovideoResults div.resultTitle {
+  vertical-align: bottom;
+  margin: 0 0 0 20;
+  padding: 5 40 5 20;
+}

@@ -2,6 +2,8 @@
 include_once "../private/client.php";
 
 $client = Client::getUserQueue();
+
+header('Content-type: text/html; charset=utf-8');
 ?>
 
 <html>
@@ -22,17 +24,13 @@ $client = Client::getUserQueue();
 
 <div class="actionBar">
   <div class="centerColumn">
-    <a href="theater.php?new_queue=1"><div id="newTheater" class="actionButton">
-      Start a new Queue
-    </div></a><?php if ($client->queueId) {
+    <?php if ($client->queueId) {
       ?><a href="theater.php?queue_id=<?= $client->encodedQueueId ?>"><div id="goTheater" class="actionButton">
       Go to your Queue
     </div></a><?php } ?>
-
-    <div id="joinTheater" class="actionButton actionButtonRight">
-      Join a Queue 
-      <input type="text" name="queue_id" onkeypress="pressedJoin(this, event)" oninput="inputJoin(this, event)"/>
-    </div>
+    <a href="theater.php?new_queue=1"><div id="newTheater" class="actionButton <?= $client->queueId ? "actionButtonRight" : "" ?>">
+      Start a new Queue
+    </div></a>
   </div>
 </div>
 
