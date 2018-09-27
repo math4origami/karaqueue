@@ -263,7 +263,7 @@ div.queueButton {
   position: absolute;
   width: 312;
   height: 185;
-  z-index: 1;
+  z-index: 2;
   top: 0;
 }
 
@@ -281,7 +281,7 @@ div.queueButtonHighlight {
 div.queueButtonCurrent {
   width: 292;
   height: 165;
-  border: 10px #44f solid;
+  border: 10px #16c solid;
 }
 
 iframe.queue {
@@ -319,6 +319,10 @@ div.youtubeTitle {
   padding: 10;
   font-size: larger;
   font-weight: bold;
+  position: absolute;
+  width: 272;
+  height: 145;
+  z-index: 1;
 }
 
 img.youtubeThumbnail {
@@ -335,6 +339,7 @@ div#newSongToaster {
   left: 50%;
   margin-left: -156;
   pointer-events: none;
+  z-index: 3;
 }
 
 div.toasterContainer {

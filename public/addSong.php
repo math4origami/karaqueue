@@ -16,6 +16,14 @@ function getTypeName($type) {
   }
 }
 
+function verifyYoutube($name) {
+  return strlen($name) == 11 && preg_match("/^[\w-_]*$/", $name) === 1;
+}
+
+function verifyNicovideo($name) {
+  return strlen($name) <= 11 && preg_match("/^(sm|nm)\d+$/", $name) === 1;
+}
+
 function addSong($type, $name) {
   global $mysqli;
   $name = $mysqli->escape_string($name);
@@ -88,6 +96,16 @@ if (isset($_GET["address"])) {
 
   addSong(1, json_encode($damData, JSON_UNESCAPED_UNICODE));
   $success = true;
+} else if (isset($_GET["type"]) && isset($_GET["name"])) {
+  $type = (int) $_GET["type"];
+  $name = $_GET["name"];
+  if ($type == 0 && verifyNicovideo($name)) {
+    addSong(0, $name);
+    $success = true;
+  } else if ($type == 2 && verifyYoutube($name)) {
+    addSong(2, $name);
+    $success = true;
+  }
 }
 
 if (!$success) {

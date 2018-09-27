@@ -19,7 +19,7 @@ if (!isset($_GET["q"])) {
   exit();
 }
 
-$napi = "http://api.search.nicovideo.jp/api/v2/video/contents/search?&targets=title,description,tags&_sort=-viewCounter&fields=contentId,title,thumbnailUrl,viewCounter&q=";
+$napi = "http://api.search.nicovideo.jp/api/v2/video/contents/search?&targets=title,description,tags&_sort=-viewCounter&fields=contentId,title,thumbnailUrl&q=";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $napi . rawurlencode($_GET["q"]));

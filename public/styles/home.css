@@ -12,6 +12,7 @@ body {
 div.centerColumn {
   width: 960;
   margin: auto;
+  position: relative;
 }
 
 div.headerBar {
@@ -19,7 +20,6 @@ div.headerBar {
 }
 
 div.headerBar div.centerColumn {
-  position: relative;
   height: 90;
 }
 
@@ -31,13 +31,13 @@ div.headerBar h1 {
 
 div#joinTheaterError {
   visibility: hidden;
-  background-color: #eee;
+  background-color: #ddd;
   color: red;
   padding: 10 15;
   border-radius: 5px;
   position: absolute;
-  margin-bottom: 10;
-  bottom: 0;
+  margin-top: 10;
+  top: 0;
   right: 0;
 }
 
@@ -56,7 +56,7 @@ div.actionButton {
 }
 
 div.actionButtonRight {
-  margin: 10 0;
+  margin: 10 0 10 20;
   float: right;
 }
 
@@ -74,7 +74,7 @@ div.contentRow {
 }
 
 div.contentButton {
-  background-color: #5a5;
+  background-color: #7bf;
   color: white;
   display: inline-block;
   margin-right: 20;
@@ -84,7 +84,7 @@ div.contentButton {
 }
 
 div.contentButton:hover {
-  background-color: #7c7;
+  background-color: #16c;
 }
 
 div.description {
@@ -111,6 +111,33 @@ div.footer a:hover {
   color: #555;
 }
 
+div.searchButton {
+  background-color: #def;
+  display: inline-block;
+  margin: 30 10 10 0;
+  padding: 10;
+  border: 1px #aaa solid;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+div.searchButton:hover {
+  background-color: #7bf;
+}
+
+div.searchSelected, div.searchSelected:hover {
+  background-color: #16c;
+  color: white;
+}
+
+input.searchInput {
+  box-sizing: border-box;
+  margin: 0 0 20 0;
+  padding: 10;
+  width: 960;
+  font-size: large;
+}
+
 div.searchResults {
   width: 960;
   position: relative;
@@ -131,8 +158,9 @@ div#nicovideoResults {
   width: 640;
 }
 
-div.resultRow, img.resultImg {
+div.resultRow, .resultImg {
   height: 180;
+  box-sizing: border-box;
 }
 
 div.resultRow {
@@ -162,22 +190,68 @@ div.resultTitle {
   height: 80;
 }
 
-div#youtubeResults img.resultImg {
+div#youtubeResults .resultImg {
   width: 320;
+  border-width: 5px;
 }
 
 div#youtubeResults div.resultTitle {
   vertical-align: top;
   margin: 0 20 0 0;
   padding: 5 20 5 40;
+  border-width: 5px 5px 5px 0px;
 }
 
-div#nicovideoResults img.resultImg {
+div#nicovideoResults .resultImg {
+  position: absolute;
+  right: 0;
+  bottom: 0;
   width: 234;
+  border-width: 5px;
 }
 
 div#nicovideoResults div.resultTitle {
-  vertical-align: bottom;
+  position: absolute;
+  right: 234;
+  bottom: 0;
   margin: 0 0 0 20;
   padding: 5 40 5 20;
+  border-width: 5px 0px 5px 5px;
+}
+
+div.resultButton, div.resultHandler {
+  background-color: transparent;
+  position: absolute;
+}
+
+div.resultButton {
+  z-index: 1;
+}
+
+div.resultHandler {
+  z-index: 2;
+  cursor: pointer;
+}
+
+div.resultHandler:hover~div.resultButton {
+  background-color: rgba(119, 187, 255, 0.25);
+  border-color: rgba(119, 187, 255, 0.75);
+  border-style: solid;
+}
+
+div.resultSelected div.resultHandler:hover~div.resultButton {
+  background-color: rgba(17, 102, 204, 0.25);
+  border-color: rgba(17, 102, 204, 0.75);
+}
+
+div#youtubeResults div.resultImg.resultButton,
+div#youtubeResults div.resultImg.resultHandler {
+  left: 0;
+  top: 0;
+}
+
+div#youtubeResults div.resultTitle.resultButton,
+div#youtubeResults div.resultTitle.resultHandler {
+  left: 320;
+  top: 0;
 }

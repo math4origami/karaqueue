@@ -139,3 +139,22 @@ function last(array) {
 function isEnter(event) {
   return event.key == "Enter";
 }
+
+function createDoubleclick(callback) {
+  var timer = null;
+  return (event) => {
+    if (!timer) {
+      timer = setTimeout(() => timer = null, 500);
+    } else {
+      timer = null;
+      callback(event);
+    }
+  };
+}
+
+function disableMobileZoom(element, callback) {
+  element.ontouchend = (event) => {
+    event.preventDefault();
+    callback(event);
+  };
+}
