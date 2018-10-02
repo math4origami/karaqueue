@@ -1,10 +1,57 @@
+var lastYoutube = {q: null, nextPageToken: null, searching: false};
+var lastNicovideo = {q: null, offset: 0, searching: false};
+
 function searchYoutube(q, callback) {
-  youtubeQuery("search", "maxResults=10&type=video&q="+q, (r) => callback(r));
+  if (lastYoutube.searching) {
+    return;
+  }
+
+  var search = "maxResults=10&type=video";
+  if (q != null) {
+    lastYoutube.q = q;
+  } else if (lastYoutube.nextPageToken != null) {
+    search += "&pageToken=" + lastYoutube.nextPageToken;
+  } else {
+    return;
+  }
+  if (lastYoutube.q == null) {
+    return;
+  }
+
+  search += "&q=" + lastYoutube.q;
+  lastYoutube.nextPageToken = null;
+  lastYoutube.searching = true;
+  youtubeQuery("search", search, (r) => {
+    var response = JSON.parse(r);
+    if (!response || idx(response, "kind") != "youtube#searchListResponse") {
+      return;
+    }
+    lastYoutube.searching = false;
+    lastYoutube.nextPageToken = idx(response, "nextPageToken", null);
+    callback(response);
+  });
 }
 
 function searchNicovideo(q, callback) {
-  var napi = "searchNicovideo.php?q=";
-  httpRequest(napi+q, (r) => callback(r));
+  if (lastNicovideo.searching) {
+    return;
+  }
+
+  if (q != null) {
+    lastNicovideo.q = q;
+    lastNicovideo.offset = 0;
+  }
+  if (lastNicovideo.q == null) {
+    return;
+  }
+
+  var napi = "searchNicovideo.php?q=" + lastNicovideo.q + "&_offset=" + lastNicovideo.offset;
+  lastNicovideo.offset += 10;
+  lastNicovideo.searching = true;
+  httpRequest(napi, (r) => {
+    lastNicovideo.searching = false;
+    callback(r);
+  });
 }
 
 function getYoutubeResults() {
@@ -23,16 +70,24 @@ function pressedSearch(input, event) {
   removeAllChildren(getNicovideoResults());
 
   var q = encodeURIComponent(input.value);
-  searchYoutube(q, (r) => buildYoutubeResults(r));
-  searchNicovideo(q, (r) => buildNicovideoResults(r));
+  searchYoutube(q, buildYoutubeResults);
+  searchNicovideo(q, buildNicovideoResults);
 }
 
-function buildYoutubeResults(r) {
-  var response = JSON.parse(r);
-  if (!response || idx(response, "kind") != "youtube#searchListResponse") {
-    return;
-  }
+function shouldAutoscroll() {
+  return document.body.scrollTop + document.body.offsetHeight >= document.body.scrollHeight - 10;
+}
 
+function createAutoscroll() {
+  document.body.onscroll = () => {
+    if (shouldAutoscroll()) {
+      searchYoutube(null, buildYoutubeResults);
+      searchNicovideo(null, buildNicovideoResults);
+    }
+  };
+}
+
+function buildYoutubeResults(response) {
   var container = getYoutubeResults();
   for (var item of response.items) {
     var div = buildResultRow(item.snippet.title, item.snippet.thumbnails.medium.url, 
@@ -153,7 +208,7 @@ function addSearchOption(text, div, input) {
   if (input.value.length > 0  && !isSpace(input.value.charAt(input.value.length - 1))) {
     input.value += " ";
   }
-  input.value += text;
+  input.value += text + " ";
   div.classList.add("searchSelected");
 }
 

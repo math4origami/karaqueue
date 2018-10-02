@@ -29,6 +29,22 @@ div.headerBar h1 {
   bottom: 0;
 }
 
+div.linkIcons {
+  position: absolute;
+  right: 0;
+  bottom: 10;
+}
+
+a.linkIcon {
+  display: inline-block;
+  margin: 5;
+}
+
+a.linkIcon img {
+  width: 26;
+  height: 26;
+}
+
 div#joinTheaterError {
   visibility: hidden;
   background-color: #ddd;
@@ -45,6 +61,10 @@ div.actionBar {
   background-color: #333;
 }
 
+div.actionBarRight {
+  float: right;
+}
+
 div.actionButton {
   background-color: #444;
   display: inline-block;
@@ -57,7 +77,6 @@ div.actionButton {
 
 div.actionButtonRight {
   margin: 10 0 10 20;
-  float: right;
 }
 
 div.actionButton:hover {
@@ -119,6 +138,7 @@ div.searchButton {
   border: 1px #aaa solid;
   border-radius: 5px;
   cursor: pointer;
+  user-select: none;
 }
 
 div.searchButton:hover {

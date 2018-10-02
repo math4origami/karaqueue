@@ -11,4 +11,5 @@
 
 <script type="text/javascript">
 createSearchOptions();
+createAutoscroll();
 </script>

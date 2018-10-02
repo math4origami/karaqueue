@@ -24,6 +24,42 @@ function verifyNicovideo($name) {
   return strlen($name) <= 11 && preg_match("/^(sm|nm)\d+$/", $name) === 1;
 }
 
+function createAlert($text) {
+  echo "
+  (function () {
+    let div = document.createElement('div');
+    div.style.position = 'fixed';
+    div.style.boxSizing = 'border-box';
+    div.style.width = '480px';
+    div.style.top = '40px';
+    div.style.left = '50%';
+    div.style.marginLeft = '-240px';
+    div.style.zIndex = '128';
+    div.style.padding = '20px 40px';
+    div.style.backgroundColor = '#eee';
+    div.style.color = 'black';
+    div.style.border = '2px grey solid';
+    div.style.borderRadius = '5px';
+    div.innerHTML = '$text ';
+    let a = document.createElement('a');
+    a.style.float = 'right';
+    a.style.cursor = 'pointer';
+    a.style.textDecoration = 'underline';
+    a.innerHTML = '(Close)';
+    a.onclick = () => document.body.removeChild(div);
+    div.insertBefore(a, div.firstChild);
+    document.body.appendChild(div);
+  })();
+  ";
+}
+
+function isLocalhost() {
+  if (!isset($_SERVER["HTTP_HOST"])) {
+    return false;
+  }
+  return strpos($_SERVER["HTTP_HOST"], "localhost") !== false;
+}
+
 function addSong($type, $name) {
   global $mysqli;
   $name = $mysqli->escape_string($name);
@@ -42,8 +78,12 @@ function addSong($type, $name) {
   $mysqli->query("INSERT INTO queued_song (queue_id, queue_index, song_id, type, name)
     VALUES ($client->queueId, " . ($last + 1) . ", " . $song->id . ", $type, '$name')");
 
+  echo "if (typeof createGoTheater == 'function') { createGoTheater('$client->encodedQueueId'); }";
   $typeName = getTypeName($type);
-  echo "alert('Successfully added `$name` from $typeName to queue `$client->encodedQueueId`.');";
+  $domain = isLocalhost() ? "localhost" : "karaqueue.com";
+  $url = "http://$domain/theater.php?queue_id=$client->encodedQueueId";
+  $a = "<a style=\"text-decoration: underline; cursor: pointer\" href=\"$url\">";
+  createAlert("Successfully added `$name` from $typeName to queue `$a$client->encodedQueueId</a>`.");
 }
 
 $success = false;
