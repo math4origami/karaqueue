@@ -1,5 +1,5 @@
 var lastYoutube = {q: null, nextPageToken: null, searching: false};
-var lastNicovideo = {q: null, offset: 0, searching: false};
+var lastNicovideo = {q: null, offset: 0, searching: false, totalCount: 0};
 
 function searchYoutube(q, callback) {
   if (lastYoutube.searching) {
@@ -22,11 +22,11 @@ function searchYoutube(q, callback) {
   lastYoutube.nextPageToken = null;
   lastYoutube.searching = true;
   youtubeQuery("search", search, (r) => {
+    lastYoutube.searching = false;
     var response = JSON.parse(r);
     if (!response || idx(response, "kind") != "youtube#searchListResponse") {
       return;
     }
-    lastYoutube.searching = false;
     lastYoutube.nextPageToken = idx(response, "nextPageToken", null);
     callback(response);
   });
@@ -40,6 +40,9 @@ function searchNicovideo(q, callback) {
   if (q != null) {
     lastNicovideo.q = q;
     lastNicovideo.offset = 0;
+    lastNicovideo.totalCount = 0;
+  } else if (lastNicovideo.offset >= lastNicovideo.totalCount) {
+    return;
   }
   if (lastNicovideo.q == null) {
     return;
@@ -50,7 +53,12 @@ function searchNicovideo(q, callback) {
   lastNicovideo.searching = true;
   httpRequest(napi, (r) => {
     lastNicovideo.searching = false;
-    callback(r);
+    var response = JSON.parse(r);
+    if (!response || !response.meta || idx(response.meta, "status") != "200") {
+      return;
+    }
+    lastNicovideo.totalCount = idx(response.meta, "totalCount", 0);
+    callback(response);
   });
 }
 
@@ -96,12 +104,7 @@ function buildYoutubeResults(response) {
   }
 }
 
-function buildNicovideoResults(r) {
-  var response = JSON.parse(r);
-  if (!response || !response.meta || idx(response.meta, "status") != "200") {
-    return;
-  }
-
+function buildNicovideoResults(response) {
   var container = getNicovideoResults();
   for (var item of response.data) {
     var div = buildResultRow(item.title, item.thumbnailUrl, createAddSong(0, item.contentId));
