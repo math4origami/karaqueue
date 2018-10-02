@@ -31,15 +31,16 @@ function createAlert($text) {
     div.style.position = 'fixed';
     div.style.boxSizing = 'border-box';
     div.style.width = '480px';
-    div.style.top = '40px';
+    div.style.top = '70px';
     div.style.left = '50%';
     div.style.marginLeft = '-240px';
-    div.style.zIndex = '128';
+    div.style.zIndex = '2147483647';
     div.style.padding = '20px 40px';
     div.style.backgroundColor = '#eee';
     div.style.color = 'black';
     div.style.border = '2px grey solid';
     div.style.borderRadius = '5px';
+    div.style.fontSize = 'medium';
     div.innerHTML = '$text ';
     let a = document.createElement('a');
     a.style.float = 'right';
@@ -149,7 +150,7 @@ if (isset($_GET["address"])) {
 }
 
 if (!$success) {
-  echo "alert('Error, unable to add song.');";
+  createAlert("Error, unable to add song.");
 }
 
 ?>
