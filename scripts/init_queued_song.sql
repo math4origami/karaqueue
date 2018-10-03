@@ -13,6 +13,6 @@ CREATE TABLE IF NOT EXISTS `queued_song` (
   UNIQUE KEY `location` (`queue_id`,`queue_index`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-ALTER TABLE  `queued_song`
-ADD `song_id` int(11) NOT NULL DEFAULT '0'
-AFTER  `queue_index`;
+-- ALTER TABLE  `queued_song`
+-- ADD `song_id` int(11) NOT NULL DEFAULT '0'
+-- AFTER  `queue_index`;

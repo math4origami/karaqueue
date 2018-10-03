@@ -6,8 +6,7 @@ class User {
   public $id;
   public $queue_id;
   public $name;
-  public $cookie_id;
-  public $created_time;
+  public $timestamp;
 
   public static function load($id = 0) {
     $id = (int)$id;
