@@ -2,6 +2,7 @@
 include_once "../private/client.php";
 include_once "../private/mysql.php";
 include_once "../private/song.php";
+include_once "../private/strings.php";
 
 function getTypeName($type) {
   switch ($type) {
@@ -114,6 +115,10 @@ if (isset($_GET["address"])) {
           $success = true;
         }
       }
+    } else if (strpos($parsed["host"], "karaqueue.com") !== false ||
+               strpos($parsed["host"], "localhost") !== false) {
+      createAlert(Strings::BOOKMARKLET_DESCRIPTION);
+      $success = true;
     }
   }
 } else if (isset($_GET["contentsId"]) &&

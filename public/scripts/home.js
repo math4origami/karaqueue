@@ -4,14 +4,24 @@ function isValidInput(string) {
   return /^[\w-_]*$/.test(string) && string.length <= 6;
 }
 
+function displayError(text) {
+  var error = document.getElementById("joinTheaterError");
+  error.innerHTML = text;
+  error.style.visibility = "visible";
+}
+
+function hideError() {
+  var error = document.getElementById("joinTheaterError");
+  error.innerHTML = "";
+  error.style.visibility = "hidden";
+}
+
 function pressedJoin(input, event) {
   if (!isEnter(event)) {
     return;
   }
   if (input.value.length != 6) {
-    var error = document.getElementById("joinTheaterError");
-    error.innerHTML = "Queue ids must be 6 characters.";
-    error.style.visibility = "visible";
+    displayError("Queue id must be 6 characters.");
     return;
   }
   window.location.href = "theater.php?join=1&queue_id=" + input.value;
@@ -25,12 +35,17 @@ function inputJoin(input, event) {
 }
 
 function createBookmarklet() {
-  var siteLabel = "Karaqueue";
+  var siteLabel = " Add Song";
   if (window.location.host.indexOf("localhost") > -1) {
-    siteLabel = "Localhost";
+    siteLabel = "Localhost" + siteLabel;
+  } else {
+    siteLabel = "Karaqueue" + siteLabel;
   }
-  var div = document.getElementById("bookmarkletDiv");
-  div.innerHTML = siteLabel + " Add Song";
+  var img = document.getElementById("bookmarkletImg");
+  var text = document.getElementById("bookmarkletText");
+  img.alt = siteLabel;
+  text.innerHTML = siteLabel;
+
   var link = document.getElementById("bookmarkletLink");
   link.href = "javascript:(function() { \
     var addSongPath = window.location.protocol + '//" + window.location.host + "/addSong.php?'; \
@@ -46,12 +61,10 @@ function createBookmarklet() {
   })();";
 }
 
-function displayError() {
+function checkError() {
   var join_queue_error = parseSearch("join_queue_error");
   if (join_queue_error) {
-    var error = document.getElementById("joinTheaterError");
-    error.innerHTML = "Queue with id \"" + join_queue_error + "\" does not exist.";
-    error.style.visibility = "visible";
+    displayError("Queue with id \"" + join_queue_error + "\" does not exist.");
     window.history.replaceState({}, document.title, window.location.origin);
   }
 }

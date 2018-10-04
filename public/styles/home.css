@@ -10,7 +10,7 @@ body {
 }
 
 div.centerColumn {
-  width: 960;
+  max-width: 960;
   margin: auto;
   position: relative;
 }
@@ -32,12 +32,12 @@ div.headerBar h1 {
 div.linkIcons {
   position: absolute;
   right: 0;
-  bottom: 10;
+  bottom: 0;
 }
 
 a.linkIcon {
-  display: inline-block;
-  margin: 5;
+  float: left;
+  margin: 0 0 15 15;
 }
 
 a.linkIcon img {
@@ -50,11 +50,37 @@ div#joinTheaterError {
   background-color: #ddd;
   color: red;
   padding: 10 15;
+  border: 1px #aaa solid;
   border-radius: 5px;
   position: absolute;
   margin-top: 10;
   top: 0;
   right: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+
+div.bookmarklet {
+  background-color: white;
+  border: 1px #aaa solid;
+  border-radius: 5px;
+  position: absolute;
+  top: 30;
+  right: 0;
+  padding: 5 10;
+}
+
+div.bookmarklet:hover {
+  background-color: #ddd;
+}
+
+img#bookmarkletImg {
+  width: 34;
+  height: 34;
+}
+
+p#bookmarkletText {
+  display: none;
 }
 
 div.actionBar {
@@ -154,12 +180,13 @@ input.searchInput {
   box-sizing: border-box;
   margin: 0 0 20 0;
   padding: 10;
-  width: 960;
+  width: 100%;
+  max-width: 960;
   font-size: large;
 }
 
 div.searchResults {
-  width: 960;
+  max-width: 960;
   position: relative;
 }
 
