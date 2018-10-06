@@ -34,33 +34,6 @@ function inputJoin(input, event) {
   joinValue = input.value;
 }
 
-function createBookmarklet() {
-  var siteLabel = " Add Song";
-  if (window.location.host.indexOf("localhost") > -1) {
-    siteLabel = "Localhost" + siteLabel;
-  } else {
-    siteLabel = "Karaqueue" + siteLabel;
-  }
-  var img = document.getElementById("bookmarkletImg");
-  var text = document.getElementById("bookmarkletText");
-  img.alt = siteLabel;
-  text.innerHTML = siteLabel;
-
-  var link = document.getElementById("bookmarkletLink");
-  link.href = "javascript:(function() { \
-    var addSongPath = window.location.protocol + '//" + window.location.host + "/addSong.php?'; \
-    var damData = document.getElementsByClassName('nicokaraDamData'); \
-    if (damData.length > 0) { \
-      addSongPath += damData[0].id; \
-    } else { \
-      addSongPath += 'address=' + encodeURIComponent(window.location.href); \
-    } \
-    var script = document.createElement('script'); \
-    script.src = addSongPath; \
-    document.body.appendChild(script); \
-  })();";
-}
-
 function checkError() {
   var join_queue_error = parseSearch("join_queue_error");
   if (join_queue_error) {

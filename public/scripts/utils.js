@@ -23,8 +23,6 @@ function removeAllChildren(node) {
 }
 
 function run(callback, interval) {
-  // callback();
-  // setInterval(callback, interval);
   var timeout = function() {
     callback();
     setTimeout(timeout, interval);
@@ -32,17 +30,28 @@ function run(callback, interval) {
   timeout();
 }
 
-function httpRequest(url, callback, post) {
+function httpRequest(url, callback, errorCallback) {
+  httpRequestPost(url, null, callback, errorCallback);
+}
+
+function httpRequestPost(url, post, callback, errorCallback) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function() {
-    if (xmlHttp.readyState==4 && xmlHttp.status==200) {
-      if (callback) {
+    if (xmlHttp.readyState != 4) {
+      return;
+    }
+    if (xmlHttp.status == 200) {
+      if (callback != null) {
         callback(xmlHttp.responseText);
       }
-      xmlHttp.onreadystatechange = null;
+    } else {
+      if (errorCallback != null) {
+        errorCallback();
+      }
     }
+    xmlHttp.onreadystatechange = null;
   }
-  if (post) {
+  if (post != null) {
     xmlHttp.open("POST", url, true);
     xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlHttp.send(post);
@@ -143,7 +152,7 @@ function isEnter(event) {
 function createDoubleclick(callback) {
   var timer = null;
   return (event) => {
-    if (!timer) {
+    if (timer == null) {
       timer = setTimeout(() => timer = null, 500);
     } else {
       timer = null;

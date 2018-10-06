@@ -60,29 +60,6 @@ div#joinTheaterError {
   cursor: pointer;
 }
 
-div.bookmarklet {
-  background-color: white;
-  border: 1px #aaa solid;
-  border-radius: 5px;
-  position: absolute;
-  top: 30;
-  right: 0;
-  padding: 5 10;
-}
-
-div.bookmarklet:hover {
-  background-color: #ddd;
-}
-
-img#bookmarkletImg {
-  width: 34;
-  height: 34;
-}
-
-p#bookmarkletText {
-  display: none;
-}
-
 div.actionBar {
   background-color: #333;
 }
@@ -113,32 +90,6 @@ div.actionButton input {
   margin-left: 10;
 }
 
-div.contentRow {
-  margin-top: 20;
-  white-space: nowrap;
-}
-
-div.contentButton {
-  background-color: #7bf;
-  color: white;
-  display: inline-block;
-  margin-right: 20;
-  padding: 15 20;
-  font-weight: bold;
-  border-radius: 5px;
-}
-
-div.contentButton:hover {
-  background-color: #16c;
-}
-
-div.description {
-  display: inline-block;
-  white-space: normal;
-  max-width: 660;
-  vertical-align: middle;
-}
-
 div.footer {
   margin-top: 30;
   font-style: italic;
@@ -156,6 +107,29 @@ div.footer a:hover {
   color: #555;
 }
 
+div.bookmarklet {
+  background-color: white;
+  border: 1px #aaa solid;
+  border-radius: 5px;
+  position: absolute;
+  top: 30;
+  right: 0;
+  padding: 5 10;
+}
+
+div.bookmarklet:hover {
+  background-color: #ddd;
+}
+
+img#bookmarkletImg {
+  width: 34;
+  height: 34;
+}
+
+p#bookmarkletText {
+  display: none;
+}
+
 div.searchButton {
   background-color: #def;
   display: inline-block;
@@ -165,6 +139,11 @@ div.searchButton {
   border-radius: 5px;
   cursor: pointer;
   user-select: none;
+}
+
+div#searchOptions {
+  width: 960px;
+  white-space: nowrap;
 }
 
 div.searchButton:hover {

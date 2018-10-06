@@ -68,8 +68,9 @@ function updateSong() {
   if (clientSong.subtitles == textarea.value) {
    alert("No changes to update.");
   } else {
-    httpRequest("updateSong.php?song_id="+clientSong.song_id, updateSongCallback,
-      "subtitles="+encodeURIComponent(textarea.value));
+    httpRequestPost("updateSong.php?song_id="+clientSong.song_id, 
+                    "subtitles="+encodeURIComponent(textarea.value),
+                    updateSongCallback);
     setStageDisabled(true);
   }
 }

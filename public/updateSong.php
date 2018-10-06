@@ -6,12 +6,14 @@ include_once "../private/yahooApplication.php";
 function updateSong() {
   if (!isset($_GET["song_id"]) ||
       !isset($_POST["subtitles"])) {
+    error_log("sub no arg");
     return false;
   }
 
   $id = Id::decode($_GET["song_id"]);
   $song = Song::load($id->value);
   if (!$song) {
+    error_log("no db");
     return false;
   }
 

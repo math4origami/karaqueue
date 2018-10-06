@@ -1,7 +1,7 @@
 var lastYoutube = {q: null, nextPageToken: null, searching: false};
 var lastNicovideo = {q: null, offset: 0, searching: false, totalCount: 0};
 
-function searchYoutube(q, callback) {
+function searchYoutube(q) {
   if (lastYoutube.searching) {
     return;
   }
@@ -19,7 +19,6 @@ function searchYoutube(q, callback) {
   }
 
   search += "&q=" + lastYoutube.q;
-  lastYoutube.nextPageToken = null;
   lastYoutube.searching = true;
   youtubeQuery("search", search, (r) => {
     lastYoutube.searching = false;
@@ -28,11 +27,15 @@ function searchYoutube(q, callback) {
       return;
     }
     lastYoutube.nextPageToken = idx(response, "nextPageToken", null);
-    callback(response);
-  });
+    buildYoutubeResults(response);
+  }, youtubeError);
 }
 
-function searchNicovideo(q, callback) {
+function youtubeError() {
+  lastYoutube.searching = false;
+}
+
+function searchNicovideo(q) {
   if (lastNicovideo.searching) {
     return;
   }
@@ -49,7 +52,6 @@ function searchNicovideo(q, callback) {
   }
 
   var napi = "searchNicovideo.php?q=" + lastNicovideo.q + "&_offset=" + lastNicovideo.offset;
-  lastNicovideo.offset += 10;
   lastNicovideo.searching = true;
   httpRequest(napi, (r) => {
     lastNicovideo.searching = false;
@@ -57,9 +59,14 @@ function searchNicovideo(q, callback) {
     if (!response || !response.meta || idx(response.meta, "status") != "200") {
       return;
     }
+    lastNicovideo.offset += 10;
     lastNicovideo.totalCount = idx(response.meta, "totalCount", 0);
-    callback(response);
-  });
+    buildNicovideoResults(response);
+  }, nicovideoError);
+}
+
+function nicovideoError() {
+  lastNicovideo.searching = false;
 }
 
 function getYoutubeResults() {
@@ -78,8 +85,8 @@ function pressedSearch(input, event) {
   removeAllChildren(getNicovideoResults());
 
   var q = encodeURIComponent(input.value);
-  searchYoutube(q, buildYoutubeResults);
-  searchNicovideo(q, buildNicovideoResults);
+  searchYoutube(q);
+  searchNicovideo(q);
 }
 
 function shouldAutoscroll() {
@@ -89,8 +96,8 @@ function shouldAutoscroll() {
 function createAutoscroll() {
   document.body.onscroll = () => {
     if (shouldAutoscroll()) {
-      searchYoutube(null, buildYoutubeResults);
-      searchNicovideo(null, buildNicovideoResults);
+      searchYoutube(null);
+      searchNicovideo(null);
     }
   };
 }
@@ -130,9 +137,9 @@ function buildResultRow(titleString, imgUrl, callback) {
   imgHandler.className = "resultImg resultHandler";
   imgButton.className = "resultImg resultButton";
 
+  titleHandler.onclick = callback;
+  imgHandler.onclick = callback;
   var doubleclick = createDoubleclick(callback);
-  titleHandler.onclick = doubleclick;
-  imgHandler.onclick = doubleclick;
   disableMobileZoom(titleHandler, doubleclick);
   disableMobileZoom(imgHandler, doubleclick);
 
@@ -226,4 +233,31 @@ function updateSearchOption(texts, divs, input) {
       }
     }
   };
+}
+
+function createBookmarklet() {
+  var siteLabel = " Add Song";
+  if (window.location.host.indexOf("localhost") > -1) {
+    siteLabel = "Localhost" + siteLabel;
+  } else {
+    siteLabel = "Karaqueue" + siteLabel;
+  }
+  var img = document.getElementById("bookmarkletImg");
+  var text = document.getElementById("bookmarkletText");
+  img.alt = siteLabel;
+  text.innerHTML = siteLabel;
+
+  var link = document.getElementById("bookmarkletLink");
+  link.href = "javascript:(function() { \
+    var addSongPath = window.location.protocol + '//" + window.location.host + "/addSong.php?'; \
+    var damData = document.getElementsByClassName('nicokaraDamData'); \
+    if (damData.length > 0) { \
+      addSongPath += damData[0].id; \
+    } else { \
+      addSongPath += 'address=' + encodeURIComponent(window.location.href); \
+    } \
+    var script = document.createElement('script'); \
+    script.src = addSongPath; \
+    document.body.appendChild(script); \
+  })();";
 }

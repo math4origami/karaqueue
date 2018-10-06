@@ -1,16 +1,23 @@
 <?php
 include_once "../private/client.php";
-include_once "../private/strings.php";
 
 $client = Client::getUserQueue();
 
 header('Content-type: text/html; charset=utf-8');
 
 function printNewTheater($class) {
-  echo
-    "<a id='newTheater' href='theater.php?new_queue=1'><div class='actionButton $class'>
-      Start a new Queue
-    </div></a>";
+  echo "
+<a id='newTheater' href='theater.php?new_queue=1'><div class='actionButton $class'>
+  Start a new Queue
+</div></a>";
+}
+
+function printFooter() {
+  echo "
+  </div>
+</div>
+</body>
+</html>";
 }
 ?>
 
@@ -59,19 +66,3 @@ function printNewTheater($class) {
 <div class="contentBar">
   <div class="centerColumn">
     <div id="joinTheaterError" onclick="hideError()"></div>
-    <a href="/" id="bookmarkletLink" title="<?= Strings::BOOKMARKLET_DESCRIPTION ?>">
-      <div class="bookmarklet">
-        <img id="bookmarkletImg" src="images/baseline_bookmark_black_36dp.png">
-        <p id="bookmarkletText"></p>
-      </div>
-    </a>
-    <?php include_once "search.php"; ?>
-  </div>
-</div>
-
-<script type="text/javascript">
-checkError();
-createBookmarklet();
-</script>
-</body>
-</html>
