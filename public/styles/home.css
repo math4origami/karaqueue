@@ -27,6 +27,7 @@ div.headerBar h1 {
   position: absolute;
   margin-bottom: 10;
   bottom: 0;
+  color: black;
 }
 
 div.linkIcons {
