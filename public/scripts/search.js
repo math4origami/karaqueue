@@ -236,7 +236,7 @@ function updateSearchOption(texts, divs, input) {
 }
 
 function createBookmarklet() {
-  var siteLabel = " Add Song";
+  var siteLabel = " Add Video";
   if (window.location.host.indexOf("localhost") > -1) {
     siteLabel = "Localhost" + siteLabel;
   } else {

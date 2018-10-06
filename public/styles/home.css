@@ -281,3 +281,41 @@ div#youtubeResults div.resultTitle.resultHandler {
   left: 320;
   top: 0;
 }
+
+div.aboutLeftCol, div.aboutRightCol, div.aboutCenterCol {
+  display: inline-block;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+
+div.aboutLeftCol {
+  padding-right: 5;
+}
+
+div.aboutRightCol {
+  padding-left: 5;
+
+}
+
+div.aboutTwoCol div.aboutLeftCol {
+  width: 560;
+}
+
+div.aboutTwoCol div.aboutRightCol {
+  width: 400;
+}
+
+div.aboutThreeCol div.aboutLeftCol {
+  width: 320;
+}
+
+div.aboutThreeCol div.aboutRightCol {
+  width: 320;
+}
+
+div.aboutThreeCol div.aboutCenterCol {
+  width: 320;
+}
+
+div.aboutRightCol {
+}
