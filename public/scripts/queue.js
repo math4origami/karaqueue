@@ -114,7 +114,7 @@ function buildQueueSong(serverSong, server_i) {
     buildYoutubeSong(serverSong.name, queueSong);
   } else {
     queueSong = document.createElement("iframe");
-    queueSong.src = "http://ext.nicovideo.jp/thumb/" + serverSong.name;
+    queueSong.src = window.location.protocol + "//ext.nicovideo.jp/thumb/" + serverSong.name;
     queueSong.scrolling = "no";
     queueSong.className = "queue";
   }

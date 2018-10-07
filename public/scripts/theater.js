@@ -152,7 +152,7 @@ var SceneFrame = function() {
   return that;
 }
 
-SceneFrame.origin = "http://embed.nicovideo.jp";
+SceneFrame.origin = window.location.protocol + "//embed.nicovideo.jp";
 SceneFrame.init = function(iframe) {
   SceneFrame.instance = {
     iframe: iframe,
