@@ -350,8 +350,11 @@ function lowerSong() {
 }
 
 function bodyKeyPress(event) {
-  var tag = event.path[0];
-  if (["INPUT", "TEXTAREA"].indexOf(tag.tagName) > -1) {
+  var tag = event.target;
+  if (tag.tagName == "TEXTAREA") {
+    return true;
+  }
+  if (tag.tagName == "INPUT" && tag.type == "text") {
     return true;
   }
 

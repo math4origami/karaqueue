@@ -261,6 +261,7 @@ function buildSceneFrame(clientSong) {
   scene.src = SceneFrame.origin + "/watch/" + clientSong.name + "?jsapi=1";
   scene.scrolling = false;
   scene.className = "sceneFrame";
+  scene.allow = "autoplay";
 
   var stage = getStage();
   removeAllChildren(stage);
