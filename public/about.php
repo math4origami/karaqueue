@@ -13,7 +13,9 @@ include_once "../private/template.php";
     </p>
   </div><div class="aboutRightCol">
     <h2>「カラキュー」とは？</h2>
-    <p>「カラキュー」はYoutubeとニコニコ動画から動画を見えるウェブサイト。</p>
+    <p>
+      カラキューは大勢の人がYoutubeとニコニコ動画の動画を入力して一緒に見れるサイトです。ふりがな付きの字幕を加える機能もあるので、歌詞がついてない動画にも付け加えることができます。
+    </p>
   </div>
 </div>
 
@@ -32,7 +34,9 @@ include_once "../private/template.php";
     </p>
   </div><div class="aboutRightCol">
     <h3>動画を検索する</h3>
-    <p>問いを打ち込んで「Enter」を押して、Youtubeとニコニコ動画で一緒に検索する。</p>
+    <p>
+      本サイトでテキストを入力して「Enter」を押せばYoutubeとニコニコ動画の動画を同時検索できます。タグをクリックすれば「カラオケ」などのよく検索される言葉も簡単に入力できます。
+    </p>
   </div>
 </div>
 
@@ -46,11 +50,13 @@ include_once "../private/template.php";
   <div class="aboutLeftCol">
     <h3>Add videos</h3>
     <p>
-      Click on a video result to add it to your queue.
+      Click on a video result to add it to your queue (double-tap on mobile).
     </p>
   </div><div class="aboutRightCol">
-    <h3>動画を加える</h3>
-    <p>動画結果を押してキューに加える。</p>
+    <h3>動画をキューに入れる</h3>
+    <p>
+      検索結果の動画をクリックすると、動画が動画ストック（以下、キュー）に加わります。スマホでは動画をダブルタップしてください。
+    </p>
   </div>
 </div>
 
@@ -68,7 +74,9 @@ include_once "../private/template.php";
     </p>
   </div><div class="aboutRightCol">
     <h3>動画を見る</h3>
-    <p>「Go to your Queue」を押して加える動画を見る。</p>
+    <p>
+      「Go to your Queue」をタップすればキューにある動画を順番に見れます。
+    </p>
   </div>
 </div>
 
@@ -82,12 +90,14 @@ include_once "../private/template.php";
   <div class="aboutLeftCol">
     <h3>Share and join queues</h3>
     <p>
-      Share the "Join Link" with a friend so they can watch and add songs to the same queue!
+      Share the "Join Link" with a friend so they can watch and add videos to the same queue!
       You can also join by typing the 6-digit queue_id into "Join a Queue" and pressing &lt;Enter&gt;.
     </p>
   </div><div class="aboutRightCol">
     <h3>キューを付ける</h3>
-    <p></p>
+    <p>
+      「Join Link」のリンク先を友達に送ることで、友達を自分のカラキューに招待し、一緒に動画を見たり、動画をキューに入れたりできるようになります。ほかの招待方法として、ホームページの右上の「Join a Queue」に6桁の認証コードを入力することで、その人のカラキューに入ることもできます。
+    </p>
   </div>
 </div>
 
@@ -99,15 +109,16 @@ include_once "../private/template.php";
 
 <div class="aboutTwoCol">
   <div class="aboutLeftCol">
-    <h3>Edit subtitles</h3>
+    <h3>Add subtitles</h3>
     <p>
-      Go to "Subtitles" to add and edit subtitles that can scroll over your video.
+      Click on "Subtitles" to add and edit subtitles that can scroll over your video.
       They will have furigana automatically added.
     </p>
   </div><div class="aboutRightCol">
-    <h3>字幕を編集する</h3>
-    <p>「Subtitles」に行って字幕を付けに編集する。</p>
-    <p></p>
+    <h3>字幕を加える</h3>
+    <p>
+      動画に字幕を加えたい場合、「Subtitles」をクリックし、動画リストをダブルクリックすれば字幕を新たに加えたり、編集したりできます。ふりがなは自動的につきます。動画が流れるときに字幕も自動的に流れます。
+    </p>
   </div>
 </div>
 
@@ -119,14 +130,16 @@ include_once "../private/template.php";
 
 <div class="aboutTwoCol">
   <div class="aboutLeftCol">
-    <h3>Use the bookmarklet</h3>
+    <h3>Use the bookmarklet to add videos</h3>
     <p>
       In a traditional desktop web browser, you can use the bookmarklet to add videos directly from any
       Youtube or NicoNicoDouga video page.
     </p>
   </div><div class="aboutRightCol">
-    <h3>字幕を編集する</h3>
-    <p>「Subtitles」に行って字幕を付けに編集する。</p>
+    <h3>ブックマークレットを使って動画をキューに入れる</h3>
+    <p>
+      キューの動画入力方法をもう一つ紹介します。ブックマークレットをブラウザのブックマークに加えたあと、Youtubeかニコニコ動画の動画ページを開き、次に加えたブックマークをクリックすれば、開いてある動画がキューに加わります。
+    </p>
   </div>
 </div>
 
