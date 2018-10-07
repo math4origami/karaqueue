@@ -139,9 +139,6 @@ function buildResultRow(titleString, imgUrl, callback) {
 
   titleHandler.onclick = callback;
   imgHandler.onclick = callback;
-  var doubleclick = createDoubleclick(callback);
-  disableMobileZoom(titleHandler, doubleclick);
-  disableMobileZoom(imgHandler, doubleclick);
 
   var div = document.createElement("div");
   div.className = "resultRow";

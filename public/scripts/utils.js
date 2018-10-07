@@ -149,21 +149,15 @@ function isEnter(event) {
   return event.key == "Enter";
 }
 
-function createDoubleclick(callback) {
+function mobileDoubleTap(element, callback) {
   var timer = null;
-  return (event) => {
+  element.ontouchend = (event) => {
     if (timer == null) {
       timer = setTimeout(() => timer = null, 500);
     } else {
       timer = null;
       callback(event);
+      event.preventDefault();
     }
-  };
-}
-
-function disableMobileZoom(element, callback) {
-  element.ontouchend = (event) => {
-    event.preventDefault();
-    callback(event);
   };
 }

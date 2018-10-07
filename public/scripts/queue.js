@@ -137,9 +137,9 @@ function addQueue(serverSong, server_i) {
   queueButton.onclick = function () {
     queueButtonClick(server_i);
   };
-  queueButton.ondblclick = function () {
-    queueButtonDblClick(server_i);
-  };
+  var dblClickAction = () => queueButtonDblClick(server_i);
+  queueButton.ondblclick = dblClickAction;
+  mobileDoubleTap(queueButton, dblClickAction);
 
   var queueSong = buildQueueSong(serverSong, server_i);
 

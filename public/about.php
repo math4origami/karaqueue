@@ -48,12 +48,12 @@ include_once "../private/template.php";
   <div class="aboutLeftCol">
     <h3>Add videos</h3>
     <p>
-      Click on a video result to add it to your queue (or double-tap on mobile).
+      Click on a video result to add it to your queue.
     </p>
   </div><div class="aboutRightCol">
     <h3>動画をキューに入れる</h3>
     <p>
-      検索結果の動画をクリックすると、動画が動画ストック（以下、キュー）に加わります。スマホでは動画をダブルタップしてください。
+      検索結果の動画をクリックすると、動画が動画ストック（以下、キュー）に加わります。
     </p>
   </div>
 </div>
