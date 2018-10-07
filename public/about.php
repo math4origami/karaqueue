@@ -100,9 +100,7 @@ include_once "../private/template.php";
 </div>
 
 <div class="aboutRow">
-  <div class="aboutCenterCol">
-    <img src="images/favicon.png">
-  </div>
+  <img src="images/about/subtitles.png">
 </div>
 
 <div class="aboutTwoCol">
@@ -121,9 +119,7 @@ include_once "../private/template.php";
 </div>
 
 <div class="aboutRow">
-  <div class="aboutCenterCol">
-    <img src="images/about/bookmarklet.png">
-  </div>
+  <img src="images/about/bookmarklet.png">
 </div>
 
 <div class="aboutTwoCol">
