@@ -143,5 +143,7 @@ include_once "../private/template.php";
   </div>
 </div>
 
+<!-- Thanks Kotaro for the translations! -->
+
 <?php
 printFooter();
