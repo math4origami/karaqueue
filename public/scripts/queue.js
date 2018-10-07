@@ -534,6 +534,6 @@ function autoHideSidebar() {
 }
 
 function repeatReloadQueue() {
-  setTimeout(reloadQueue(repeatReloadQueue), 1000);
+  reloadQueue(() => setTimeout(repeatReloadQueue, 1000));
 }
-reloadQueue(repeatReloadQueue);
+repeatReloadQueue();

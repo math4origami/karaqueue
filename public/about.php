@@ -6,10 +6,8 @@ include_once "../private/template.php";
   <div class="aboutLeftCol">
     <h2>What is Karaqueue?</h2>
     <p>
-      Karaqueue is a website where you can queue and watch videos from Youtube and NicoNicoDouga.
-      Multiple people can all submit videos to the same queue to watch them together.
-      It also provides a rudimentary subtitle overlay while watching the videos, along with 
-      automatically added furigana.
+      Karaqueue is a website where many people can queue and watch videos from Youtube and NicoNicoDouga together.
+      It also provides a rudimentary subtitle overlay while watching the videos, along with automatically added furigana.
     </p>
   </div><div class="aboutRightCol">
     <h2>「カラキュー」とは？</h2>
@@ -50,7 +48,7 @@ include_once "../private/template.php";
   <div class="aboutLeftCol">
     <h3>Add videos</h3>
     <p>
-      Click on a video result to add it to your queue (double-tap on mobile).
+      Click on a video result to add it to your queue (or double-tap on mobile).
     </p>
   </div><div class="aboutRightCol">
     <h3>動画をキューに入れる</h3>
@@ -124,7 +122,7 @@ include_once "../private/template.php";
 
 <div class="aboutRow">
   <div class="aboutCenterCol">
-    <img src="images/favicon.png">
+    <img src="images/about/bookmarklet.png">
   </div>
 </div>
 
