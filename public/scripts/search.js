@@ -114,7 +114,8 @@ function buildYoutubeResults(response) {
 function buildNicovideoResults(response) {
   var container = getNicovideoResults();
   for (var item of response.data) {
-    var div = buildResultRow(item.title, item.thumbnailUrl, createAddSong(0, item.contentId));
+    var url = item.thumbnailUrl.replace("http:", "https:");
+    var div = buildResultRow(item.title, url, createAddSong(0, item.contentId));
     container.appendChild(div);
   }
 }
