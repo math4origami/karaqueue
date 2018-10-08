@@ -11,7 +11,14 @@ include_once "youtube.php";
   </div>
 </a>
 <div id="searchOptions"></div>
-<input type="text" class="searchInput" id="searchInput" onkeypress="pressedSearch(this, event)"/>
+<div class="searchRow">
+  <button class="searchImgHolder" onclick="clickSearch()">
+    <img src="images/baseline_search_black_24dp.png">
+  </button>
+  <div class="searchInputHolder">
+    <input type="text" name="q" class="searchInput" id="searchInput" onkeypress="pressedSearch(this, event)" placeholder="Search for videos"/>
+  </div>
+</div>
 
 <div class="searchResults">
   <div id="youtubeResults"></div><div id="nicovideoResults"></div>

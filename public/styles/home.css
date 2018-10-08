@@ -50,12 +50,11 @@ div#joinTheaterError {
   visibility: hidden;
   background-color: #ddd;
   color: red;
-  padding: 10 15;
+  padding: 20 30;
   border: 1px #aaa solid;
   border-radius: 5px;
   position: absolute;
-  margin-top: 10;
-  top: 0;
+  top: -20;
   right: 0;
   z-index: 1;
   cursor: pointer;
@@ -113,7 +112,7 @@ div.bookmarklet {
   border: 1px #aaa solid;
   border-radius: 5px;
   position: absolute;
-  top: 30;
+  top: 0;
   right: 0;
   padding: 5 10;
 }
@@ -134,7 +133,7 @@ p#bookmarkletText {
 div.searchButton {
   background-color: #def;
   display: inline-block;
-  margin: 30 10 10 0;
+  margin: 0 10 10 0;
   padding: 10;
   border: 1px #aaa solid;
   border-radius: 5px;
@@ -145,6 +144,7 @@ div.searchButton {
 div#searchOptions {
   width: 960px;
   white-space: nowrap;
+  margin-top: 30;
 }
 
 div.searchButton:hover {
@@ -156,13 +156,53 @@ div.searchSelected, div.searchSelected:hover {
   color: white;
 }
 
-input.searchInput {
-  box-sizing: border-box;
-  margin: 0 0 20 0;
-  padding: 10;
+div.searchRow {
   width: 100%;
   max-width: 960;
+  position: relative;
+  margin: 0 0 20 0;
+  height: 46;
+}
+
+div.searchInputHolder {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  right: 56px;
+}
+
+input.searchInput {
+  box-sizing: border-box;
+  padding: 10;
+  width: 100%;
   font-size: large;
+  height: 46;
+}
+
+input.searchInput::placeholder {
+  color: #aaa;
+}
+
+button.searchImgHolder {
+  padding: 10 15;
+  border: 1px #aaa solid;
+  background-color: #ddd;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+button.searchImgHolder:hover {
+  background-color: #ccc;
+}
+
+button.searchImgHolder img {
+  opacity: 0.5;
+}
+
+button.searchImgHolder:hover img {
+  opacity: 1.0;
 }
 
 div.searchResults {

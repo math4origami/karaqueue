@@ -10,8 +10,11 @@ function displayError(text) {
   error.style.visibility = "visible";
 }
 
-function hideError() {
+function hideError(previousValue) {
   var error = document.getElementById("joinTheaterError");
+  if (previousValue != null && previousValue != error.innerHTML) {
+    return;
+  }
   error.innerHTML = "";
   error.style.visibility = "hidden";
 }

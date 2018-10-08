@@ -81,6 +81,20 @@ function pressedSearch(input, event) {
   if (!isEnter(event)) {
     return;
   }
+  doSearch(input);
+}
+
+function clickSearch() {
+  var input = document.getElementById("searchInput");
+  doSearch(input);
+}
+
+function doSearch(input) {
+  if (input.value.length <= 0) {
+    displayError("Search query cannot be empty.");
+    return;
+  }
+  hideError("Search query cannot be empty.");
   removeAllChildren(getYoutubeResults());
   removeAllChildren(getNicovideoResults());
 
