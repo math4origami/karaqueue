@@ -35,6 +35,9 @@ function printFooter() {
   <div class="centerColumn">
     <a href="/"><h1>Karaqueue</h1></a>
     <div class="linkIcons">
+      <div class="linkText">
+        <a href="about.php">About</a>
+      </div>
       <a class="linkIcon" href="https://github.com/math4origami/karaqueue">
         <img title="github.com/math4origami/karaqueue" src="images/GitHub-Mark-32px.png">
       </a>

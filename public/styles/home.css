@@ -36,6 +36,26 @@ div.linkIcons {
   bottom: 0;
 }
 
+div.linkText {
+  float: left;
+  position: relative;
+  height: 30;
+}
+
+div.linkText a {
+  font-weight: bold;
+  color: gray;
+  text-decoration: none;
+  position: absolute;
+  font-size: larger;
+  bottom: 0;
+  right: 0;
+}
+
+div.linkText a:hover {
+  color: black;
+}
+
 a.linkIcon {
   float: left;
   margin: 0 0 15 15;
@@ -62,6 +82,8 @@ div#joinTheaterError {
 
 div.actionBar {
   background-color: #333;
+  white-space: nowrap;
+  min-width: 850px;
 }
 
 div.actionBarRight {
@@ -338,10 +360,15 @@ div#youtubeResults div.resultTitle.resultHandler {
   top: 0;
 }
 
-div.aboutLeftCol, div.aboutRightCol, div.aboutCenterCol {
+div.aboutTwoCol {
+  white-space: nowrap;
+}
+
+div.aboutLeftCol, div.aboutRightCol {
   display: inline-block;
   vertical-align: top;
   box-sizing: border-box;
+  white-space: normal;
 }
 
 div.aboutLeftCol {
