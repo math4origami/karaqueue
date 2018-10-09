@@ -91,13 +91,13 @@ div.actionButton input {
 }
 
 div.footer {
-  margin-top: 30;
+  margin: 10 0 40 0;
   font-style: italic;
   color: #999;
+  position: relative;
 }
 
 div.footer a {
-  margin-left: 20;
   color: #999;
   text-decoration: none;
 }
@@ -105,6 +105,21 @@ div.footer a {
 div.footer a:hover {
   text-decoration: underline;
   color: #555;
+}
+
+div.footerLeft {
+  display: inline-block;
+}
+
+div.footerRight {
+  float: right;
+}
+
+div.footer img {
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
 }
 
 div.bookmarklet {
@@ -346,41 +361,27 @@ div.aboutTwoCol div.aboutRightCol {
   width: 480;
 }
 
-div.aboutThreeCol div.aboutLeftCol {
-  width: 240;
-  padding-right: 10;
-}
-
-div.aboutThreeCol div.aboutRightCol {
-  width: 240;
-  padding-left: 10;
-}
-
-div.aboutThreeCol div.aboutCenterCol {
-  width: 480;
-}
-
-div.aboutCenterCol>img {
-  box-sizing: border-box;
-  border: 2px gray solid;
-  border-radius: 5px;
-  width: 480;
-}
-
 div.aboutRow>img {
-  box-sizing: border-box;
   width: 960;
   border: 2px gray solid;
   border-radius: 5px;
+  position: relative;
+  left: -2px;
   /*margin: 20 0;*/
+  margin-top: 8px;
+}
+
+div.aboutLeftCol h2, div.aboutRightCol h2 {
+  margin-block-start: 2em;
+  margin-block-end: 0.75em;
 }
 
 div.aboutLeftCol h3, div.aboutRightCol h3 {
   /*margin-block-start: 0.75em;*/
-  margin-block-end: 0.5em;
+  margin-block-end: 0.75em;
 }
 
 div.aboutLeftCol p, div.aboutRightCol p {
-  margin-block-start: 0.5em;
+  margin-block-start: 0.75em;
   /*margin-block-end: 0.75em;*/
 }
