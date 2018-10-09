@@ -360,6 +360,20 @@ div#youtubeResults div.resultTitle.resultHandler {
   top: 0;
 }
 
+div.backLink {
+  margin-bottom: 40px;
+}
+
+div.backLink a {
+  text-decoration: none;
+  color: gray;
+}
+
+div.backLink a:hover {
+  color: black;
+  text-decoration: underline;
+}
+
 div.aboutTwoCol {
   white-space: nowrap;
 }

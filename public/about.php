@@ -144,6 +144,10 @@ include_once "../private/template.php";
   </div>
 </div>
 
+<div class="backLink">
+  <a href="/">Back to Home</a>
+</div>
+
 <!-- Thanks Kotaro for the translations! -->
 
 <?php
