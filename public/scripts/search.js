@@ -1,5 +1,14 @@
-var lastYoutube = {q: null, nextPageToken: null, searching: false};
-var lastNicovideo = {q: null, offset: 0, searching: false, totalCount: 0};
+var lastYoutube = {
+  q: null,
+  nextPageToken: null,
+  searching: false,
+};
+var lastNicovideo = {
+  q: null,
+  offset: 0,
+  searching: false,
+  totalCount: 0
+};
 
 function searchYoutube(q) {
   if (lastYoutube.searching) {
@@ -9,6 +18,7 @@ function searchYoutube(q) {
   var search = "maxResults=10&type=video";
   if (q != null) {
     lastYoutube.q = q;
+    lastYoutube.nextPageToken = null;
   } else if (lastYoutube.nextPageToken != null) {
     search += "&pageToken=" + lastYoutube.nextPageToken;
   } else {
@@ -26,8 +36,8 @@ function searchYoutube(q) {
     if (!response || idx(response, "kind") != "youtube#searchListResponse") {
       return;
     }
-    lastYoutube.nextPageToken = idx(response, "nextPageToken", null);
     buildYoutubeResults(response);
+    lastYoutube.nextPageToken = idx(response, "nextPageToken", null);
   }, youtubeError);
 }
 
@@ -59,9 +69,9 @@ function searchNicovideo(q) {
     if (!response || !response.meta || idx(response.meta, "status") != "200") {
       return;
     }
+    buildNicovideoResults(response);
     lastNicovideo.offset += 10;
     lastNicovideo.totalCount = idx(response.meta, "totalCount", 0);
-    buildNicovideoResults(response);
   }, nicovideoError);
 }
 
@@ -154,6 +164,7 @@ function buildResultRow(titleString, imgUrl, callback) {
 
   titleHandler.onclick = callback;
   imgHandler.onclick = callback;
+  imgHandler.tabIndex = 0;
 
   var div = document.createElement("div");
   div.className = "resultRow";

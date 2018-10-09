@@ -18,39 +18,27 @@ include_once "../private/template.php";
 </div>
 
 <div class="aboutRow">
-  <div class="aboutCenterCol">
-    <img src="images/favicon.png">
-  </div>
 </div>
+<img src="images/favicon.png">
 
-<div class="aboutTwoCol">
+<div class="aboutThreeCol">
   <div class="aboutLeftCol">
     <h3>Search for videos</h3>
     <p>
       Press &lt;Enter&gt; after you type a query and Karaqueue will search both Youtube and NicoNicoDouga at the same time.
       Helpful search terms such as "カラオケ" (karaoke) can be added or removed by clicking on them.
     </p>
+    <h3>Add videos</h3>
+    <p>
+      Click on a video result to add it to your queue.
+    </p>
+  </div><div class="aboutCenterCol">
+    <img src="images/favicon.png">
   </div><div class="aboutRightCol">
     <h3>動画を検索する</h3>
     <p>
       本サイトでテキストを入力して「Enter」を押せばYoutubeとニコニコ動画の動画を同時検索できます。タグをクリックすれば「カラオケ」などのよく検索される言葉も簡単に入力できます。
     </p>
-  </div>
-</div>
-
-<div class="aboutRow">
-  <div class="aboutCenterCol">
-    <img src="images/favicon.png">
-  </div>
-</div>
-
-<div class="aboutTwoCol">
-  <div class="aboutLeftCol">
-    <h3>Add videos</h3>
-    <p>
-      Click on a video result to add it to your queue.
-    </p>
-  </div><div class="aboutRightCol">
     <h3>動画をキューに入れる</h3>
     <p>
       検索結果の動画をクリックすると、動画が動画ストック（以下、キュー）に加わります。
@@ -59,10 +47,8 @@ include_once "../private/template.php";
 </div>
 
 <div class="aboutRow">
-  <div class="aboutCenterCol">
-    <img src="images/favicon.png">
-  </div>
 </div>
+<img src="images/favicon.png">
 
 <div class="aboutTwoCol">
   <div class="aboutLeftCol">
@@ -79,9 +65,7 @@ include_once "../private/template.php";
 </div>
 
 <div class="aboutRow">
-  <div class="aboutCenterCol">
-    <img src="images/favicon.png">
-  </div>
+  <img src="images/about/share.png">
 </div>
 
 <div class="aboutTwoCol">
@@ -89,7 +73,7 @@ include_once "../private/template.php";
     <h3>Share and join queues</h3>
     <p>
       Share the "Join Link" with a friend so they can watch and add videos to the same queue!
-      You can also join by typing the 6-digit queue_id into "Join a Queue" and pressing &lt;Enter&gt;.
+      You can also join by typing the 6-digit queue_id into "Join a Queue" on the home page.
     </p>
   </div><div class="aboutRightCol">
     <h3>キューを付ける</h3>
