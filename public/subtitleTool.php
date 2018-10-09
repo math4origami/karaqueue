@@ -12,7 +12,7 @@ if (!$client->queueId) {
 
 <head>
 <title>Karaqueue Subtitles</title>
-<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="icon" type="image/png" href="images/logo_32.png">
 <link rel="stylesheet" type="text/css" href="styles/basic.css">
 <?= $client->fixUrl() ?>
 <script type="text/javascript" src="scripts/utils.js"></script>

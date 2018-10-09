@@ -24,7 +24,7 @@ function printFooter() {
 <html>
 <head>
 <title>Karaqueue</title>
-<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="icon" type="image/png" href="images/logo_32.png">
 <link rel="stylesheet" type="text/css" href="styles/home.css">
 <script type="text/javascript" src="scripts/utils.js"></script>
 <script type="text/javascript" src="scripts/home.js"></script>
@@ -33,7 +33,7 @@ function printFooter() {
 <body>
 <div class="headerBar">
   <div class="centerColumn">
-    <a href="/"><h1>Karaqueue</h1></a>
+    <a href="/"><img class="logo" src="images/logo_60.png"><h1>Karaqueue</h1></a>
     <div class="linkIcons">
       <div class="linkText">
         <a href="about.php">About</a>
