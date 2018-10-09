@@ -54,7 +54,7 @@ div.linkText {
 
 div.linkText a {
   font-weight: bold;
-  color: gray;
+  color: #aaa;
   text-decoration: none;
   position: absolute;
   font-size: larger;
