@@ -1,20 +1,4 @@
 <?php
-include_once "../private/utils.php";
-
-$referer = idx($_SERVER, "HTTP_REFERER");
-if (!$referer) {
-  exit();
-}
-
-$host = parse_url($referer, PHP_URL_HOST);
-if ($host !== "localhost" && 
-    $host !== "karaqueue.com" &&
-    $host !== "www.karaqueue.com" &&
-    $host !== "192.168.7.32") {
-  exit();
-}
-
-
 if (!isset($_GET["q"]) || !isset($_GET["_offset"])) {
   exit();
 }
